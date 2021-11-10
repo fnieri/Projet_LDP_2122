@@ -4,6 +4,7 @@ class MainWindow {
     'Fields
     - size
     - title
+    - loadingScreen : mp4/gif /' watch pdf '/
 }
 
 class Cell {
@@ -17,11 +18,12 @@ class Cell {
     - destroy(): void
 }
 
+
 class Candy {
     'Fields
-    - id
-    - color
-    - isSpecial
+    - candyId  /' candyId is more understandable'/
+    - color : Color
+    - isSpecial : True..False
 
     'Methods
     - getId()
@@ -43,10 +45,18 @@ class candySpeciality {
 
 class Wall {
     'Fields
-    - id
+    - state /' state is better than id '/
+
+    'Methods
+    - changeState(newState)
+    - setState(newState)
 }
 
-class Color {
+/'
+Enum > Class?
+Will have to watch how we will implement this to decide
+'/
+enum Color {
     'Fields
     - red
     - orange
@@ -56,7 +66,7 @@ class Color {
     - purple
 
     'Methods
-    }
+}
 
 class Board{
     'Fields
@@ -78,23 +88,28 @@ class Board{
 
 class Icing{
     'Fields
-    - type: 1 or 2
+    - type: 0..1..2 /' if 0 delete '/
 
     'Methods
     - getType(): number
     - setType(type: number)
 }
 
-class Animation {
+abstract Animation {
     'Fields
     - duration
-    - easing
-    - callback
+    - easing /' What's easing? '/
+    - callback /' What's callback '/
 
     'Methods
-    - start()
-    - stop()
+    - animate()
+    /' Removed start and stop because you would need to call
+    stop 60 times a second? Right? '/
 }
+
+class Slide {}
+
+class Explosion {}
 
 class Score{
     'Fields
@@ -103,26 +118,40 @@ class Score{
 
     'Methods
     - getScore(): number
+    - calculateScore(Action)
+    - updateScore(actionScore : score)
+    - checkForNewHighScore(currentScore)
     - getHighScore(): number
-    - setScore(score: number)
     - setHighScore(highScore: number)
+
 }
 
 class StartScreen {
     'Fields
-    - bestScore
+    - highScore
+    - choiceButtons : Buttons
 }
 
+enum Buttons {
+    'Fields
+    - play
+    - options?
+    - exit
+
+}
+
+Explosion-up->Animation
+Slide-up->Animation
 Board--MainWindow
 Score--MainWindow
 Cell--Board
 Wall--Cell
 Candy--Cell
-Color->Candy
+Color-up->Candy
 Icing->Candy
 candySpeciality->Candy
 Animation->Cell
 StartScreen--MainWindow
-
-
+Buttons-right->MainWindow
+/' What's the difference between Wall and Icing? '/
 @enduml
