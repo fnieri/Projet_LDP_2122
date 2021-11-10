@@ -1,1 +1,128 @@
-wef
+@startuml LDP
+
+class MainWindow {
+    'Fields
+    - size
+    - title
+}
+
+class Cell {
+    'Fields
+    - <T> cellObject
+
+    'Methods
+    - setCellObject(cellObject: T)
+    - getCellObject(): T
+    - isEmpty(): boolean
+    - destroy(): void
+}
+
+class Candy {
+    'Fields
+    - id
+    - color
+    - isSpecial
+
+    'Methods
+    - getId()
+    - getColor()
+    - setColor(color)
+    - setSpeciality(candySpeciality)
+}
+
+class candySpeciality {
+    'Fields
+    - type
+    - value
+
+    'Methods
+    - getType()
+    - getValue()
+    - setValue(value)
+}
+
+class Wall {
+    'Fields
+    - id
+}
+
+class Color {
+    'Fields
+    - red
+    - orange
+    - yellow
+    - green
+    - blue
+    - purple
+
+    'Methods
+    }
+
+class Board{
+    'Fields
+    - vertex<Cell>
+    - width
+    - height
+    - lastMoveTime
+    - numberOfMovesPlayed
+
+    'Methods
+    - getCell(x, y)
+    - updateCell(x, y, cellObject)
+    - getWidth(): number
+    - getHeight(): number
+    - updateBoard()
+    - isPlayable(): boolean
+    - suggestMove()
+}
+
+class Icing{
+    'Fields
+    - type: 1 or 2
+
+    'Methods
+    - getType(): number
+    - setType(type: number)
+}
+
+class Animation {
+    'Fields
+    - duration
+    - easing
+    - callback
+
+    'Methods
+    - start()
+    - stop()
+}
+
+class Score{
+    'Fields
+    - score
+    - highScore
+
+    'Methods
+    - getScore(): number
+    - getHighScore(): number
+    - setScore(score: number)
+    - setHighScore(highScore: number)
+}
+
+class StartScreen {
+    'Fields
+    - bestScore
+}
+
+Board--MainWindow
+Score--MainWindow
+Cell--Board
+Wall--Cell
+Candy--Cell
+Color->Candy
+Icing->Candy
+candySpeciality->Candy
+Animation->Cell
+StartScreen--MainWindow
+
+
+@enduml
