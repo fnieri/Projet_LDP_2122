@@ -2,12 +2,12 @@
 #define __COLOR_HPP
 
 enum class Color {
-    Red,
-    Orange,
-    Yellow,
-    Green,
-    Blue,
-    Purple
+    RED,
+    ORANGE,
+    YELLOW,
+    GREEN,
+    BLUE,
+    PURPLE
 };
 
 #endif
