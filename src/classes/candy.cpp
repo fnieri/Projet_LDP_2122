@@ -1,25 +1,38 @@
-#include <candy.hpp>
+#include "candy.h"
 
-Candy::Candy (Color color) : color{color} {};
+
+Candy::Candy () {
+    this->generateColor();
+    this->setImages();
+    candyIdleImage->draw();
+    candyOnHoverImage->draw();
+}
+
 
 Candy::~Candy() = default;
+
 
 Color Candy::getColor() {
     return this->color;
 }
 
+
+void Candy::generateColor(){
+    this->setColor(static_cast<Color>(rand() % NUMBER_OF_COLORS));
+}
+
+
 void Candy::setColor(Color color){
     this->color = color;
 }
 
+
 void Candy::setImages(){
-    Color randomColor = static_cast<Color>(rand() % NUMBER_OF_COLORS);
-    std::string candyImagePrefix = generateCandyImagePrefix(randomColor);
-    
-    this->setColor(randomColor);
+    std::string candyImagePrefix = generateCandyImagePrefix(this->color);
     this->setIdleImage(candyImagePrefix);
     this->setOnHoverImage(candyImagePrefix);
 }
+
 
 std::string Candy::generateCandyImagePrefix(Color color) {
     std::string returnPrefix;
@@ -27,22 +40,22 @@ std::string Candy::generateCandyImagePrefix(Color color) {
     {
     
         case Color::RED:
-            returnPrefix == "red";
+            returnPrefix = "red";
             break;
         case Color::ORANGE:
-            returnPrefix == "orange";
+            returnPrefix = "orange";
             break;
         case Color::YELLOW:
-            returnPrefix == "yellow";
+            returnPrefix = "yellow";
             break;
         case Color::GREEN:
-            returnPrefix == "blue";
+            returnPrefix = "blue";
             break;
         case Color::BLUE:
-            returnPrefix == "blue";
+            returnPrefix = "blue";
             break;
         case Color::PURPLE:
-            returnPrefix == "purple";
+            returnPrefix = "purple";
             break;
         default:
             break;
@@ -51,10 +64,23 @@ std::string Candy::generateCandyImagePrefix(Color color) {
    return returnPrefix;
 
 }
-/*
+
+
 void Candy::setIdleImage(std::string prefix){
-    std::string idleImageName = prefix + CANDY_IDLE_IMAGE_EXTENSION;
-    this->candyIdleImage = new Fl_PNG_Image(WORKING_PATH);
+    const char* asd = "/sprites/normal_candies/";
+    std::string spritesPath = WORKING_DIRECTORY + asd;
+    std::string idleImageName = spritesPath + prefix + CANDY_IDLE_IMAGE_EXTENSION;
+    this->candyIdleImage = new Fl_PNG_Image(idleImageName.c_str());
 
 }
-*/
+
+
+void Candy::setOnHoverImage(std::string prefix){
+    std::string spritesPath = WORKING_DIRECTORY + "/sprites/normal_candies/";
+    std::string onHoverImageName = spritesPath + prefix + CANDY_ON_HOVER_IMAGE_EXTENSION;
+    this->candyOnHoverImage = new Fl_PNG_Image(onHoverImageName.c_str());
+
+}
+
+void Candy::mouseClick(Point mouseLoc){}
+void Candy::mouseMove(Point mouseLoc){}

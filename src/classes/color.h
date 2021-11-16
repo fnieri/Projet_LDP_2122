@@ -1,5 +1,5 @@
-#ifndef __COLOR_HPP
-#define __COLOR_HPP
+#ifndef __COLOR_H
+#define __COLOR_H
 
 enum class Color {
     RED,
@@ -9,5 +9,6 @@ enum class Color {
     BLUE,
     PURPLE
 };
+
 
 #endif

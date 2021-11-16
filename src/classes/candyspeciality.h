@@ -1,5 +1,5 @@
-#ifndef __CANDYSPECIALITY_HPP
-#define __CANDYSPECIALITY_HPP
+#ifndef __CANDYSPECIALITY_H
+#define __CANDYSPECIALITY_H
 
 class candySpeciality {
     private:
