@@ -10,8 +10,9 @@ using namespace std;
 class Cell {
     Point center;
     int cellSize;
+    Fl_Color color;
 public:
-    Cell(Point center, int cellSize);
+    Cell(Point center, int cellSize, Fl_Color color);
 //    Point getCenter();
 //    void setCenter(Point center);
 

@@ -4,6 +4,10 @@
 #include <vector>
 #include "common.h"
 #include "cell.h"
+#include "board.h"
+#include <cmath>
+#include <iostream>
+#include <FL/fl_draw.H>
 
 /*--------------------------------------------------
 
