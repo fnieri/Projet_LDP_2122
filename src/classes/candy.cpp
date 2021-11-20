@@ -4,8 +4,6 @@
 Candy::Candy () {
     this->generateColor();
     this->setImages();
-    candyIdleImage->draw();
-    candyOnHoverImage->draw();
 }
 
 
@@ -18,6 +16,7 @@ Color Candy::getColor() {
 
 
 void Candy::generateColor(){
+    srand(time(0));
     this->setColor(static_cast<Color>(rand() % NUMBER_OF_COLORS));
 }
 

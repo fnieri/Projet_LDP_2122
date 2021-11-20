@@ -8,26 +8,27 @@
 
 class Candy{
     private:
-        Color color;
-        bool isSpecial;
         Fl_PNG_Image *candyIdleImage;
         Fl_PNG_Image *candyOnHoverImage;
+        std::vector<Candy> neighbors;
+    protected:
+        Color color;
     public:
         Candy();
+        Candy(Color color);
         ~Candy();
-        Color getColor();
-        void setColor(Color color);
-
-        void setImages();
-        std::string generateCandyImagePrefix(Color color);
-        void setIdleImage(std::string prefix);
-        void setOnHoverImage(std::string prefix);
-        void generateColor();
-        void mouseClick(Point mouseLoc);
-        void mouseMove(Point mouseLoc);
+        Color getColor() const;
+        virtual void setColor(Color color);
         
+        virtual void setImages();
+        virtual std::string generateCandyImagePrefix(Color color);
+        virtual void setIdleImage(std::string prefix);
+        virtual void setOnHoverImage(std::string prefix);
+        virtual void generateColor();
+        virtual void mouseClick(Point mouseLoc);
+        virtual void mouseMove(Point mouseLoc);
+        virtual bool isEqualColor(Candy &otherCandy);
         //void mouseDrag(Point mouseLoc);
-        // void setSpeciality() 
 
     
 };
