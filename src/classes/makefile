@@ -1,5 +1,5 @@
-FLAGS=-lfltk  -Wall -std=c++17
-
+FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 
+		#load fltk	 #Load PNG Load Current Path 
 all: mainwindow
 
 mainwindow: mainwindow.cpp
