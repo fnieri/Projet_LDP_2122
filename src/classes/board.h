@@ -5,6 +5,8 @@
 #include "cell.h"
 #include <cmath>
 #include <iostream>
+#include "common.h"
+
 
 class Board {
     vector<Cell> CellsVertex;
@@ -14,7 +16,8 @@ class Board {
 public:
     Board(int cellSize, int margin, int numberOfCells);
     void draw();
-    void handleClick();
+    bool contains(Point p);
+//    void handleClick();
 };
 
 

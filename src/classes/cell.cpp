@@ -11,5 +11,15 @@ void Cell::draw() const {
     fl_rect(center.x - cellSize / 2, center.y - cellSize/ 2, cellSize, cellSize);
 }
 
+bool Cell::contains(Point p) {
+    return p.x >= center.x - cellSize / 2 &&
+           p.x < center.x + cellSize / 2 &&
+           p.y >= center.y - cellSize / 2 &&
+           p.y < center.y + cellSize / 2;
+}
+
+void Cell::setColor(Fl_Color color) {
+    this->color = color;
+}
 
 

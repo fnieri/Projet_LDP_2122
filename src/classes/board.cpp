@@ -21,6 +21,18 @@ void Board::draw() {
     }
 }
 
-void Board::handleClick() {
-
+bool Board::contains(Point p) {
+    for (auto &cell: CellsVertex) {
+        if (cell.contains(p)) {
+            cell.setColor(FL_RED);
+            return true;
+        }
+    }
+    return false;
 }
+
+//void Board::handleClick() {
+//    // determine which cell was clicked
+//
+//
+//}

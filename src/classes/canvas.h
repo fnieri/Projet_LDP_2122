@@ -5,9 +5,11 @@
 #include "common.h"
 #include "cell.h"
 #include "board.h"
+#include "board.h"
 #include <cmath>
 #include <iostream>
 #include <FL/fl_draw.H>
+
 
 /*--------------------------------------------------
 
@@ -28,10 +30,11 @@ elsewhere it will probably crash.
 --------------------------------------------------*/
 
 class Canvas {
+    Board board{50,60,100};
 public:
     Canvas();
-    static void draw();
-    static void mouseClick(Point mouseLoc);
+    void draw();
+    void mouseClick(Point mouseLoc);
     static void keyPressed(int keyCode);
 };
 
