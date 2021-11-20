@@ -10,12 +10,12 @@ using namespace std;
 class Cell {
     Point center;
     int cellSize;
+    Fl_Color color;
 public:
-    Cell(Point center, int cellSize);
-//    Point getCenter();
-//    void setCenter(Point center);
-
+    Cell(Point, int, Fl_Color);
+    bool contains(Point p);
     void draw() const;
+    void setColor(Fl_Color color);
 };
 
 #endif
