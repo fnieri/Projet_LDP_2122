@@ -4,12 +4,14 @@
 
 #ifndef __COMMON_H
 #define __COMMON_H
-#include <color.hpp>
 #include <iostream>
-#include <filesystem>
+#include <experimental/filesystem>
+
 struct Point {
     int x, y;
 };
+
+//std::string CURRENT_PATH = std::experimental::filesystem::current_path();
 
 #define NUMBER_OF_COLORS 6
 #define CANDY_IDLE_IMAGE_EXTENSION "_01.png"
@@ -17,8 +19,7 @@ struct Point {
 #define SUPER_CANDY_HORIZONTAL_EXTENSION "_horizontal.png"
 #define SUPER_CANDY_VERTICAL_EXTENSION "_vertical.png"
 #define SUPER_CANDY_BOMB_EXTENSION "_bomb.png"
+#define WORKING_DIRECTORY std::string(std::experimental::filesystem::current_path())
 
-int ass() {
-    std::cout << WORKING_PATH;
-}
+
 #endif
