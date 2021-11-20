@@ -7,8 +7,10 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             Point center{margin + j * margin, y};
+            shared_ptr <Candy> candy = make_shared<Candy>(center);
+
             // add to vector
-            Cell cell{center, cellSize, FL_GREEN};
+            Cell cell{center, cellSize, FL_GREEN, candy};
             CellsVertex.push_back(cell);
         }
         y += margin;
@@ -17,6 +19,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
 
 void Board::draw() {
     for (auto &cell: CellsVertex) {
+
         cell.draw();
     }
 }
@@ -30,7 +33,11 @@ bool Board::contains(Point p) {
     }
     return false;
 }
-
+/*
+vector<Cell> Board::getCells(){
+    return this->CellsVertex;
+}
+*/
 //void Board::handleClick() {
 //    // determine which cell was clicked
 //

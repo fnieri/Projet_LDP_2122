@@ -3,5 +3,5 @@ FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17
 all: mainwindow
 
 mainwindow: mainwindow.cpp
-	g++ mainwindow.cpp common.h canvas.cpp canvas.h cell.cpp cell.h board.cpp board.h -o game $(FLAGS)
+	g++ mainwindow.cpp common.h canvas.cpp canvas.h cell.cpp cell.h board.cpp board.h candy.cpp candy.h -o game $(FLAGS)
 	./game

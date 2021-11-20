@@ -11,19 +11,23 @@ class Candy{
         Fl_PNG_Image *candyIdleImage;
         Fl_PNG_Image *candyOnHoverImage;
         std::vector<Candy> neighbors;
+        Point center;
     protected:
         Color color;
     public:
-        Candy();
-        Candy(Color color);
-        ~Candy();
+        Candy(Point center);
+        Candy(Point center, Color color);
+        virtual ~Candy();
         Color getColor() const;
         virtual void setColor(Color color);
-        
+        virtual void setCenter(Point center);
+        virtual Point getCenter();
         virtual void setImages();
         virtual std::string generateCandyImagePrefix(Color color);
         virtual void setIdleImage(std::string prefix);
+        virtual Fl_PNG_Image* getIdleImage();
         virtual void setOnHoverImage(std::string prefix);
+        virtual Fl_PNG_Image* getOnHoverImage();
         virtual void generateColor();
         virtual void mouseClick(Point mouseLoc);
         virtual void mouseMove(Point mouseLoc);

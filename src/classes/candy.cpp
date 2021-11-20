@@ -1,19 +1,32 @@
 #include "candy.h"
 
 
-Candy::Candy () {
+Candy::Candy (Point center) : center{center} {
     this->generateColor();
     this->setImages();
 }
 
+Candy::Candy (Point center, Color color) :  center{center}, color{color} {
+    this->setImages();
+}
 
-Candy::~Candy() = default;
+Candy::~Candy() {
+    delete candyIdleImage;
+    delete candyOnHoverImage;
+}
 
 
-Color Candy::getColor() {
+Color Candy::getColor () const{
     return this->color;
 }
 
+Point Candy::getCenter() {
+    return this->center;
+}
+
+void Candy::setCenter(Point newCenter) {
+    this->center = newCenter;
+}
 
 void Candy::generateColor(){
     srand(time(0));
@@ -21,8 +34,8 @@ void Candy::generateColor(){
 }
 
 
-void Candy::setColor(Color color){
-    this->color = color;
+void Candy::setColor(Color newColor){
+    this->color = newColor;
 }
 
 
@@ -81,5 +94,12 @@ void Candy::setOnHoverImage(std::string prefix){
 
 }
 
+
+Fl_PNG_Image* Candy::getIdleImage() {return this->candyIdleImage;}
+Fl_PNG_Image* Candy::getOnHoverImage() {return this->candyOnHoverImage;}
+
 void Candy::mouseClick(Point mouseLoc){}
 void Candy::mouseMove(Point mouseLoc){}
+bool Candy::isEqualColor(Candy &otherCandy) {
+    return (this->getColor() == otherCandy.getColor());
+}
