@@ -8,19 +8,15 @@
 #include <Fl/Fl_Box.H>
 using namespace std;
 
-class Cell : public Fl_Box {
+class Cell {
     Point center;
     int cellSize;
     Fl_Color color;
-    shared_ptr<Candy> candy;
+    Candy candy;
 public:
-    Cell(Point, int, Fl_Color color, shared_ptr<Candy> candy);
-    Cell(const Cell&);
-    ~Cell();
+    Cell(Point, int, Fl_Color, Candy);
     bool contains(Point p);
     void draw();
-    shared_ptr<Candy> getCandy();
-    void setColor(Fl_Color color);
 };
 
 #endif

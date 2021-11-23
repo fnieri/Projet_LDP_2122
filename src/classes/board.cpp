@@ -7,7 +7,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
             Point center{margin + j * margin, y};
-            shared_ptr <Candy> candy = make_shared<Candy>(center);
+            Candy candy{"sprites/normal_candies/blue_01.png", center};
 
             // add to vector
             Cell cell{center, cellSize, FL_GREEN, candy};
@@ -19,7 +19,6 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
 
 void Board::draw() {
     for (auto &cell: CellsVertex) {
-
         cell.draw();
     }
 }
@@ -27,7 +26,6 @@ void Board::draw() {
 bool Board::contains(Point p) {
     for (auto &cell: CellsVertex) {
         if (cell.contains(p)) {
-            cell.setColor(FL_RED);
             return true;
         }
     }
