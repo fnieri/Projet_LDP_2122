@@ -6,7 +6,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
-            Point center{margin + j * margin, y};
+            Point center{ margin * j + margin, y};
             Candy candy{"sprites/normal_candies/blue_01.png", center};
 
             // add to vector
@@ -26,6 +26,7 @@ void Board::draw() {
 bool Board::contains(Point p) {
     for (auto &cell: CellsVertex) {
         if (cell.contains(p)) {
+            cout << "true";
             return true;
         }
     }
@@ -36,8 +37,11 @@ vector<Cell> Board::getCells(){
     return this->CellsVertex;
 }
 */
-//void Board::handleClick() {
-//    // determine which cell was clicked
-//
+// void Board::handleClick(Point mouseLoc) {
+// //    // determine which cell was clicked
+//     for (auto &cell: CellsVertex) {
+//         cout << cell.contains(mouseLoc);
+//     }
+// }
 //
 //}

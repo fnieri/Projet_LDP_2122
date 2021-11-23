@@ -18,7 +18,7 @@ public:
     void draw();
     bool contains(Point p);
    // vector<Cell> getCells();
-//    void handleClick();
+  //  void handleClick(Point mouseLoc);
 };
 
 
