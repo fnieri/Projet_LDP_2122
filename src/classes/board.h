@@ -17,7 +17,7 @@ public:
     Board(int cellSize, int margin, int numberOfCells);
     void draw();
     bool contains(Point p);
-    vector<Cell> getCells();
+   // vector<Cell> getCells();
 //    void handleClick();
 };
 

@@ -18,7 +18,7 @@ public:
     Cell(const Cell&);
     ~Cell();
     bool contains(Point p);
-    void draw() const;
+    void draw();
     shared_ptr<Candy> getCandy();
     void setColor(Fl_Color color);
 };

@@ -83,14 +83,18 @@ void Candy::setIdleImage(std::string prefix){
     std::string spritesPath = WORKING_DIRECTORY + asd;
     std::string idleImageName = spritesPath + prefix + CANDY_IDLE_IMAGE_EXTENSION;
     this->candyIdleImage = new Fl_PNG_Image(idleImageName.c_str());
+    std::cout << idleImageName << "\n";
+    std::cout << candyIdleImage->fail();
 
 }
 
 
 void Candy::setOnHoverImage(std::string prefix){
-    std::string spritesPath = WORKING_DIRECTORY + "/sprites/normal_candies/";
+    std::string spritesPath =  WORKING_DIRECTORY + "/sprites/normal_candies/";
     std::string onHoverImageName = spritesPath + prefix + CANDY_ON_HOVER_IMAGE_EXTENSION;
     this->candyOnHoverImage = new Fl_PNG_Image(onHoverImageName.c_str());
+    std::cout << onHoverImageName << "\n";
+    std::cout << candyOnHoverImage->fail();
 
 }
 

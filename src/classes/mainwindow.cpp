@@ -3,6 +3,11 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/fl_draw.H>
+
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Shared_Image.H>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Box.H>
 #include <math.h>
 #include <time.h>
 #include <chrono>
@@ -64,6 +69,7 @@ Do not edit!!!!
 --------------------------------------------------*/
 
 int main(int argc, char *argv[]) {
+    fl_register_images();
     srand(time(0));
     MainWindow window;
     window.show(argc, argv);

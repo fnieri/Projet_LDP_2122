@@ -8,8 +8,8 @@
 
 class Candy{
     private:
-        Fl_PNG_Image *candyIdleImage;
-        Fl_PNG_Image *candyOnHoverImage;
+        Fl_PNG_Image* candyIdleImage;
+        Fl_PNG_Image* candyOnHoverImage;
         std::vector<Candy> neighbors;
         Point center;
     protected:
@@ -19,8 +19,8 @@ class Candy{
         Candy(Point center, Color color);
         virtual ~Candy();
         Color getColor() const;
-        virtual void setColor(Color color);
-        virtual void setCenter(Point center);
+        virtual void setColor(Color newColor);
+        virtual void setCenter(Point newCenter);
         virtual Point getCenter();
         virtual void setImages();
         virtual std::string generateCandyImagePrefix(Color color);
