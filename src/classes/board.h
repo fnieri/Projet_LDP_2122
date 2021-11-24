@@ -6,7 +6,8 @@
 #include <cmath>
 #include <iostream>
 #include "common.h"
-
+#include <memory>
+#include "candyfactory.h"
 
 class Board {
     vector<Cell> CellsVertex;
@@ -17,7 +18,8 @@ public:
     Board(int cellSize, int margin, int numberOfCells);
     void draw();
     bool contains(Point p);
-//    void handleClick();
+   // vector<Cell> getCells();
+  //  void handleClick(Point mouseLoc);
 };
 
 
