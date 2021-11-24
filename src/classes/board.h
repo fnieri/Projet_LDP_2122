@@ -7,6 +7,7 @@
 #include <iostream>
 #include "common.h"
 #include <memory>
+#include "candyfactory.h"
 
 class Board {
     vector<Cell> CellsVertex;

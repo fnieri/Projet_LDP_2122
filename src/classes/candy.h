@@ -12,8 +12,8 @@ class Candy : public Fl_PNG_Image {
         Color color;
     public:
         //Candy(const char *filename, Point center);
-        Candy(const char *filename, Point center);
-        Candy(const char *filename, Point center, Fl_Color color);
+     //   Candy(const char *filename, Point center);
+        Candy(const char *filename, Point center, Color color);
         Candy(const Candy &c);
         virtual ~Candy();
         Color getColor() const;

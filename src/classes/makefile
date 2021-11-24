@@ -1,4 +1,4 @@
-FLAGS= fltk-config --use-images load-jpeg.cxx -lfltk -lfltk_images -lstdc++fs  -Wall -std=c++17 
+FLAGS=  -lfltk -lfltk_images -lstdc++fs  -Wall -std=c++17 
 		#load fltk	 #Load PNG Load Current Path 
 all: mainwindow
 
