@@ -1,62 +1,42 @@
 #include "candyfactory.h"
 
-CandyFactory::CandyFactory() {}
-CandyFactory::~CandyFactory()=default;
+CandyFactory::CandyFactory() = default;
 
 Color CandyFactory::generateColor() {
-    Color randomColor;
-    std::srand(time(NULL));
-    std::cout << rand();
-    randomColor = static_cast<Color>(std::rand() % NUMBER_OF_COLORS);
-    return randomColor;
+    return static_cast<Color>(rand() % NUMBER_OF_COLORS);;
 }
 
 
 std::string CandyFactory::generateSpecialityPath(CandySpeciality speciality) {
-    std::string specialityPath;
-
-    if (speciality != CandySpeciality::NONE) {
-        specialityPath = "/sprites/special_candies/";
-    }
-    else {
-        specialityPath = "/sprites/normal_candies/";
-    }
-    return specialityPath;
+    if (speciality != CandySpeciality::NONE) return "/sprites/special_candies/";
+    return "/sprites/normal_candies/";
 }
 
 
 std::string CandyFactory::generateColorPrefix(Color color) {
-    std::string colorPrefix;
-      switch (color) {
-    
+    switch (color) {
         case Color::RED:
-            colorPrefix = "red_";
-            break;
+            return "red_";
         case Color::ORANGE:
-            colorPrefix = "orange_";
-            break;
+            return "orange_";
         case Color::YELLOW:
-            colorPrefix = "yellow_";
-            break;
+            return "yellow_";
         case Color::GREEN:
-            colorPrefix = "green_";
-            break;
+            return "green_";
         case Color::BLUE:
-            colorPrefix = "blue_";
-            break;
+            return "blue_";
         case Color::PURPLE:
-            colorPrefix = "purple_";
-            break;
+            return "purple_";
         default:
             break;
-
     }
-    return colorPrefix;
+    return "";
 }
 
-std::string CandyFactory::generateFullPath(CandySpeciality speciality, std::string colorPrefix, std::string specialityPath) {
+std::string
+CandyFactory::generateFullPath(CandySpeciality speciality, const std::string &colorPrefix,
+                               const std::string &specialityPath) {
     std::string candyPath;
-  
     switch (speciality) {
         case CandySpeciality::NONE:
             candyPath = "01.png";
@@ -76,34 +56,29 @@ std::string CandyFactory::generateFullPath(CandySpeciality speciality, std::stri
         default:
             break;
     }
-    std::string fullPath = WORKING_DIRECTORY + specialityPath + colorPrefix + candyPath;
-   // std::cout << fullPath.c_str();
-   std::cout << "This is genfullPath filename: " << fullPath << "\n";
-    this->setfile(fullPath);
-    return fullPath;
+    return specialityPath + colorPrefix + candyPath;
 }
 
-void CandyFactory::setfile(std::string file) {
-    this->tempfilename = file;
-}
-
-const char* CandyFactory::generateImageName(Color color, CandySpeciality speciality) {
-    std::string colorPrefix = this->generateColorPrefix(color);
-    std::string specialityPath = this->generateSpecialityPath(speciality);
-    const char* fullPath = this->generateFullPath(speciality, colorPrefix, specialityPath).c_str();
-    std::cout << "This is genImage filename: " << fullPath << "\n";
+std::string CandyFactory::generateImageName(Color color, CandySpeciality speciality) {
+    std::string colorPrefix = generateColorPrefix(color);
+    std::string specialityPath = generateSpecialityPath(speciality);
+    std::string fullPath = generateFullPath(speciality, colorPrefix, specialityPath);
+//    char fullPathChar[fullPath.length() + 1];
+//    strcpy(fullPathChar, fullPath.c_str());
     return fullPath;
 }
 
 Candy CandyFactory::generateCandy(Point center, CandySpeciality speciality) {
-    Color color = this->generateColor();
-    std::cout << "entered 1 with color:" << static_cast<int>(color) << "and speciality" << speciality << "\n";
-    const char *filename = this->generateImageName(color, speciality);
-    return Candy(tempfilename.c_str(), center, color);
+    Color color = CandyFactory::generateColor();
+    std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
+    char *fullPathChar = new char[filename.length() + 1];
+    strcpy(fullPathChar, filename.c_str());
+    return {fullPathChar, center, color};
 }
 
 Candy CandyFactory::generateCandy(Point center, CandySpeciality speciality, Color color) {
-    const char *filename = this->generateImageName(color, speciality);
-    return Candy(tempfilename.c_str(), center, color);
-
+    std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
+    char *fullPathChar = new char[filename.length() + 1];
+    strcpy(fullPathChar, filename.c_str());
+    return {&filename[0], center, color};
 }

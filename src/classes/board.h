@@ -18,8 +18,8 @@ public:
     Board(int cellSize, int margin, int numberOfCells);
     void draw();
     bool contains(Point p);
-   // vector<Cell> getCells();
-  //  void handleClick(Point mouseLoc);
+    // vector<Cell> getCells();
+    //  void handleClick(Point mouseLoc);
 };
 
 
