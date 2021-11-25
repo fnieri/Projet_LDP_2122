@@ -8,21 +8,28 @@
 #include "candyspeciality.h"
 #include <cstdlib>
 #include <ctime>
-class CandyFactory {
-    std::string tempfilename;
-    public:
-        void setfile(std::string file);
+#include <cstring>
+#include <utility>
 
-        CandyFactory();
-        ~CandyFactory();
-        Color generateColor();
-        std::string generateSpecialityPath(CandySpeciality speciality);
-        std::string generateColorPrefix(Color color);
-        std::string generateFullPath(CandySpeciality speciality, std::string colorPrefix, std::string specialityPath);
-        const char* generateImageName(Color color, CandySpeciality speciality);
-//        const char* generateImageName(Color color, Point center, CandySpeciality speciality);
-        Candy generateCandy(Point center, CandySpeciality speciality);
-        Candy generateCandy(Point center, CandySpeciality speciality, Color color);
+class CandyFactory {
+public:
+
+    CandyFactory();
+
+    static Color generateColor();
+
+    static std::string generateSpecialityPath(CandySpeciality speciality);
+
+    static std::string generateColorPrefix(Color color);
+
+    static std::string
+    generateFullPath(CandySpeciality speciality, const std::string &colorPrefix, const std::string &specialityPath);
+
+    static std::string generateImageName(Color color, CandySpeciality speciality);
+
+    static Candy generateCandy(Point center, CandySpeciality speciality);
+
+    static Candy generateCandy(Point center, CandySpeciality speciality, Color color);
 
 };
 
