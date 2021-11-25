@@ -9,19 +9,11 @@
 
 class MultiColor : public Candy {	
     private:
-		Fl_PNG_Image *candyIdleImage;
-		Fl_PNG_Image *candyOnHoverImage;
-		std::vector<Candy> neighbors;	
-    protected:
-		Color color;
+		std::vector<Candy> neighbors;
+    	Color color;
     public:
 		MultiColor();
-		~MultiColor();
 		Color getColor();
-		void setImages();
-		std::string generateCandyImagePrefix(Color color);
-		void setIdleImage(std::string prefix);
-		void setOnHoverImage(std::string prefix);
 		void mouseClick(Point mouseLoc);
 		void mouseMove(Point mouseLoc);
 		void mouseDrag(Point mouseLoc);
