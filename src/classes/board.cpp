@@ -2,7 +2,6 @@
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
-//    CandyFactory candyFactory;
     int y = 60;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
@@ -10,7 +9,6 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
         for (int j = 0; j < size; ++j) {
             Point center{margin * j + margin, y};
             Candy candy = CandyFactory::generateCandy(CandySpeciality::NONE);
-//            unique_ptr<Candy> candyPtr = make_unique<Candy>(candy);
             Cell cell{center, cellSize, candy};
             cellRow.push_back(cell);
         }
@@ -28,10 +26,14 @@ void Board::draw() {
 }
 
 bool Board::contains(Point p) {
+    int x = 0;
+    int y = 0;
     for (auto &cellRow: CellsVertex) {
+        ++x;
         for (auto &cell: cellRow) {
+            ++y;
             if (cell.contains(p)) {
-                cout << "true";
+                std::cout << x << " " << y << std::endl;
                 return true;
             }
         }
@@ -39,58 +41,63 @@ bool Board::contains(Point p) {
     return false;
 }
 
-void Board::checkMatches() {
-    for (int i = 0; i < CellsVertex.size(); i++) {
-        std::cout << "Checking matches" << std::endl;
-        for (int j = 0; j < CellsVertex[i].size(); j++) {
-//            std::cout << std::to_string(static_cast<int>(CellsVertex[i][j].getColor())) << " ";
-
-            try {
-                if (CellsVertex[i].at(j - 1).getColor() == CellsVertex[i][j].getColor() &&
-                    CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor()) {
-                    std::cout << "found horizontal match "
-                              << std::to_string(static_cast<int>(CellsVertex[i][j].getColor()))
-                              << " ";
-                    vector<vector<int>> cellsToRemove{{i, j},
-                                                      {i, j - 1},
-                                                      {i, j + 1}};
-                    moveCells(cellsToRemove);
-                }
-            }
-            catch (const std::out_of_range &e) {
-                std::cout << "Out of range" << std::endl;
-            }
-
-            try {
-                if (CellsVertex.at(i - 1)[j].getColor() == CellsVertex[i][j].getColor() &&
-                    CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-                    std::cout << "found vertical match "
-                              << std::to_string(static_cast<int>(CellsVertex[i][j].getColor()))
-                              << " ";
-                    vector<vector<int>> cellsToRemove{{i, j},
-                                                      {i - 1, j},
-                                                      {i + 1, j}};
-                    moveCells(cellsToRemove);
-                }
-            }
-            catch (const std::out_of_range &e) {
-                std::cout << "Out of range" << std::endl;
-            }
-
+bool Board::checkHorizontalMatch(int i, int j) {
+    try {
+        if (CellsVertex[i].at(j - 1).getColor() == CellsVertex[i][j].getColor() &&
+            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor()) {
+            vector<vector<int>> cellsToRemove{{i, j - 1},
+                                              {i, j},
+                                              {i, j + 1}}; // order doesn't matter
+            moveCells(cellsToRemove);
+            return true;
         }
-        std::cout << std::endl;
+        return false;
+    }
+    catch (const std::out_of_range &e) {
+        return false;
     }
 }
 
+bool Board::checkVerticalMatch(int i, int j) {
+    try {
+        if (CellsVertex.at(i - 1)[j].getColor() == CellsVertex[i][j].getColor() &&
+            CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
+            vector<vector<int>> cellsToRemove{{i - 1, j},
+                                              {i,     j},
+                                              {i + 1, j}}; // don't change order
+            moveCells(cellsToRemove);
+            return true;
+        }
+        return false;
+    }
+    catch (const std::out_of_range &e) {
+        return false;
+    }
+}
+
+void Board::checkMatches() {
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (checkHorizontalMatch(i, j)) continue;
+            if (checkVerticalMatch(i, j)) continue;
+        }
+    }
+}
+
+
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
-    std::cout << "moving cells" << std::endl;
     for (auto &cellToReplace: cellsToReplace) {
         int i = cellToReplace[0];
         int j = cellToReplace[1];
-        Candy candy = CandyFactory::generateCandy(CandySpeciality::NONE);
-        CellsVertex[i][j].setCandy(candy);
+
+        // drops all candy one cell under then generates candy for top cell
+        for (int k = i; k > 0; k--) {
+            CellsVertex[k][j].setCandy(CellsVertex[k - 1][j].getCandy());
+        }
+        CellsVertex[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
     }
 }
+
 //    for (int i = 0; i < CellsVertex.size(); i++) {
 //        for (int j = 0; j < CellsVertex[i].size(); j++) {
 //

@@ -35,7 +35,7 @@ public:
     Canvas();
     void draw();
     void mouseClick(Point mouseLoc);
-    static void keyPressed(int keyCode);
+    void keyPressed(int keyCode);
 };
 
 #endif

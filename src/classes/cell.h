@@ -27,6 +27,8 @@ public:
     Color getColor();
 
     void setCandy(const Candy&);
+
+    Candy getCandy();
 };
 
 #endif

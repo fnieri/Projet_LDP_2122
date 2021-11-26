@@ -19,13 +19,18 @@ public:
 
     void draw();
 
-    bool contains(Point p);
+    bool contains(Point);
 
     // vector<Cell> getCells();
     //  void handleClick(Point mouseLoc);
     void checkMatches();
 
-    void moveCells(vector<vector <int>>);
+    bool checkHorizontalMatch(int, int);
+
+    bool checkVerticalMatch(int, int);
+
+    void moveCells(vector<vector<int>>);
+
 };
 
 

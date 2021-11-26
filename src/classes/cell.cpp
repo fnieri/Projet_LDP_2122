@@ -33,11 +33,12 @@ Color Cell::getColor() {
 }
 
 void Cell::setCandy(const Candy& candy) {
-    std::cout << "hello im a trouble maker" << std::endl;
-    // change value of candyPtr
     unique_ptr<Candy> ca = make_unique<Candy>(candy);
     candyPtr = std::move(ca);
-    std::cout << "setCandy: " << to_string(static_cast<double>(candyPtr->getColor())) << std::endl;
+}
+
+Candy Cell::getCandy() {
+    return *candyPtr;
 }
 
 
