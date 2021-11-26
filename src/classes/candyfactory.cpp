@@ -63,22 +63,23 @@ std::string CandyFactory::generateImageName(Color color, CandySpeciality special
     std::string colorPrefix = generateColorPrefix(color);
     std::string specialityPath = generateSpecialityPath(speciality);
     std::string fullPath = generateFullPath(speciality, colorPrefix, specialityPath);
-//    char fullPathChar[fullPath.length() + 1];
-//    strcpy(fullPathChar, fullPath.c_str());
+
     return fullPath;
 }
 
-Candy CandyFactory::generateCandy(Point center, CandySpeciality speciality) {
+Candy CandyFactory::generateCandy(CandySpeciality speciality) {
+
     Color color = CandyFactory::generateColor();
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
-    return {fullPathChar, center, color};
+    return {fullPathChar, color};
 }
 
-Candy CandyFactory::generateCandy(Point center, CandySpeciality speciality, Color color) {
+Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
-    return {&filename[0], center, color};
+    return {&filename[0], color};
+
 }

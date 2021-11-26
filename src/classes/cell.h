@@ -6,17 +6,29 @@
 #include "candy.h"
 #include <memory>
 #include <Fl/Fl_Box.H>
+#include "color.h"
+
 using namespace std;
 
 class Cell {
     Point center;
     int cellSize;
-    Fl_Color color;
-    Candy candy;
+//    Candy candy;
+    unique_ptr<Candy> candyPtr;
 public:
-    Cell(Point, int, Fl_Color, Candy);
+    Cell(Point, int, Candy candy);
+
+    Cell(const Cell &);
+
     bool contains(Point p);
+
     void draw();
+
+    Color getColor();
+
+    void setCandy(const Candy&);
+
+    Candy getCandy();
 };
 
 #endif

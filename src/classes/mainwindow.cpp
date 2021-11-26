@@ -20,8 +20,8 @@
 
 
 using namespace std;
-const int windowWidth = 450;
-const int windowHeight = 450;
+const int windowWidth = 700;
+const int windowHeight = 700;
 const double refreshPerSecond = 60;
 
 /*--------------------------------------------------

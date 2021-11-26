@@ -13,14 +13,16 @@ void Canvas::draw() {
 }
 
 void Canvas::mouseClick(Point p) {
-//    std::cout << "mouseClick" << std::endl;
-//    std::cout << "x: " << p.x << " y: " << p.y << std::endl;
-    if(board.contains(p)) return;
+//    board.checkMatches();
+    if (board.contains(p)) return;
 }
 
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':
             exit(0);
+        case 'c':
+            board.checkMatches();
+            break;
     }
 }
