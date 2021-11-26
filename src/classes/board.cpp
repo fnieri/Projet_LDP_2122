@@ -2,6 +2,7 @@
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
+
     int y = 60;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
