@@ -51,8 +51,7 @@ CandyFactory::generateFullPath(CandySpeciality speciality, const std::string &co
             candyPath = "bomb.png";
             break;
         case CandySpeciality::MULTICOLOR:
-            candyPath = "multicolor.png";
-            break;
+            return specialityPath + "multicolor.png";
         default:
             break;
     }
@@ -67,7 +66,11 @@ std::string CandyFactory::generateImageName(Color color, CandySpeciality special
 }
 
 Candy CandyFactory::generateCandy(CandySpeciality speciality) {
-    Color color = CandyFactory::generateColor();
+    Color color;
+    if (speciality == CandySpeciality::MULTICOLOR)
+        color = Color::MULTICOLOR;
+    else
+        color = CandyFactory::generateColor();
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
@@ -78,5 +81,5 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
-    return {&filename[0], color};
+    return {fullPathChar, color};
 }
