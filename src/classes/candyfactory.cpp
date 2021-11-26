@@ -62,6 +62,7 @@ std::string CandyFactory::generateImageName(Color color, CandySpeciality special
     std::string colorPrefix = generateColorPrefix(color);
     std::string specialityPath = generateSpecialityPath(speciality);
     std::string fullPath = generateFullPath(speciality, colorPrefix, specialityPath);
+
     return fullPath;
 }
 

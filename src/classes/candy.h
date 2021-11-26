@@ -15,6 +15,7 @@ public:
     virtual ~Candy();
     [[nodiscard]] Color getColor() const;
     virtual void setColor(Color newColor);
+
     /*
       virtual void mouseClick(Point mouseLoc);
       virtual void mouseMove(Point mouseLoc);
