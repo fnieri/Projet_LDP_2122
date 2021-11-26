@@ -8,20 +8,17 @@
 #include <FL/Fl_Box.H>
 #include <utility>
 
-Cell::Cell(Point center, int cellSize, Fl_Color color, Candy candy) : center{center}, cellSize{cellSize}, color{color},
-                                                                      candy{candy} {}
+Cell::Cell(Point center, int cellSize, Candy candy) : center{center}, cellSize{cellSize},
+                                                      candyPtr{make_unique<Candy>(candy)} {}
+
+Cell::Cell(const Cell &c) {
+    center = c.center;
+    cellSize = c.cellSize;
+    candyPtr = make_unique<Candy>(*c.candyPtr);
+}
 
 void Cell::draw() {
- //   fl_color(color);
-   // fl_rectf(center.x - cellSize / 2, center.y - cellSize / 2, cellSize, cellSize);
-   // fl_color(FL_BLACK);
-   // fl_rect(center.x - cellSize / 2, center.y - cellSize / 2, cellSize, cellSize);
-  //  fl_rectf(center.x, center.y, cellSize, cellSize);
-  //  fl_color(FL_BLACK);
-  //  fl_rect(center.x, center.y, cellSize, cellSize);
-    candy.draw(center.x - cellSize / 2, center.y - cellSize / 2, candy.w(), candy.h());
-    
-
+    candyPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, candyPtr->w(), candyPtr->h());
 }
 
 bool Cell::contains(Point p) {
@@ -30,3 +27,17 @@ bool Cell::contains(Point p) {
            p.y >= center.y - cellSize / 2 &&
            p.y < center.y + cellSize / 2;
 }
+
+Color Cell::getColor() {
+    return candyPtr->getColor();
+}
+
+void Cell::setCandy(const Candy& candy) {
+    std::cout << "hello im a trouble maker" << std::endl;
+    // change value of candyPtr
+    unique_ptr<Candy> ca = make_unique<Candy>(candy);
+    candyPtr = std::move(ca);
+    std::cout << "setCandy: " << to_string(static_cast<double>(candyPtr->getColor())) << std::endl;
+}
+
+

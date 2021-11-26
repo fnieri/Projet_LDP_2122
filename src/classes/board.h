@@ -10,16 +10,22 @@
 #include "candyfactory.h"
 
 class Board {
-    vector<Cell> CellsVertex;
+    vector<vector<Cell>> CellsVertex;
     int cellSize;
     int margin;
     int numberOfCells;
 public:
     Board(int cellSize, int margin, int numberOfCells);
+
     void draw();
+
     bool contains(Point p);
-   // vector<Cell> getCells();
-  //  void handleClick(Point mouseLoc);
+
+    // vector<Cell> getCells();
+    //  void handleClick(Point mouseLoc);
+    void checkMatches();
+
+    void moveCells(vector<vector <int>>);
 };
 
 

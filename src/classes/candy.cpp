@@ -1,35 +1,21 @@
 #include "candy.h"
 
-Candy::Candy(const char *filename, Point center, Color color) : 
-    Fl_PNG_Image(filename), center(center), filename(filename), color{color} {
-        std::cout << this->filename;
-        std::cout << this->fail();
-
-    }
-
-Candy::Candy(const Candy &c) : 
-    Fl_PNG_Image{c.filename}, center{c.center}, filename(c.filename) {
-        std::cout << this->filename;
-        std::cout << this->fail();
-
-    }
-
-Candy::~Candy()=default;
-//Candy::Candy(const char *filename, Point center, Fl_Color color) : 
-  //  Fl_PNG_Image{filename}, center{center}, filename{filename}, color{color} {}
-
-Color Candy::getColor() const {
-    return this->color;
+Candy::Candy(const char *filename, Color color) :
+        Fl_PNG_Image(filename), filename(filename), color{color} {
+    // FLTK automatically deletes filename
 }
 
-Point Candy::getCenter(){
-    return this->center;
+Candy::Candy(const Candy &c) :
+        Fl_PNG_Image{c.filename}, filename(c.filename), color{c.color} {}
+
+Candy::~Candy() = default;
+
+Color Candy::getColor() const {
+    return color;
 }
 
 void Candy::setColor(Color newColor) {
-    this->color = newColor;
+    color = newColor;
 }
-void Candy::setCenter(Point newCenter) {
-    this->center = newCenter;
-} 
+
 

@@ -7,7 +7,6 @@ Canvas::Canvas() = default;
 void Canvas::draw() {
     fl_color(FL_BLACK);
     fl_draw("Fuck this shit i need sleep", 250, 20);
-
     // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
     board.draw();
 }
@@ -15,6 +14,8 @@ void Canvas::draw() {
 void Canvas::mouseClick(Point p) {
 //    std::cout << "mouseClick" << std::endl;
 //    std::cout << "x: " << p.x << " y: " << p.y << std::endl;
+    board.checkMatches();
+
     if(board.contains(p)) return;
 }
 
