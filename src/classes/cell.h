@@ -13,10 +13,9 @@ using namespace std;
 class Cell {
     Point center;
     int cellSize;
-//    Candy candy;
     unique_ptr<Candy> candyPtr;
 public:
-    Cell(Point, int, Candy candy);
+    Cell(Point, int, const Candy& candy);
 
     Cell(const Cell &);
 
@@ -29,6 +28,12 @@ public:
     void setCandy(const Candy&);
 
     Candy getCandy();
+
+    void animateCandy(Cell*);
+
+    Point getCenter();
+
+    void setCenter(Point);
 };
 
 #endif

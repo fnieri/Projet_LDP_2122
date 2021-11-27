@@ -14,6 +14,7 @@ class Board {
     int cellSize;
     int margin;
     int numberOfCells;
+    Cell *selectedCell = nullptr;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -29,9 +30,19 @@ public:
 
     bool checkVerticalMatch(int, int);
 
+    bool checkHorizontalMatchFour(int, int);
+
+    bool checkMatchFive(int, int);
+
+    bool checkVerticalMatchFour(int, int);
+
     void moveCells(vector<vector<int>>);
 
+    void createSpecialCandy(int, int, CandySpeciality);
 
+    bool checkWrappedCandy(int, int);
+
+    void swapCells(Cell*);
 };
 
 
