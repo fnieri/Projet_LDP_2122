@@ -15,10 +15,9 @@
 #include <memory>
 #include "candyfactory.h"
 
-
 class MatchDetection {
     private:
-        Board candyBoard;
+        Board *candyBoard;
         vector<vector<Cell>> CellsVertex;
         static const int matchFive[2][2][4];
         static const int wrappedCandy[6][2][2];
@@ -26,11 +25,10 @@ class MatchDetection {
         static const int matchVerticalFour[2][3];
         static const int matchHorizontal[2][3];
         static const int matchVertical[2][3];
-        vector<vector<int>> cellsToRemove;
     public:
+        MatchDetection(Board *board);
 
-        MatchDetection(Board board);
-        void checkMatches(Board board);
+        void checkMatches();
 
         bool checkMatchFive(int i, int j);
 
@@ -39,6 +37,7 @@ class MatchDetection {
         bool checkHorizontalMatchFour(int i, int j);
 
         bool checkVerticalMatchFour(int i, int j);
+        
         bool checkHorizontalMatch(int i, int j);
 
         bool checkVerticalMatch(int i, int j);
@@ -47,8 +46,6 @@ class MatchDetection {
         bool checkForCandiesInteraction(Candy firstCandy, Candy secondCandy);
 
         bool doubleBombInteraction();
-
-        bool createSpecialCandy(int i, int j, CandySpeciality speciality);
 
 
 };

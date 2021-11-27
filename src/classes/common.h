@@ -6,6 +6,8 @@
 #define __COMMON_H
 #include <iostream>
 #include <experimental/filesystem>
+class Board;
+class MatchDetection;
 
 struct Point {
     int x, y;

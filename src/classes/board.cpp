@@ -2,7 +2,7 @@
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
-
+    matchDetector = new MatchDetection(this);
     int y = 60;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
@@ -16,6 +16,11 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
         CellsVertex.push_back(cellRow);
         y += margin;
     };
+}
+
+
+    vector<vector<Cell>> Board::getCells(){
+    return this->CellsVertex;
 }
 
 void Board::draw() {
@@ -39,6 +44,12 @@ bool Board::contains(Point p) {
     }
     return false;
 }
+/*
+const int MatchDetection::matchFive[2][2][4] = 
+    {
+        {{0, 0, 0, 0}, {-2, -1, 1, 2}},
+        {{-2, -1, 1, 2}, {0, 0, 0, 0}}
+    };
 
 bool Board::checkMatchFive(int i, int j) {
     // find cookie
@@ -165,7 +176,7 @@ bool Board::checkWrappedCandy(int i, int j) {
 
 bool Board::checkHorizontalMatchFour(int i, int j) {
     try {
-        if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
+        if (    CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
             CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
             CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor()) {
             vector<vector<int>> cellsToRemove{{i, j - 2},
@@ -209,7 +220,7 @@ bool Board::checkVerticalMatchFour(int i, int j) {
                                               {i + 1, j},
                                               {i + 2, j}};
             createSpecialCandy(i, j, CandySpeciality::STRIPED_VERTICAL);
-            moveCells(cellsToRemove);
+            moveCells(cellsToRemove );
             return true;
         }
         return false;
@@ -252,16 +263,6 @@ bool Board::checkVerticalMatch(int i, int j) {
         return false;
     }
 }
-
-void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
-    if (speciality == CandySpeciality::MULTICOLOR)
-        CellsVertex[i][j].setCandy(
-                CandyFactory::generateCandy(speciality));
-    else
-        CellsVertex[i][j].setCandy(
-                CandyFactory::generateCandy(speciality, CellsVertex[i][j].getColor()));
-}
-
 void Board::checkMatches() {
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
@@ -279,6 +280,22 @@ void Board::checkMatches() {
     }
 }
 
+*/
+
+void Board::checkMatches() {
+    matchDetector->checkMatches();
+}
+
+
+void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
+    if (speciality == CandySpeciality::MULTICOLOR)
+        CellsVertex[i][j].setCandy(
+                CandyFactory::generateCandy(speciality));
+    else
+        CellsVertex[i][j].setCandy(
+                CandyFactory::generateCandy(speciality, CellsVertex[i][j].getColor()));
+}
+
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
     for (auto &cellToReplace: cellsToReplace) {
@@ -293,6 +310,7 @@ void Board::moveCells(vector<vector<int>> cellsToReplace) {
 }
 
 void Board::swapCells(Cell *swapCell) {
+
     selectedCell->animateCandy(swapCell);
 
     Candy selectedCellCandy = selectedCell->getCandy();
@@ -306,5 +324,6 @@ void Board::swapCells(Cell *swapCell) {
 
     selectedCell = nullptr;
 
-    checkMatches();
+   matchDetector->checkMatches();
 }
+

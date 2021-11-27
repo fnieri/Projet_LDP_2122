@@ -45,128 +45,167 @@ bool MatchDetection::checkForCandiesInteraction(Candy firstCandy, Candy secondCa
 }
 
 
-MatchDetection::MatchDetection(Board board) : candyBoard{board} {
-    
-}
-void MatchDetection::checkMatches(Board board) {
-    this->candyBoard = board;
-    this->CellsVertex = candyBoard.getCells();
+MatchDetection::MatchDetection(Board *board) : candyBoard{board} {}
 
+
+void MatchDetection::checkMatches() {
+    CellsVertex = candyBoard->getCells();
+    // this->tempBoard = *board;
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (checkMatchFive(i, j)) continue;
+            if (checkWrappedCandy(i, j)) continue;
+            if (checkHorizontalMatchFour(i, j)) continue;
+            if (checkVerticalMatchFour(i, j)) continue;
+        }
+    }
+    
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (checkHorizontalMatch(i, j)) continue;
+            if (checkVerticalMatch(i, j)) continue;
+
+        }
+    }
 }
+
 bool MatchDetection::checkMatchFive(int i, int j) {
-    try {
-        int iterator = 0;
-        while (iterator < sizeof(this->matchFive) / sizeof(this->matchFive[0][0][0])) {
-            if (CellsVertex[i][j].getColor() == CellsVertex[i + this->matchFive[iterator][0][0]].at(j + this->matchFive[iterator][1][0]).getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex[i + this->matchFive[iterator][0][1]].at(j - this->matchFive[iterator][1][1]).getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex[i + this->matchFive[iterator][0][2]].at(j + this->matchFive[iterator][1][2]).getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex[i + this->matchFive[iterator][0][3]].at(j + this->matchFive[iterator][1][3]).getColor()) {
-                cellsToRemove = {
-                        {i + this->matchFive[iterator][0][0], j + this->matchFive[iterator][1][0]},
-                        {i + this->matchFive[iterator][0][1], j + this->matchFive[iterator][1][1]},
-                        {i + this->matchFive[iterator][0][2], j + this->matchFive[iterator][1][2]},
-                        {i + this->matchFive[iterator][0][3], j + this->matchFive[iterator][1][3]}};
-                candyBoard.createSpecialCandy(i, j, CandySpeciality::BOMB);
-                candyBoard.moveCells(cellsToRemove);
+    int iterator = 0;
+    unsigned long int array_size = sizeof(this->matchFive) / sizeof(this->matchFive[0]);
+    for (iterator; iterator < array_size; iterator++) {
+        try {
+            const int* thisMatchI = this->matchFive[iterator][0];
+            const int* thisMatchJ = this->matchFive[iterator][1];
+
+            if (CellsVertex[i][j].getColor() == CellsVertex[i + thisMatchI[0]].at(j + (thisMatchJ[0])).getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex[i + thisMatchI[1]].at(j + (thisMatchJ[1])).getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex[i + thisMatchI[2]].at(j + (thisMatchJ[2])).getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex[i + thisMatchI[3]].at(j + (thisMatchJ[3])).getColor()) {
+           /* 
+               if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
+            CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
+            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
+            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 2).getColor()) {
+            */
+                vector<vector<int>> cellsToRemove {
+                        {i + thisMatchI[0], j + thisMatchJ[0]},
+                        {i + thisMatchI[1], j + thisMatchJ[1]},
+                        {i + thisMatchI[2], j + thisMatchJ[2]},
+                        {i + thisMatchI[3], j + thisMatchJ[3]}};
+                candyBoard->createSpecialCandy(i, j, CandySpeciality::MULTICOLOR);
+                candyBoard->moveCells(cellsToRemove);
                 return true;
-                }
-            iterator++;
             }
+        
+            }
+        catch (const std::out_of_range &e) {
             return false;
         }
-    catch (const std::out_of_range &e) {
-        return false;
+        iterator++;
     }
+    return false;
+
 }
 
 bool MatchDetection::checkWrappedCandy(int i, int j) {
     int iterator = 0;
-    try {
-        while (iterator < sizeof(this->wrappedCandy) / sizeof(this->wrappedCandy[0][0][0])) {
+    unsigned long int array_size = sizeof(this->wrappedCandy) / sizeof(this->wrappedCandy[0]);
+    
+    for (iterator; iterator < array_size; iterator++) {
+       try {
+            const int* thisMatchI = this->wrappedCandy[iterator][0];
+            const int* thisMatchJ = this->wrappedCandy[iterator][1];
 
-            if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j + this->wrappedCandy[iterator][1][0]).getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex[i].at(j + this->wrappedCandy[iterator][1][0]).getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex.at(i + this->wrappedCandy[iterator][0][0])[j].getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex.at(i + this->wrappedCandy[iterator][0][1])[j].getColor()) {
-                cellsToRemove = {{i, j + this->wrappedCandy[iterator][1][0]},
-                                 {i, j + this->wrappedCandy[iterator][1][1]},
-                                 {i + this->wrappedCandy[iterator][0][0], j},
-                                 {i + this->wrappedCandy[iterator][0][1], j}};
+            if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j + thisMatchJ[0]).getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex[i].at(j + thisMatchJ[0]).getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex.at(i + thisMatchI[0])[j].getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex.at(i + thisMatchI[1])[j].getColor()) {
+              
+            vector<vector<int>> cellsToRemove {{i, j + thisMatchJ[0]},
+                                 {i, j + thisMatchJ[1]},
+                                 {i + thisMatchI[0], j},
+                                 {i + thisMatchI[1], j}};
+           
+                candyBoard->createSpecialCandy(i, j, CandySpeciality::BOMB);
+                candyBoard->moveCells(cellsToRemove);
+                
                 return true;
 
-                candyBoard.createSpecialCandy(i, j, CandySpeciality::STRIPED_BOMB);
-                candyBoard.moveCells(cellsToRemove);
-            }
-            iterator++;
+              }
         }
-        return false;
+        catch (const std::out_of_range &e) {
+            return false;
+        }
+        iterator++;
     }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
+    return false;
+
 }
 
 bool MatchDetection::checkHorizontalMatchFour(int i, int j) {
     int iterator = 0;
-    try {
-        while (iterator < sizeof(this->matchHorizontalFour) / sizeof(this->matchHorizontalFour[0][0])) {
+    unsigned long int array_size = sizeof(this->matchHorizontalFour) / sizeof(this->matchHorizontalFour[0]);
+    for (iterator; iterator < array_size; iterator++) {
+      try {
+            const int* thisMatch = this->matchHorizontalFour[iterator];
             if (CellsVertex[i][j].getColor() ==
-                CellsVertex[i].at(j + this->matchHorizontalFour[iterator][0]).getColor() &&
+                CellsVertex[i].at(j + thisMatch[0]).getColor() &&
                 CellsVertex[i][j].getColor() ==
                 CellsVertex[i].at(j + this->matchHorizontalFour[iterator][1]).getColor() &&
                 CellsVertex[i][j].getColor() ==
                 CellsVertex[i].at(j + this->matchHorizontalFour[iterator][2]).getColor()) {
-                cellsToRemove = {{i, j + matchHorizontalFour[iterator][0]},
-                                 {i, j - 1},
-                                 {i, j + 1}};
-                candyBoard.createSpecialCandy(i, j, CandySpeciality::STRIPED_HORIZONTAL);
-                candyBoard.moveCells(cellsToRemove);
+                vector<vector<int>> cellsToRemove{{i, j + matchHorizontalFour[iterator][0]},
+                                 {i, j + this->matchHorizontalFour[iterator][1]},
+                                 {i, j + this->matchHorizontalFour[iterator][2]}};
+                candyBoard->createSpecialCandy(i, j, CandySpeciality::STRIPED_HORIZONTAL);
+                candyBoard->moveCells(cellsToRemove);
                 return true;
             }
-        iterator++;
+            iterator++;
+        }
+        catch (const std::out_of_range &e) {
+            return false;
         }
     }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
+    return false;
+
 }
 
 bool MatchDetection::checkVerticalMatchFour(int i, int j) {
-    vector<vector<Cell>> CellsVertex = candyBoard.getCells();
     int iterator = 0;
-    try {
-        while (iterator < sizeof(this->matchVerticalFour) / sizeof(this->matchVerticalFour[0][0])) {
-            if (CellsVertex[i][j].getColor() ==
-                CellsVertex.at(i + this->matchVerticalFour[iterator][0])[j].getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex.at(i + this->matchVerticalFour[iterator][1])[j].getColor() &&
-                CellsVertex[i][j].getColor() == CellsVertex.at(i + this->matchVerticalFour[iterator][2])[j].getColor()) {
-                cellsToRemove = {{i + this->matchVertical[0][0], j},
+    unsigned long int array_size = sizeof(this->matchVerticalFour) / sizeof(this->matchVerticalFour[0]);
+    for (iterator; iterator < array_size; iterator++) {
+        const int* thisMatch = this->matchVerticalFour[iterator];  
+        try {
+            if (CellsVertex[i][j].getColor() == CellsVertex.at(i + thisMatch[0])[j].getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex.at(i + thisMatch[1])[j].getColor() &&
+                CellsVertex[i][j].getColor() == CellsVertex.at(i + thisMatch[2])[j].getColor()) {
+                vector<vector<int>> cellsToRemove{{i + this->matchVertical[0][0], j},
                                  {i + this->matchVertical[0][1], j},
                                  {i + this->matchVertical[0][2], j}};
 
-                candyBoard.createSpecialCandy(i, j, CandySpeciality::STRIPED_VERTICAL);
-                candyBoard.moveCells(cellsToRemove);
+                candyBoard->createSpecialCandy(i, j, CandySpeciality::STRIPED_VERTICAL);
+                candyBoard->moveCells(cellsToRemove);
                 return true;
             }
-        iterator++;
         }
+        catch (const std::out_of_range &e) {
+            return false;
+        }
+        iterator++;
     }
-    catch (const std::out_of_range &e) {
-        return false;
-
-    }
+    return false;
 }
 
 
 bool MatchDetection::checkHorizontalMatch(int i, int j) {
-
     try {
-        if (CellsVertex[i].at(j + this->matchHorizontal[1][0]).getColor() == CellsVertex[i][j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + this->matchHorizontal[1][2]).getColor()) {
-                            cellsToRemove =   {{i + this->matchHorizontal[0][0], j + this->matchHorizontal[1][0]},
+        if (CellsVertex[i].at(j + this->matchHorizontal[1][0]).getColor() == candyBoard->getCells()[i][j].getColor() &&
+            CellsVertex[i][j].getColor() == candyBoard->getCells()[i].at(j + this->matchHorizontal[1][2]).getColor()) {
+                            vector<vector<int>> cellsToRemove {{i + this->matchHorizontal[0][0], j + this->matchHorizontal[1][0]},
                                               {i + this->matchHorizontal[0][1], j + this->matchHorizontal[1][1]},
                                               {i + this->matchHorizontal[0][2], j + this->matchHorizontal[1][2]}}; // order doesn't matter
-            candyBoard.moveCells(cellsToRemove);
+            candyBoard->moveCells(cellsToRemove);
             return true;
         }
         return false;
@@ -179,12 +218,12 @@ bool MatchDetection::checkHorizontalMatch(int i, int j) {
 
 bool MatchDetection::checkVerticalMatch(int i, int j) {
     try {
-        if (CellsVertex.at(i - 1)[j].getColor() == CellsVertex[i][j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-            cellsToRemove = {{i + this->matchVertical[0][0], j},
+        if (CellsVertex.at(i - 1)[j].getColor() == candyBoard->getCells()[i][j].getColor() &&
+            CellsVertex[i][j].getColor() == candyBoard->getCells().at(i + 1)[j].getColor()) {
+            vector<vector<int>> cellsToRemove {{i + this->matchVertical[0][0], j},
                                               {i + this->matchVertical[0][1],     j},
                                               {i + this->matchVertical[0][2], j}}; // don't change order
-            candyBoard.moveCells(cellsToRemove);
+            candyBoard->moveCells(cellsToRemove);
             return true;
         }
         return false;
