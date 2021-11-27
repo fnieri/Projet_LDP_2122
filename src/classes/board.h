@@ -15,6 +15,7 @@ class Board {
     int margin;
     int numberOfCells;
     Cell *selectedCell = nullptr;
+    Point selectedCellPosition;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -22,9 +23,7 @@ public:
 
     bool contains(Point);
 
-    // vector<Cell> getCells();
-    //  void handleClick(Point mouseLoc);
-    void checkMatches();
+    bool checkMatches();
 
     bool checkHorizontalMatch(int, int);
 
@@ -42,7 +41,11 @@ public:
 
     bool checkWrappedCandy(int, int);
 
-    void swapCells(Cell*);
+    void swapCells(Cell *, Point);
+
+    static void exchangeCells(Cell *cell1, Cell *cell2, const std::string&);
+
+    static bool isMoveAllowed(Point cell1Position, Point cell2Position);
 };
 
 

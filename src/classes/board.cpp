@@ -27,12 +27,13 @@ void Board::draw() {
 }
 
 bool Board::contains(Point p) {
-    for (auto &row: CellsVertex) {
-        for (auto & cell : row) {
-            if (cell.contains(p)) {
-//                row[j].animateCandy(&row[j - 1]);
-                if (!selectedCell) selectedCell = &cell;
-                else swapCells(&cell);
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
+                if (!selectedCell) {
+                    selectedCell = &CellsVertex[i][j];
+                    selectedCellPosition = Point{i, j};
+                } else swapCells(&CellsVertex[i][j], Point{i, j});
                 return true;
             }
         }
@@ -262,23 +263,23 @@ void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
                 CandyFactory::generateCandy(speciality, CellsVertex[i][j].getColor()));
 }
 
-void Board::checkMatches() {
+bool Board::checkMatches() {
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (checkMatchFive(i, j)) continue;
-            if (checkWrappedCandy(i, j)) continue;
-            if (checkHorizontalMatchFour(i, j)) continue;
-            if (checkVerticalMatchFour(i, j)) continue;
+            if (checkMatchFive(i, j)) return true;
+            if (checkWrappedCandy(i, j)) return true;
+            if (checkHorizontalMatchFour(i, j)) return true;
+            if (checkVerticalMatchFour(i, j)) return true;
         }
     }
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (checkHorizontalMatch(i, j)) continue;
-            if (checkVerticalMatch(i, j)) continue;
+            if (checkHorizontalMatch(i, j)) return true;
+            if (checkVerticalMatch(i, j)) return true;
         }
     }
+    return false;
 }
-
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
     for (auto &cellToReplace: cellsToReplace) {
@@ -286,25 +287,45 @@ void Board::moveCells(vector<vector<int>> cellsToReplace) {
         int j = cellToReplace[1];
         // drops all candy one cell under then generates candy for top cell
         for (int k = i; k > 0; k--) {
+            Point originalCenter = CellsVertex[k-1][j].getCenter();
+            CellsVertex[k-1][j].animateGravity(CellsVertex[k][j].getCenter());
+            CellsVertex[k-1][j].setCenter(originalCenter);
             CellsVertex[k][j].setCandy(CellsVertex[k - 1][j].getCandy());
         }
         CellsVertex[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
     }
 }
 
-void Board::swapCells(Cell *swapCell) {
-    selectedCell->animateCandy(swapCell);
+void Board::exchangeCells(Cell *cell1, Cell *cell2, const std::string &animationType = "cell_swap") {
 
-    Candy selectedCellCandy = selectedCell->getCandy();
-    Point selectedCellCenter = selectedCell->getCenter();
+    if (animationType == "cell_swap") cell1->animateCandy(cell2);
+    else if (animationType == "gravity") cell1->animateGravity(cell2->getCenter());
 
-    selectedCell->setCandy(swapCell->getCandy());
-    swapCell->setCandy(selectedCellCandy);
+    Candy selectedCellCandy = cell1->getCandy();
+    Point selectedCellCenter = cell1->getCenter();
 
-    selectedCell->setCenter(swapCell->getCenter());
-    swapCell->setCenter(selectedCellCenter);
+    cell1->setCandy(cell2->getCandy());
+    cell2->setCandy(selectedCellCandy);
 
+    cell1->setCenter(cell2->getCenter());
+    cell2->setCenter(selectedCellCenter);
+}
+
+bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
+    if ((cell1Position.x == cell2Position.x && std::abs(cell1Position.y - cell2Position.y) == 1) ||
+        (cell1Position.y == cell2Position.y && std::abs(cell1Position.x - cell2Position.x) == 1))
+        return true;
+    return false;
+}
+
+void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
+    if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
+        exchangeCells(selectedCell, swapCell);
+        if (!checkMatches()) {
+            exchangeCells(selectedCell, swapCell);
+        } else {
+            while (checkMatches()) {}
+        }
+    }
     selectedCell = nullptr;
-
-    checkMatches();
 }

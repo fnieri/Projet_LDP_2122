@@ -47,6 +47,15 @@ void Cell::animateCandy(Cell *swapCell) {
     }
 }
 
+void Cell::animateGravity(Point destination) {
+    if (destination.x == center.x) { // little verification so we don't accidentally break everything lol
+        while (center.y != destination.y) {
+            center.y += 1;
+            Fl::wait(0.003);
+        }
+    }
+}
+
 bool Cell::contains(Point p) {
     return p.x >= center.x - cellSize / 2 &&
            p.x < center.x + cellSize / 2 &&

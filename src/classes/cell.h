@@ -34,6 +34,8 @@ public:
     Point getCenter();
 
     void setCenter(Point);
+
+    void animateGravity(Point destination);
 };
 
 #endif
