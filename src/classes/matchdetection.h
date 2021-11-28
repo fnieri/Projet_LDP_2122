@@ -17,7 +17,7 @@
 
 class MatchDetection {
     private:
-        Board *candyBoard;
+        unique_ptr<Board> candyBoard;
         vector<vector<Cell>> CellsVertex;
         static const int matchFive[2][2][4];
         static const int wrappedCandy[6][2][2];
@@ -30,17 +30,17 @@ class MatchDetection {
 
         void checkMatches();
 
-        bool checkMatchFive(int i, int j);
+        bool checkMatchFive(int i, int j, Color currentCellColor);
 
-        bool checkWrappedCandy(int i, int j);
+        bool checkWrappedCandy(int i, int j, Color currentCellColor);
 
-        bool checkHorizontalMatchFour(int i, int j);
+        bool checkHorizontalMatchFour(int i, int j, Color currentCellColor);
 
-        bool checkVerticalMatchFour(int i, int j);
+        bool checkVerticalMatchFour(int i, int j, Color currentCellColor);
         
-        bool checkHorizontalMatch(int i, int j);
+        bool checkHorizontalMatch(int i, int j, Color currentCellColor);
 
-        bool checkVerticalMatch(int i, int j);
+        bool checkVerticalMatch(int i, int j, Color currentCellColor);
 
 
         bool checkForCandiesInteraction(Candy firstCandy, Candy secondCandy);

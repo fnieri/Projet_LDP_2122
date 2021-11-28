@@ -12,7 +12,7 @@
 
 class Board {
     vector<vector<Cell>> CellsVertex;
-    MatchDetection* matchDetector;
+    unique_ptr<MatchDetection> matchDetector;
     int cellSize;
     int margin;
     int numberOfCells;
