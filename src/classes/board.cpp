@@ -3,7 +3,7 @@
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
 
-    int y = 60;
+    int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
         vector<Cell> cellRow;
@@ -17,6 +17,14 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
         y += margin;
     };
 }
+
+void Board::reset() {
+    for (auto &row: CellsVertex) {
+        for (auto &cell: row) {
+            cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
+        }
+    }
+};
 
 void Board::draw() {
     for (auto &cellRow: CellsVertex) {
@@ -39,6 +47,48 @@ bool Board::contains(Point p) {
         }
     }
     return false;
+}
+
+void Board::handleDrag(Point p) {
+    if (selectedCell) {
+        auto direction = Point{p.x - selectedCellPosition.x, p.y - selectedCellPosition.y};
+        cout << "direction: " << direction.x << " " << direction.y << endl;
+        if (abs(direction.x) > abs(direction.y)) {
+            if (direction.x > 0) {
+                Point cellPosition{selectedCellPosition.x + margin, selectedCellPosition.y};
+                for (auto & i : CellsVertex)
+                    for (auto & j : i)
+                        if (j.contains(cellPosition))
+                            return;
+            } else {
+                Point cellPosition{selectedCellPosition.x - margin, selectedCellPosition.y};
+                for (auto & i : CellsVertex)
+                    for (auto & j : i)
+                        if (j.contains(cellPosition))
+                            return;
+            }
+        } else {
+            if (direction.y > 0) {
+                Point cellPosition{selectedCellPosition.x, selectedCellPosition.y + margin};
+                for (auto & i : CellsVertex)
+                    for (auto & j : i)
+                        if (j.contains(cellPosition))
+                            return;
+            } else {
+                Point cellPosition{selectedCellPosition.x, selectedCellPosition.y - margin};
+                for (auto & i : CellsVertex)
+                    for (auto & j : i)
+                        if (j.contains(cellPosition))
+                            return;
+            }
+        }
+        selectedCell = nullptr;
+    }
+    else {
+        if (contains(p)) {
+            cout << "contains" << endl;
+        }
+    }
 }
 
 bool Board::checkMatchFive(int i, int j) {

@@ -1,7 +1,5 @@
 #include "canvas.h"
 
-//Canvas::Canvas(Board board) : board(board) {}
-
 Canvas::Canvas() = default;
 
 void Canvas::draw() {
@@ -21,12 +19,19 @@ void Canvas::mouseClick(Point p) {
     if (board.contains(p)) return;
 }
 
+void Canvas::mouseDrag(Point p) {
+    board.handleDrag(p);
+}
+
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':
             exit(0);
         case 'c':
             board.checkMatches();
+            break;
+        case 'r':
+            board.reset();
             break;
     }
 }

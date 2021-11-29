@@ -21,6 +21,8 @@ class Board {
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
+    void reset();
+
     void draw();
 
     bool contains(Point);
@@ -48,6 +50,8 @@ public:
     static void exchangeCells(Cell *cell1, Cell *cell2);
 
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);
+
+    void handleDrag(Point p);
 };
 
 
