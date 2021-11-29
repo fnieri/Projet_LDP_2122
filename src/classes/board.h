@@ -8,6 +8,8 @@
 #include "common.h"
 #include <memory>
 #include "candyfactory.h"
+#include "color.h"
+#include <map>
 
 class Board {
     vector<vector<Cell>> CellsVertex;
@@ -43,7 +45,7 @@ public:
 
     void swapCells(Cell *, Point);
 
-    static void exchangeCells(Cell *cell1, Cell *cell2, const std::string&);
+    static void exchangeCells(Cell *cell1, Cell *cell2);
 
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);
 };

@@ -57,10 +57,10 @@ void Cell::animateGravity(Point destination) {
 }
 
 bool Cell::contains(Point p) {
-    return p.x >= center.x - cellSize / 2 &&
-           p.x < center.x + cellSize / 2 &&
-           p.y >= center.y - cellSize / 2 &&
-           p.y < center.y + cellSize / 2;
+    return p.x >= center.x - cellSize &&
+           p.x < center.x + cellSize &&
+           p.y >= center.y - cellSize &&
+           p.y < center.y + cellSize;
 }
 
 Color Cell::getColor() {

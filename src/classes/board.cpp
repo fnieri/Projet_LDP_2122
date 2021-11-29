@@ -282,24 +282,37 @@ bool Board::checkMatches() {
 }
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
+    for (auto &cellToReplace: cellsToReplace)
+        CellsVertex[cellToReplace[0]][cellToReplace[1]].setCandy(Candy{nullptr, Color::BLUE});
+
+    for (int l = 0; l < (int) margin; ++l) {
+        for (auto &cellToReplace: cellsToReplace) {
+            int i = cellToReplace[0];
+            int j = cellToReplace[1];
+            // drops all candy one cell under then generates candy for top cell
+            for (int k = i; k > 0; k--) {
+                Point movingCenter{CellsVertex[k - 1][j].getCenter().x,
+                                   CellsVertex[k - 1][j].getCenter().y + 1};
+                CellsVertex[k - 1][j].setCenter(movingCenter);
+            }
+        }
+        Fl::wait(0.003);
+    }
     for (auto &cellToReplace: cellsToReplace) {
         int i = cellToReplace[0];
         int j = cellToReplace[1];
-        // drops all candy one cell under then generates candy for top cell
         for (int k = i; k > 0; k--) {
-            Point originalCenter = CellsVertex[k-1][j].getCenter();
-            CellsVertex[k-1][j].animateGravity(CellsVertex[k][j].getCenter());
-            CellsVertex[k-1][j].setCenter(originalCenter);
+            Point originalCenter{CellsVertex[k - 1][j].getCenter().x,
+                                 CellsVertex[k - 1][j].getCenter().y - margin};
+            CellsVertex[k - 1][j].setCenter(originalCenter);
             CellsVertex[k][j].setCandy(CellsVertex[k - 1][j].getCandy());
         }
         CellsVertex[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
     }
 }
 
-void Board::exchangeCells(Cell *cell1, Cell *cell2, const std::string &animationType = "cell_swap") {
-
-    if (animationType == "cell_swap") cell1->animateCandy(cell2);
-    else if (animationType == "gravity") cell1->animateGravity(cell2->getCenter());
+void Board::exchangeCells(Cell *cell1, Cell *cell2) {
+    cell1->animateCandy(cell2);
 
     Candy selectedCellCandy = cell1->getCandy();
     Point selectedCellCenter = cell1->getCenter();
