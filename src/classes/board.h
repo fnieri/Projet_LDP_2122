@@ -5,7 +5,7 @@
 #include "cell.h"
 #include <cmath>
 #include <iostream>
-#include "common.h"
+#include "common.hpp"
 #include <memory>
 #include "candyfactory.h"
 #include "color.h"
@@ -17,7 +17,8 @@ class Board {
     int margin;
     int numberOfCells;
     Cell *selectedCell = nullptr;
-    Point selectedCellPosition;
+    Point selectedCellCenter{0,0};
+    Point selectedCellPosition{0,0};
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -52,6 +53,8 @@ public:
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);
 
     void handleDrag(Point p);
+
+    void handleRelease();
 };
 
 

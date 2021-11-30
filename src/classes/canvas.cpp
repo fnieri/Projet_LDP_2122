@@ -23,6 +23,10 @@ void Canvas::mouseDrag(Point p) {
     board.handleDrag(p);
 }
 
+void Canvas::handleRelease() {
+    board.handleRelease();
+}
+
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':

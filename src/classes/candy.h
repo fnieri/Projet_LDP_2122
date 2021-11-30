@@ -2,7 +2,7 @@
 #define __CANDY_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "common.h"
+#include "common.hpp"
 #include "color.h"
 #include <string>
 

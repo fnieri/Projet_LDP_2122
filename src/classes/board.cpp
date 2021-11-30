@@ -40,6 +40,7 @@ bool Board::contains(Point p) {
             if (CellsVertex[i][j].contains(p)) {
                 if (!selectedCell) {
                     selectedCell = &CellsVertex[i][j];
+                    selectedCellCenter = selectedCell->getCenter();
                     selectedCellPosition = Point{i, j};
                 } else swapCells(&CellsVertex[i][j], Point{i, j});
                 return true;
@@ -50,45 +51,62 @@ bool Board::contains(Point p) {
 }
 
 void Board::handleDrag(Point p) {
-    if (selectedCell) {
-        auto direction = Point{p.x - selectedCellPosition.x, p.y - selectedCellPosition.y};
-        cout << "direction: " << direction.x << " " << direction.y << endl;
-        if (abs(direction.x) > abs(direction.y)) {
-            if (direction.x > 0) {
-                Point cellPosition{selectedCellPosition.x + margin, selectedCellPosition.y};
-                for (auto & i : CellsVertex)
-                    for (auto & j : i)
-                        if (j.contains(cellPosition))
-                            return;
-            } else {
-                Point cellPosition{selectedCellPosition.x - margin, selectedCellPosition.y};
-                for (auto & i : CellsVertex)
-                    for (auto & j : i)
-                        if (j.contains(cellPosition))
-                            return;
-            }
-        } else {
-            if (direction.y > 0) {
-                Point cellPosition{selectedCellPosition.x, selectedCellPosition.y + margin};
-                for (auto & i : CellsVertex)
-                    for (auto & j : i)
-                        if (j.contains(cellPosition))
-                            return;
-            } else {
-                Point cellPosition{selectedCellPosition.x, selectedCellPosition.y - margin};
-                for (auto & i : CellsVertex)
-                    for (auto & j : i)
-                        if (j.contains(cellPosition))
-                            return;
-            }
-        }
-        selectedCell = nullptr;
-    }
-    else {
-        if (contains(p)) {
-            cout << "contains" << endl;
-        }
-    }
+//    if (selectedCell) {
+//        int dx = p.x - selectedCellCenter.x;
+//        int dy = p.y - selectedCellCenter.y;
+//        if (abs(dx) > abs(dy)) {
+//            if (dx < 30) {
+////                selectedCell->setCenter(Point{selectedCellCenter.x - 60, selectedCellCenter.y});
+//                swapCells(selectedCell, Point{selectedCellPosition.x - 1, selectedCellPosition.y});
+//            } else if (dx > 30) {
+//                swapCells(selectedCell, Point{selectedCellPosition.x + 1, selectedCellPosition.y});
+////                selectedCell->setCenter(Point{selectedCellCenter.x + 60, selectedCellCenter.y});
+//            } else {
+//                selectedCell->setCenter(p);
+//            }
+//        } else {
+//            if (dy < 30) {
+//                swapCells(selectedCell, Point{selectedCellPosition.x, selectedCellPosition.y - 1});
+////                selectedCell->setCenter(Point{selectedCellCenter.x, selectedCellCenter.y - 60});
+//            } else if (dy > 30) {
+//                swapCells(selectedCell, Point{selectedCellPosition.x, selectedCellPosition.y + 1});
+////                selectedCell->setCenter(Point{selectedCellCenter.x, selectedCellCenter.y + 60});
+//            } else {
+//                selectedCell->setCenter(p);
+//            }
+//        }
+//    } else {
+//        contains(p);
+//    }
+return;
+}
+
+void Board::handleRelease() {
+//    cout << "handleRelease" << endl;
+    return;
+//    if (selectedCell) {
+//        int dx = p.x - selectedCellCenter.x;
+//        int dy = p.y - selectedCellCenter.y;
+//        if (abs(dx) > abs(dy)) {
+//            if (dx < -60) {
+//                selectedCell->setCenter(Point{selectedCellCenter.x - 60, selectedCellCenter.y});
+//            } else if (dx > 60) {
+//                selectedCell->setCenter(Point{selectedCellCenter.x + 60, selectedCellCenter.y});
+//            } else {
+//                selectedCell->setCenter(p);
+//            }
+//        } else {
+//            if (dy < -60) {
+//                selectedCell->setCenter(Point{selectedCellCenter.x, selectedCellCenter.y - 60});
+//            } else if (dy > 60) {
+//                selectedCell->setCenter(Point{selectedCellCenter.x, selectedCellCenter.y + 60});
+//            } else {
+//                selectedCell->setCenter(p);
+//            }
+//        }
+//        selectedCell->setCenter(selectedCellCenter);
+//        selectedCell = nullptr;
+//    }
 }
 
 bool Board::checkMatchFive(int i, int j) {

@@ -2,7 +2,7 @@
 #define CELL_H
 
 #include <Fl/Fl.H>
-#include "common.h"
+#include "common.hpp"
 #include "candy.h"
 #include <memory>
 #include <Fl/Fl_Box.H>

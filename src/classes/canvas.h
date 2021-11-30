@@ -2,7 +2,7 @@
 #define __CANVAS_H
 
 #include <vector>
-#include "common.h"
+#include "common.hpp"
 #include "cell.h"
 #include "board.h"
 #include "board.h"
@@ -37,6 +37,8 @@ public:
     void mouseClick(Point mouseLoc);
     void mouseDrag(Point p);
     void keyPressed(int keyCode);
+
+    void handleRelease();
 };
 
 #endif

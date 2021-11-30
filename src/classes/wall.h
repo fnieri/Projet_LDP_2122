@@ -2,7 +2,7 @@
 #define __WALL_H
 
 #include <FL/Fl_PNG_Image.H>
-#include "common.h"
+#include "common.hpp"
 
 class Wall : public Fl_PNG_Image {
     private:

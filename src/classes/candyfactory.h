@@ -1,7 +1,7 @@
 #ifndef __CANDYFACTORY_H
 #define __CANDYFACTORY_H
 
-#include "common.h"
+#include "common.hpp"
 #include "color.h"
 #include <string>
 #include "candy.h"
