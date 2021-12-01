@@ -19,18 +19,6 @@ void Canvas::mouseClick(Point p) {
     if (board.contains(p)) return;
 }
 
-void Canvas::mouseDrag(Point p) {
-    board.handleDrag(p);
-}
-
-void Canvas::handleRelease() {
-    board.handleRelease();
-}
-
-void Canvas::mouseMove(Point p) {
-    board.handleMove(p);
-}
-
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':

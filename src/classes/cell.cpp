@@ -48,12 +48,6 @@ void Cell::animateCandy(Cell *swapCell) {
     }
 }
 
-void Cell::handleMove() {
-}
-
-void Cell::showNormal() {
-}
-
 void Cell::animateGravity(Point destination) {
     if (destination.x == center.x) { // little verification so we don't accidentally break everything lol
         while (center.y != destination.y) {

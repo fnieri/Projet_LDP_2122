@@ -7,8 +7,6 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Shared_Image.H>
 #include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Box.H>
-#include <math.h>
 #include <time.h>
 #include <chrono>
 #include <iostream>
@@ -52,14 +50,6 @@ public:
             case FL_KEYDOWN:
                 canvas.keyPressed(Fl::event_key());
                 return 1;
-            case FL_RELEASE:
-//                canvas.mouseDrag(Point{Fl::event_x(), Fl::event_y()});
-                canvas.handleRelease();
-                return 1;
-            case FL_DRAG:
-                canvas.mouseDrag(Point{Fl::event_x(), Fl::event_y()});
-            case FL_MOVE:
-                canvas.mouseMove(Point{Fl::event_x(), Fl::event_y()});
         }
         return 0;
     }

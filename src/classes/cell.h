@@ -36,10 +36,6 @@ public:
     void setCenter(Point);
 
     void animateGravity(Point destination);
-
-    void handleMove();
-
-    void showNormal();
 };
 
 #endif
