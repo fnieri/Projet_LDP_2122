@@ -35,7 +35,12 @@ public:
     Canvas();
     void draw();
     void mouseClick(Point mouseLoc);
+    void mouseDrag(Point p);
     void keyPressed(int keyCode);
+
+    void handleRelease();
+
+    void mouseMove(Point p);
 };
 
 #endif

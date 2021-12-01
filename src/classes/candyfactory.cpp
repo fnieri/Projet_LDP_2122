@@ -84,3 +84,7 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
     strcpy(fullPathChar, filename.c_str());
     return {fullPathChar, color};
 }
+
+Candy CandyFactory::generateEmptyCandy() {
+    return {nullptr, Color::BLUE};
+}

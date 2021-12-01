@@ -1,7 +1,5 @@
 #include "canvas.h"
 
-//Canvas::Canvas(Board board) : board(board) {}
-
 Canvas::Canvas() = default;
 
 void Canvas::draw() {
@@ -27,6 +25,9 @@ void Canvas::keyPressed(int keyCode) {
             exit(0);
         case 'c':
             board.checkMatches();
+            break;
+        case 'r':
+            board.reset();
             break;
     }
 }

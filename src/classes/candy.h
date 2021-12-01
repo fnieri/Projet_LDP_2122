@@ -15,12 +15,10 @@ public:
     virtual ~Candy();
     [[nodiscard]] Color getColor() const;
     virtual void setColor(Color newColor);
+    void handleMove();
 
-    /*
-      virtual void mouseClick(Point mouseLoc);
-      virtual void mouseMove(Point mouseLoc);
-      virtual bool isEqualColor(Candy &otherCandy);
-    */
+    void showNormal();
+
 };
 
 #endif

@@ -1,9 +1,11 @@
 #include "board.h"
 
+#include <utility>
+
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
-
-    int y = 60;
+    matchDetector = make_unique<MatchDetection>(this);
+    int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
         vector<Cell> cellRow;
@@ -18,6 +20,18 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     };
 }
 
+vector<vector<Cell>> Board::getCells() {
+    return this->CellsVertex;
+}
+
+void Board::reset() {
+    for (auto &row: CellsVertex) {
+        for (auto &cell: row) {
+            cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
+        }
+    }
+};
+
 void Board::draw() {
     for (auto &cellRow: CellsVertex) {
         for (auto &cell: cellRow) {
@@ -27,230 +41,19 @@ void Board::draw() {
 }
 
 bool Board::contains(Point p) {
-    for (auto &row: CellsVertex) {
-        for (auto & cell : row) {
-            if (cell.contains(p)) {
-//                row[j].animateCandy(&row[j - 1]);
-                if (!selectedCell) selectedCell = &cell;
-                else swapCells(&cell);
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
+                if (!selectedCell) {
+                    selectedCell = &CellsVertex[i][j];
+                    selectedCellCenter = selectedCell->getCenter();
+                    selectedCellPosition = Point{i, j};
+                } else swapCells(&CellsVertex[i][j], Point{i, j});
                 return true;
             }
         }
     }
     return false;
-}
-
-bool Board::checkMatchFive(int i, int j) {
-    // find cookie
-    try {
-        if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 2).getColor()) {
-            vector<vector<int>> cellsToRemove{{i, j - 2},
-                                              {i, j - 1},
-                                              {i, j + 1},
-                                              {i, j + 2}};
-            createSpecialCandy(i, j, CandySpeciality::MULTICOLOR);
-            moveCells(cellsToRemove);
-            return true;
-        } else if (CellsVertex[i][j].getColor() == CellsVertex.at(i - 2)[j].getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex.at(i + 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i - 2, j},
-                                              {i - 1, j},
-                                              {i + 1, j},
-                                              {i + 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::MULTICOLOR);
-            moveCells(cellsToRemove);
-            return true;
-        }
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
-}
-
-bool Board::checkWrappedCandy(int i, int j) {
-    try {
-        // check for + shape
-        if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j - 1},
-                                              {i,     j + 1},
-                                              {i - 1, j},
-                                              {i + 1, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-
-        }
-            // check for T shape
-        else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i - 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j - 1},
-                                              {i,     j + 1},
-                                              {i - 1, j},
-                                              {i - 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-        }
-            // check for inverse T shape
-        else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i + 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j - 1},
-                                              {i,     j + 1},
-                                              {i + 1, j},
-                                              {i + 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-        }
-            // check for sideways left T shape
-        else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 2).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j + 1},
-                                              {i,     j + 2},
-                                              {i - 1, j},
-                                              {i + 1, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-        }
-            // check for L shape
-        else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 2).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i + 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j + 1},
-                                              {i,     j + 2},
-                                              {i + 1, j},
-                                              {i + 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-        }
-            // check for inverse L shape
-        else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-                 CellsVertex[i][j].getColor() == CellsVertex.at(i - 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i,     j - 1},
-                                              {i,     j - 2},
-                                              {i - 1, j},
-                                              {i - 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::BOMB);
-            moveCells(cellsToRemove);
-            return true;
-        }
-        // this is annoying asf imma have to find a more efficient way to do this
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
-
-}
-
-bool Board::checkHorizontalMatchFour(int i, int j) {
-    try {
-        if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 2).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor()) {
-            vector<vector<int>> cellsToRemove{{i, j - 2},
-                                              {i, j - 1},
-                                              {i, j + 1}};
-            createSpecialCandy(i, j, CandySpeciality::STRIPED_HORIZONTAL);
-            moveCells(cellsToRemove);
-            return true;
-        } else if (CellsVertex[i][j].getColor() == CellsVertex[i].at(j - 1).getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 2).getColor()) {
-            vector<vector<int>> cellsToRemove{{i, j - 1},
-                                              {i, j + 1},
-                                              {i, j + 2}};
-            createSpecialCandy(i, j, CandySpeciality::STRIPED_HORIZONTAL);
-            moveCells(cellsToRemove);
-            return true;
-        }
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
-}
-
-bool Board::checkVerticalMatchFour(int i, int j) {
-    try {
-        if (CellsVertex[i][j].getColor() == CellsVertex.at(i - 2)[j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i - 2, j},
-                                              {i - 1, j},
-                                              {i + 1, j}};
-            createSpecialCandy(i, j, CandySpeciality::STRIPED_VERTICAL);
-            moveCells(cellsToRemove);
-            return true;
-        } else if (CellsVertex[i][j].getColor() == CellsVertex.at(i - 1)[j].getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor() &&
-                   CellsVertex[i][j].getColor() == CellsVertex.at(i + 2)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i - 1, j},
-                                              {i + 1, j},
-                                              {i + 2, j}};
-            createSpecialCandy(i, j, CandySpeciality::STRIPED_VERTICAL);
-            moveCells(cellsToRemove);
-            return true;
-        }
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
-}
-
-bool Board::checkHorizontalMatch(int i, int j) {
-    try {
-        if (CellsVertex[i].at(j - 1).getColor() == CellsVertex[i][j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex[i].at(j + 1).getColor()) {
-            vector<vector<int>> cellsToRemove{{i, j - 1},
-                                              {i, j},
-                                              {i, j + 1}}; // order doesn't matter
-            moveCells(cellsToRemove);
-            return true;
-        }
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
-}
-
-bool Board::checkVerticalMatch(int i, int j) {
-    try {
-        if (CellsVertex.at(i - 1)[j].getColor() == CellsVertex[i][j].getColor() &&
-            CellsVertex[i][j].getColor() == CellsVertex.at(i + 1)[j].getColor()) {
-            vector<vector<int>> cellsToRemove{{i - 1, j},
-                                              {i,     j},
-                                              {i + 1, j}}; // don't change order
-            moveCells(cellsToRemove);
-            return true;
-        }
-        return false;
-    }
-    catch (const std::out_of_range &e) {
-        return false;
-    }
 }
 
 void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
@@ -262,49 +65,42 @@ void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
                 CandyFactory::generateCandy(speciality, CellsVertex[i][j].getColor()));
 }
 
-void Board::checkMatches() {
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (checkMatchFive(i, j)) continue;
-            if (checkWrappedCandy(i, j)) continue;
-            if (checkHorizontalMatchFour(i, j)) continue;
-            if (checkVerticalMatchFour(i, j)) continue;
-        }
-    }
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (checkHorizontalMatch(i, j)) continue;
-            if (checkVerticalMatch(i, j)) continue;
-        }
-    }
+bool Board::checkMatches() {
+    return matchDetector->checkMatches();
 }
-
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
-    for (auto &cellToReplace: cellsToReplace) {
-        int i = cellToReplace[0];
-        int j = cellToReplace[1];
-        // drops all candy one cell under then generates candy for top cell
-        for (int k = i; k > 0; k--) {
-            CellsVertex[k][j].setCandy(CellsVertex[k - 1][j].getCandy());
-        }
-        CellsVertex[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
-    }
+    Animation::moveCellsDown(std::move(cellsToReplace), &CellsVertex, margin);
 }
 
-void Board::swapCells(Cell *swapCell) {
-    selectedCell->animateCandy(swapCell);
+void Board::exchangeCells(Cell *cell1, Cell *cell2) {
+    cell1->animateCandy(cell2);
 
-    Candy selectedCellCandy = selectedCell->getCandy();
-    Point selectedCellCenter = selectedCell->getCenter();
+    Candy selectedCellCandy = cell1->getCandy();
+    Point selectedCellCenter = cell1->getCenter();
 
-    selectedCell->setCandy(swapCell->getCandy());
-    swapCell->setCandy(selectedCellCandy);
+    cell1->setCandy(cell2->getCandy());
+    cell2->setCandy(selectedCellCandy);
 
-    selectedCell->setCenter(swapCell->getCenter());
-    swapCell->setCenter(selectedCellCenter);
+    cell1->setCenter(cell2->getCenter());
+    cell2->setCenter(selectedCellCenter);
+}
 
+bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
+    if ((cell1Position.x == cell2Position.x && std::abs(cell1Position.y - cell2Position.y) == 1) ||
+        (cell1Position.y == cell2Position.y && std::abs(cell1Position.x - cell2Position.x) == 1))
+        return true;
+    return false;
+}
+
+void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
+    if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
+        exchangeCells(selectedCell, swapCell);
+        if (!checkMatches()) {
+            exchangeCells(selectedCell, swapCell);
+        } else {
+            while (checkMatches()) {}
+        }
+    }
     selectedCell = nullptr;
-
-    checkMatches();
 }
