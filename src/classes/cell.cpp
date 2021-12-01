@@ -1,5 +1,5 @@
 #include "cell.h"
-#include "common.hpp"
+#include "common.h"
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Window.H>
@@ -9,7 +9,8 @@
 #include <utility>
 
 Cell::Cell(Point center, int cellSize, const Candy &candy) : center{center}, cellSize{cellSize},
-                                                             candyPtr{make_unique<Candy>(candy)} {}
+                                                             candyPtr{make_unique<Candy>(candy)} {
+}
 
 Cell::Cell(const Cell &c) {
     center = c.center;
@@ -45,6 +46,12 @@ void Cell::animateCandy(Cell *swapCell) {
         Fl::wait(0.005);
 //        Fl::redraw(); idk if u need this but i don't
     }
+}
+
+void Cell::handleMove() {
+}
+
+void Cell::showNormal() {
 }
 
 void Cell::animateGravity(Point destination) {

@@ -58,6 +58,8 @@ public:
                 return 1;
             case FL_DRAG:
                 canvas.mouseDrag(Point{Fl::event_x(), Fl::event_y()});
+            case FL_MOVE:
+                canvas.mouseMove(Point{Fl::event_x(), Fl::event_y()});
         }
         return 0;
     }

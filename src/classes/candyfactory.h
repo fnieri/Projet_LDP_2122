@@ -1,7 +1,7 @@
 #ifndef __CANDYFACTORY_H
 #define __CANDYFACTORY_H
 
-#include "common.hpp"
+#include "common.h"
 #include "color.h"
 #include <string>
 #include "candy.h"
@@ -33,6 +33,7 @@ public:
     static Candy generateCandy(CandySpeciality speciality, Color color);
 
 
+    static Candy generateEmptyCandy();
 };
 
 #endif

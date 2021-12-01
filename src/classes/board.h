@@ -5,11 +5,11 @@
 #include "cell.h"
 #include <cmath>
 #include <iostream>
-#include "common.hpp"
+#include "common.h"
 #include <memory>
 #include "candyfactory.h"
 #include "color.h"
-#include <map>
+#include "animation.h"
 
 class Board {
     vector<vector<Cell>> CellsVertex;
@@ -55,6 +55,8 @@ public:
     void handleDrag(Point p);
 
     void handleRelease();
+
+    void handleMove(Point p);
 };
 
 

@@ -2,7 +2,7 @@
 #define CELL_H
 
 #include <Fl/Fl.H>
-#include "common.hpp"
+#include "common.h"
 #include "candy.h"
 #include <memory>
 #include <Fl/Fl_Box.H>
@@ -36,6 +36,10 @@ public:
     void setCenter(Point);
 
     void animateGravity(Point destination);
+
+    void handleMove();
+
+    void showNormal();
 };
 
 #endif

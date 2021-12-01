@@ -2,7 +2,7 @@
 #define __BOMB_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "common.hpp"
+#include "common.h"
 #include "color.h"
 #include <string>
 #include "candy.h"

@@ -1,5 +1,7 @@
 #include "board.h"
 
+#include <utility>
+
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
 
@@ -48,6 +50,17 @@ bool Board::contains(Point p) {
         }
     }
     return false;
+}
+
+void Board::handleMove(Point p) {
+    for (auto &row: CellsVertex) {
+        for (auto &cell: row) {
+            if (cell.contains(p)) {
+                cell.handleMove();
+            }
+            else cell.showNormal();
+        }
+    }
 }
 
 void Board::handleDrag(Point p) {
@@ -350,33 +363,7 @@ bool Board::checkMatches() {
 }
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
-    for (auto &cellToReplace: cellsToReplace)
-        CellsVertex[cellToReplace[0]][cellToReplace[1]].setCandy(Candy{nullptr, Color::BLUE});
-
-    for (int l = 0; l < (int) margin; ++l) {
-        for (auto &cellToReplace: cellsToReplace) {
-            int i = cellToReplace[0];
-            int j = cellToReplace[1];
-            // drops all candy one cell under then generates candy for top cell
-            for (int k = i; k > 0; k--) {
-                Point movingCenter{CellsVertex[k - 1][j].getCenter().x,
-                                   CellsVertex[k - 1][j].getCenter().y + 1};
-                CellsVertex[k - 1][j].setCenter(movingCenter);
-            }
-        }
-        Fl::wait(0.003);
-    }
-    for (auto &cellToReplace: cellsToReplace) {
-        int i = cellToReplace[0];
-        int j = cellToReplace[1];
-        for (int k = i; k > 0; k--) {
-            Point originalCenter{CellsVertex[k - 1][j].getCenter().x,
-                                 CellsVertex[k - 1][j].getCenter().y - margin};
-            CellsVertex[k - 1][j].setCenter(originalCenter);
-            CellsVertex[k][j].setCandy(CellsVertex[k - 1][j].getCandy());
-        }
-        CellsVertex[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
-    }
+    Animation::moveCellsDown(std::move(cellsToReplace), &CellsVertex, margin);
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {

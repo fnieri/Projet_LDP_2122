@@ -2,7 +2,7 @@
 #define __ICING_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "common.hpp"
+#include "common.h"
 #include "icingstatus.h"
 class Icing : public Fl_PNG_Image {
     private:
