@@ -5,22 +5,18 @@
 #include "common.h"
 #include "color.h"
 #include <string>
+#include "candyspeciality.h"
+
 
 class Candy : public Fl_PNG_Image {
-    const char *filename;
-    Color color;
-public:
-    Candy(const char *filename, Color color);
-    Candy(const Candy &c);
-    virtual ~Candy();
-    [[nodiscard]] Color getColor() const;
-    virtual void setColor(Color newColor);
-
-    /*
-      virtual void mouseClick(Point mouseLoc);
-      virtual void mouseMove(Point mouseLoc);
-      virtual bool isEqualColor(Candy &otherCandy);
-    */
+    private:
+        const char *filename;
+        Color color;
+        CandySpeciality speciality;
+    public:
+        Candy(const char *filename, Color color, CandySpeciality speciality);
+        Candy(const Candy &c);
+        Color getColor() const;
+        CandySpeciality getSpeciality();
 };
-
 #endif

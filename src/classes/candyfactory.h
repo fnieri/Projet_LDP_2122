@@ -27,12 +27,13 @@ public:
 
     static std::string generateImageName(Color color, CandySpeciality speciality);
 
-
-    static Candy generateCandy(CandySpeciality speciality);
+    static Candy generateCandy( CandySpeciality speciality);
 
     static Candy generateCandy(CandySpeciality speciality, Color color);
 
 
 };
+
+
 
 #endif

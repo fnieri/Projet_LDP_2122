@@ -6,8 +6,12 @@
 #define __COMMON_H
 #include <iostream>
 #include <experimental/filesystem>
+
+
 class Board;
-class MatchDetection;
+class MatchDetection;   //We define classes now because they are interdependent,
+//so they need to know the existence of the other class 
+
 
 struct Point {
     int x, y;

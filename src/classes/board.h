@@ -17,6 +17,7 @@ class Board {
     int margin;
     int numberOfCells;
     Cell *selectedCell = nullptr;
+    Point selectedCellPosition;
 public:
     Board(int cellSize, int margin, int numberOfCells);
     void draw();
@@ -30,7 +31,12 @@ public:
     void createSpecialCandy(int i, int j, CandySpeciality speciality);
     void moveCells(vector<vector<int>>);
 
-    void swapCells(Cell*);
+    void swapCells(Cell *, Point);
+
+    void exchangeCells(Cell *cell1, Cell *cell2);
+
+    static bool isMoveAllowed(Point cell1Position, Point cell2Position);
+
 };
 
 

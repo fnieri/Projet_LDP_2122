@@ -28,7 +28,7 @@ class MatchDetection {
     public:
         MatchDetection(Board *board);
 
-        void checkMatches();
+        bool checkMatches();
 
         bool checkMatchFive(int i, int j, Color currentCellColor);
 
@@ -42,12 +42,11 @@ class MatchDetection {
 
         bool checkVerticalMatch(int i, int j, Color currentCellColor);
 
-
         bool checkForCandiesInteraction(Candy firstCandy, Candy secondCandy);
 
-        bool doubleBombInteraction();
+        void doubleBombInteraction();
 
-
+        void NormalCandyAndMulticolorInteraction(Color colorToRemove);
 };
 
 #endif //__MATCHDETECTION_H
