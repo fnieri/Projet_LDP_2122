@@ -1,7 +1,3 @@
-//
-// Created by frann on 27/11/21.
-//
-
 #ifndef __MATCHDETECTION_H
 #define __MATCHDETECTION_H
 
@@ -18,7 +14,6 @@
 class Board;
 
 class MatchDetection {
-private:
     unique_ptr<Board> candyBoard;
     vector<vector<Cell>> CellsVertex;
     static const int matchFive[2][2][4];
@@ -27,28 +22,27 @@ private:
     static const int matchVerticalFour[2][3];
     static const int matchHorizontal[2][3];
     static const int matchVertical[2][3];
+    Color currentCellColor;
 public:
     MatchDetection(Board *board);
 
     Color getCellColor(int x, int y);
 
+    bool cellsColorMatch(int i, int j);
+
     bool checkMatches();
 
-    bool checkMatchFive(int i, int j, Color currentCellColor);
+    bool checkMatchFive(int i, int j, );
 
-    bool checkWrappedCandy(int i, int j, Color currentCellColor);
+    bool checkWrappedCandy(int i, int j);
 
-    bool checkHorizontalMatchFour(int i, int j, Color currentCellColor);
+    bool checkHorizontalMatchFour(int i, int j);
 
-    bool checkVerticalMatchFour(int i, int j, Color currentCellColor);
+    bool checkVerticalMatchFour(int i, int j);
 
-    bool checkHorizontalMatch(int i, int j, Color currentCellColor);
+    bool checkHorizontalMatch(int i, int j);
 
-    bool checkVerticalMatch(int i, int j, Color currentCellColor);
-
-    bool checkForCandiesInteraction(Candy firstCandy, Candy secondCandy);
-
-    bool doubleBombInteraction();
+    bool checkVerticalMatch(int i, int j);
 };
 
 #endif //__MATCHDETECTION_H
