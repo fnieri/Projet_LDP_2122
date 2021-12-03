@@ -30,6 +30,10 @@ void Board::reset() {
             cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
         }
     }
+    while (checkMatches()) {}
+    CellsVertex[5][2].setCandy(CandyFactory::generateCandy(CandySpeciality::STRIPED_HORIZONTAL, Color::BLUE));
+    CellsVertex[4][3].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE, Color::BLUE));
+    CellsVertex[6][2].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE, Color::BLUE));
 };
 
 void Board::draw() {
@@ -70,7 +74,7 @@ bool Board::checkMatches() {
 }
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
-    Animation::moveCellsDown(std::move(cellsToReplace), &CellsVertex, margin);
+    Animation::moveCellsDown(this, std::move(cellsToReplace), &CellsVertex, margin);
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {
@@ -98,9 +102,7 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
         exchangeCells(selectedCell, swapCell);
         if (!checkMatches()) {
             exchangeCells(selectedCell, swapCell);
-        } else {
-            while (checkMatches()) {}
-        }
+        } else while (checkMatches()) {}
     }
     selectedCell = nullptr;
 }

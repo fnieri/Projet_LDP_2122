@@ -16,12 +16,6 @@ class Board;
 class MatchDetection {
     unique_ptr<Board> candyBoard;
     vector<vector<Cell>> CellsVertex;
-    static const int matchFive[2][2][4];
-    static const int wrappedCandy[6][2][2];
-    static const int matchHorizontalFour[2][3];
-    static const int matchVerticalFour[2][3];
-    static const int matchHorizontal[2][3];
-    static const int matchVertical[2][3];
     Color currentCellColor;
 public:
     MatchDetection(Board *board);
@@ -32,7 +26,9 @@ public:
 
     bool checkMatches();
 
-    bool checkMatchFive(int i, int j, );
+    bool checkMatch(vector<array<int, 2>> match, int i, int j, CandySpeciality speciality);
+
+    bool checkMatchFive(int i, int j);
 
     bool checkWrappedCandy(int i, int j);
 
@@ -40,9 +36,7 @@ public:
 
     bool checkVerticalMatchFour(int i, int j);
 
-    bool checkHorizontalMatch(int i, int j);
-
-    bool checkVerticalMatch(int i, int j);
+    bool checkMatchThree(int i, int j);
 };
 
 #endif //__MATCHDETECTION_H

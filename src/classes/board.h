@@ -36,21 +36,9 @@ public:
 
     bool checkMatches();
 
-//    bool checkHorizontalMatch(int, int);
-//
-//    bool checkVerticalMatch(int, int);
-//
-//    bool checkHorizontalMatchFour(int, int);
-//
-//    bool checkMatchFive(int, int);
-//
-//    bool checkVerticalMatchFour(int, int);
-
     void moveCells(vector<vector<int>>);
 
     void createSpecialCandy(int, int, CandySpeciality);
-
-//    bool checkWrappedCandy(int, int);
 
     void swapCells(Cell *, Point);
 

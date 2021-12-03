@@ -25,6 +25,8 @@ public:
 
     Color getColor();
 
+    CandySpeciality getSpeciality();
+
     void setCandy(const Candy&);
 
     Candy getCandy();
