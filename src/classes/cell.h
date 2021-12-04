@@ -25,6 +25,8 @@ public:
 
     Color getColor();
 
+    CandySpeciality getSpeciality();
+
     void setCandy(const Candy&);
 
     Candy getCandy();
@@ -34,6 +36,8 @@ public:
     Point getCenter();
 
     void setCenter(Point);
+
+    void animateGravity(Point destination);
 };
 
 #endif

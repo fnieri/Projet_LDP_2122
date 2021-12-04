@@ -15,6 +15,14 @@ class MatchDetection;   //We define classes now because they are interdependent,
 
 struct Point {
     int x, y;
+
+    bool operator ==(const Point&p) const{
+        return (x == p.x && y == p.y);
+    }
+
+    bool operator !=(const Point&p) const{
+        return (x != p.x || y != p.y);
+    }
 };
 
 //std::string CURRENT_PATH = std::experimental::filesystem::current_path();

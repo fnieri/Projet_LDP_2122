@@ -9,7 +9,8 @@
 #include <utility>
 
 Cell::Cell(Point center, int cellSize, const Candy &candy) : center{center}, cellSize{cellSize},
-                                                             candyPtr{make_unique<Candy>(candy)} {}
+                                                             candyPtr{make_unique<Candy>(candy)} {
+}
 
 Cell::Cell(const Cell &c) {
     center = c.center;
@@ -47,11 +48,20 @@ void Cell::animateCandy(Cell *swapCell) {
     }
 }
 
+void Cell::animateGravity(Point destination) {
+    if (destination.x == center.x) { // little verification so we don't accidentally break everything lol
+        while (center.y != destination.y) {
+            center.y += 1;
+            Fl::wait(0.003);
+        }
+    }
+}
+
 bool Cell::contains(Point p) {
-    return p.x >= center.x - cellSize / 2 &&
-           p.x < center.x + cellSize / 2 &&
-           p.y >= center.y - cellSize / 2 &&
-           p.y < center.y + cellSize / 2;
+    return p.x >= center.x - cellSize &&
+           p.x < center.x + cellSize &&
+           p.y >= center.y - cellSize &&
+           p.y < center.y + cellSize;
 }
 
 Color Cell::getColor() {
@@ -76,4 +86,6 @@ void Cell::setCenter(Point newCenter) {
     center.y = newCenter.y;
 }
 
-
+CandySpeciality Cell::getSpeciality() {
+    return candyPtr->getSpeciality();
+}

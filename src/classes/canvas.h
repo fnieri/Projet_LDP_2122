@@ -36,6 +36,7 @@ public:
     void draw();
     void mouseClick(Point mouseLoc);
     void keyPressed(int keyCode);
+    void mouseDrag(Point p);
 };
 
 #endif

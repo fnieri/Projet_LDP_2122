@@ -4,19 +4,20 @@
 #include <Fl/Fl_PNG_Image.H>
 #include "common.h"
 #include "color.h"
-#include <string>
 #include "candyspeciality.h"
-
+#include <string>
 
 class Candy : public Fl_PNG_Image {
-    private:
-        const char *filename;
-        Color color;
-        CandySpeciality speciality;
-    public:
-        Candy(const char *filename, Color color, CandySpeciality speciality);
-        Candy(const Candy &c);
-        Color getColor() const;
-        CandySpeciality getSpeciality();
+    const char *filename;
+    Color color;
+    CandySpeciality speciality;
+public:
+    Candy(const char *filename, Color color, CandySpeciality speciality=CandySpeciality::NONE);
+    Candy(const Candy &c);
+    virtual ~Candy();
+    [[nodiscard]] Color getColor() const;
+    [[nodiscard]] CandySpeciality getSpeciality() const;
+    virtual void setColor(Color newColor);
 };
+
 #endif

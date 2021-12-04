@@ -1,7 +1,38 @@
- FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 
-		#load fltk	 #Load PNG Load Current Path 
-all: mainwindow
+FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 
 
-mainwindow: classes/mainwindow.cpp
-	g++ classes/candyfactory.h classes/candyfactory.cpp classes/mainwindow.cpp classes/common.h classes/canvas.cpp classes/canvas.h classes/cell.cpp classes/cell.h classes/board.cpp classes/board.h classes/candy.cpp classes/candy.h -o game $(FLAGS)
-	./game
+DEBUG = -g
+
+CC=g++
+
+OBJDIR = build
+
+POBJ=\
+	cell.o\
+	canvas.o\
+	board.o\
+	candy.o\
+	candyfactory.o\
+	animation.o\
+	mainwindow.o\
+	matchdetection.o\
+	eventhandler.o	
+
+OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
+
+main.out : $(OBJ)
+	$(CC) -o $@ $^ $(FLAGS) $(DEBUG)
+	
+
+-include $(OBJDIR)/*.d  # include dependencies
+
+$(OBJ): | $(OBJDIR)
+
+$(OBJDIR):
+	mkdir $(OBJDIR)
+
+$(OBJDIR)/%.o : classes/%.cpp
+	$(CC) -o $@ -c $< -MMD
+
+.PHONY : clean
+clean :
+	rm $(OBJDIR)/*.o
