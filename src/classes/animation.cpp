@@ -5,29 +5,38 @@ Animation::Animation() = default;
 void Animation::handleStrippedHorizontal(Board *board, vector<vector<Cell>> *CellVector, int i, int j) {
     vector<vector<int>> cellsToMove;
 //    (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
-    for (int k = 0; k < (*CellVector)[i].size(); ++k) {
-        cellsToMove.push_back({i, k});
-    }
+    if (i >= 0 && i < (*CellVector)[i].size() && (j>= 0 && j < (*CellVector)[i].size())) {
+        for (int k = 0; k < (*CellVector)[i].size(); ++k) {
+            cellsToMove.push_back({i, k});
+        }
+    
     emptyCells(cellsToMove, CellVector);
     board->moveCells(cellsToMove);
+    }
 }
 
 void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellVector, int i, int j) {
     vector<vector<int>> cellsToMove;
 //    (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
-    for (int k = 0; k < (*CellVector)[i].size(); ++k) {
-        cellsToMove.push_back({k, i});
+    if (i >= 0 && i < (*CellVector)[i].size() && (j>= 0 && j < (*CellVector)[i].size())) {
+    
+        for (int k = 0; k < (*CellVector)[i].size(); ++k) {
+            cellsToMove.push_back({k, i});
+        
+        emptyCells(cellsToMove, CellVector);
+        board->moveCells(cellsToMove);
+        }
     }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
 }
 
 void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j, int leftDownMargin, int rightUpMargin) {
     vector<vector<int>> cellsToMove;
 //    (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
-    for (int k = leftDownMargin; k < rightUpMargin; ++k) {
-        for (int l = leftDownMargin; l < rightUpMargin; ++l) {
-            cellsToMove.push_back({i+k,j+l});
+    for (int k = leftDownMargin; k <= rightUpMargin; ++k) {
+        for (int l = leftDownMargin; l <= rightUpMargin; ++l) {
+            if ((i + k >= 0 && i + k < (*CellVector)[i].size()) && (j + l  >= 0 && j + l < (*CellVector)[j].size())) {
+                cellsToMove.push_back({i+k,j+l});
+            }
         }
     }
     emptyCells(cellsToMove, CellVector);
@@ -37,14 +46,12 @@ void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, in
 
 void Animation::emptyCell(vector<vector<Cell>> *CellVector, int i, int j) {
     (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
-  //  (*CellVector)[i][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
 
 }
 
 void Animation::emptyCells(vector<vector<int>> cellsToEmpty, vector<vector<Cell>> *CellVector) {
     for (auto &cellToEmpty: cellsToEmpty)
         emptyCell(CellVector, cellToEmpty[0], cellToEmpty[1]);
-    //Fl::wait(0.5);
 }
 
 void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, vector<vector<Cell>> *CellVector,
@@ -59,7 +66,7 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
                 handleStrippedHorizontal(board, CellVector, cellToReplace[0], cellToReplace[1]);
                 return;
             case CandySpeciality::BOMB:
-                handleWrapped(board, CellVector, cellToReplace[0], cellToReplace[1], -1, 2);
+                handleWrapped(board, CellVector, cellToReplace[0], cellToReplace[1], -1, 1);
                 return;
             case CandySpeciality::MULTICOLOR:
                 emptyCell(CellVector, cellToReplace[0], cellToReplace[1]);
@@ -68,10 +75,11 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
                 emptyCell(CellVector, cellToReplace[0], cellToReplace[1]);
                 break;
             default:
-                break;
+                break;  
         }
     }
 
+    board->setAcceptInput(false); //Wait for animation to end before letting user click
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToReplace: cellsToReplace) {
             int i = cellToReplace[0];
@@ -96,4 +104,5 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
         }
         (*CellVector)[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
     }
+    
 }

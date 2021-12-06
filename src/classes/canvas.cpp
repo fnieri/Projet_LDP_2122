@@ -16,16 +16,16 @@ void Canvas::draw() {
     board.draw();
 }
 
-void Canvas::mouseDrag(Point p) {
-    if (board.getAcceptInput())
+void Canvas::mouseDrag(Point p) {  
         board.handleDrag(p);
 }
 void Canvas::mouseClick(Point p) {
-//    board.checkMatches();
-    if (board.getAcceptInput())  
-        if (board.contains(p)) return;
+    if (board.contains(p)) return;
 }
 
+bool Canvas::isInputAllowed() {
+    return board.isInputAllowed();
+}
 
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {

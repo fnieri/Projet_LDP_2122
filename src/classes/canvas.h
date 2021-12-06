@@ -31,12 +31,14 @@ elsewhere it will probably crash.
 
 class Canvas {
     Board board{50,60,100};
+    
 public:
     Canvas();
     void draw();
     void mouseClick(Point mouseLoc);
     void keyPressed(int keyCode);
     void mouseDrag(Point p);
+    bool isInputAllowed();
 };
 
 #endif

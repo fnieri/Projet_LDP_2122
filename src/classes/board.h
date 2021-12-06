@@ -63,14 +63,12 @@ public:
     void createSpecialCandy(int, int, CandySpeciality);
 
     void setMargin(int newMargin);
-    
-//    bool checkWrappedCandy(int, int);
 
     void swapCells(Cell *, Point);
 
     void setAcceptInput(bool newState);
 
-    bool getAcceptInput();
+    bool isInputAllowed();
     
     void exchangeCells(Cell *cell1, Cell *cell2);
 
