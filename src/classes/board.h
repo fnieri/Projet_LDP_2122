@@ -62,13 +62,13 @@ public:
 
     void createSpecialCandy(int, int, CandySpeciality);
 
-    void setMargin(int newMargin);
-
     void swapCells(Cell *, Point);
 
     void setAcceptInput(bool newState);
 
     bool isInputAllowed();
+    
+    void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j);
     
     void exchangeCells(Cell *cell1, Cell *cell2);
 

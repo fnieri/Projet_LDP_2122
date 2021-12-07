@@ -26,6 +26,7 @@ bool Board::isInputAllowed() {
     return acceptInput;
 }
 
+
 void Board::setAcceptInput(bool newState) {
     acceptInput = newState;
 }
@@ -46,9 +47,10 @@ void Board::setSwapCellPosition(Point p) {
     toSwapCellCenter = getPositionOfCell(p);
 }
 
-void Board::setMargin(int newMargin) {
-    margin = newMargin;
+void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
+    CellsVertex[i][j].setCandy(CandyFactory::generateCandy(newSpeciality, newColor));
 }
+    
 
 Cell* Board::cellAt(Point p) {
      for (int i = 0; i < (int) CellsVertex.size(); i++) {
@@ -84,6 +86,8 @@ void Board::reset() {
         }
     }   
     while (matchDetector->checkMatches()) {}
+    CellsVertex[5][6].setCandy(CandyFactory::generateCandy(STRIPED_HORIZONTAL));
+    CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
     setAcceptInput(true);
 };
 

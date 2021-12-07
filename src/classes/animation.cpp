@@ -21,11 +21,11 @@ void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellV
     if (i >= 0 && i < (*CellVector)[i].size() && (j>= 0 && j < (*CellVector)[i].size())) {
     
         for (int k = 0; k < (*CellVector)[i].size(); ++k) {
-            cellsToMove.push_back({k, i});
+            cellsToMove.push_back({k, j});
         
+        }
         emptyCells(cellsToMove, CellVector);
         board->moveCells(cellsToMove);
-        }
     }
 }
 
@@ -56,7 +56,7 @@ void Animation::emptyCells(vector<vector<int>> cellsToEmpty, vector<vector<Cell>
 
 void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, vector<vector<Cell>> *CellVector,
                               int margin) {
-    for (auto &cellToReplace: cellsToReplace) {
+   for (auto &cellToReplace: cellsToReplace) {
         CandySpeciality cellSpeciality = (*CellVector)[cellToReplace[0]][cellToReplace[1]].getSpeciality();
         switch (cellSpeciality) {
             case CandySpeciality::STRIPED_VERTICAL:
@@ -79,7 +79,6 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
         }
     }
 
-    board->setAcceptInput(false); //Wait for animation to end before letting user click
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToReplace: cellsToReplace) {
             int i = cellToReplace[0];

@@ -56,6 +56,9 @@ public:
     void wrappedAndMulticolorInteraction(Point, Point, Color);
 
     void doubleMulticolorInteraction();
+
+    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset, int rightOffset);
+  
 };
 
 #endif //__MATCHDETECTION_H
