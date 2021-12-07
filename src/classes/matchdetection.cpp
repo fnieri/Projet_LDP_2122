@@ -21,7 +21,6 @@ bool MatchDetection::checkMatches() {
             if (checkVerticalMatchFour(i, j)) return true;
         }
     }
-
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             currentCellColor = CellsVertex[i][j].getColor();
@@ -45,7 +44,7 @@ bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, Candy
         return false;
     }
     if (cellsToRemove.size() == match.size()) {
-        if (speciality == CandySpeciality::NONE) cellsToRemove.push_back({i, j});
+        if (speciality == CandySpeciality::NONE) cellsToRemove.insert(cellsToRemove.begin()+1, {i, j});
         else candyBoard->createSpecialCandy(i, j, speciality);
         candyBoard->moveCells(cellsToRemove);
         return true;
@@ -86,7 +85,7 @@ bool MatchDetection::checkVerticalMatchFour(int i, int j) {
 }
 
 bool MatchDetection::checkMatchThree(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 1}},
+    vector<vector<array<int, 2>>> match{{{0, -1}, {0,  1}},
                                         {{-1, 0},  {1, 0}}};
     for (auto &matchThree: match) {
         if (checkMatch(matchThree, i, j, CandySpeciality::NONE)) return true;

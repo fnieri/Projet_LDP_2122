@@ -19,6 +19,10 @@ void Canvas::mouseClick(Point p) {
     if (board.contains(p)) return;
 }
 
+void Canvas::mouseMove(Point p) {
+    board.highlight(p);
+}
+
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':

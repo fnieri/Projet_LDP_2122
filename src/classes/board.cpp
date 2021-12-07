@@ -12,7 +12,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
         for (int j = 0; j < size; ++j) {
             Point center{margin * j + margin, y};
             Candy candy = CandyFactory::generateCandy(CandySpeciality::NONE);
-            Cell cell{center, cellSize, candy};
+            Cell cell{center, cellSize, candy, margin};
             cellRow.push_back(cell);
         }
         CellsVertex.push_back(cellRow);
@@ -31,7 +31,7 @@ void Board::reset() {
         }
     }
     while (checkMatches()) {}
-    CellsVertex[5][2].setCandy(CandyFactory::generateCandy(CandySpeciality::STRIPED_HORIZONTAL, Color::BLUE));
+    CellsVertex[5][2].setCandy(CandyFactory::generateCandy(CandySpeciality::STRIPED_VERTICAL, Color::BLUE));
     CellsVertex[4][3].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE, Color::BLUE));
     CellsVertex[6][2].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE, Color::BLUE));
 };
@@ -67,6 +67,15 @@ void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
     else
         CellsVertex[i][j].setCandy(
                 CandyFactory::generateCandy(speciality, CellsVertex[i][j].getColor()));
+}
+
+void Board::highlight(Point p) {
+    for (auto &i: CellsVertex) {
+        for (auto &j: i) {
+            if (j.contains(p)) j.setHighlighted(true);
+            else j.setHighlighted(false);
+        }
+    }
 }
 
 bool Board::checkMatches() {

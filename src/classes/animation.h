@@ -9,11 +9,14 @@
 class Board;
 
 class Animation {
-    static void handleStrippedHorizontal(Board *board, vector<vector<Cell>> *CellVector, int i, int j);
+    static void handleStrippedHorizontal(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
+                                         vector<vector<int>> cellsToMove);
 
-    static void handleStrippedVertical(Board *board, vector<vector<Cell>> *CellVector, int i, int j);
+    static void handleStrippedVertical(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
+                                       vector<vector<int>> cellsToMove);
 
-    static void handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j);
+    static void handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
+                              vector<vector<int>> cellsToMove);
 
     static void emptyCell(vector<vector<Cell>> *CellVector, int i, int j);
 

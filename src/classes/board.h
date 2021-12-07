@@ -45,6 +45,8 @@ public:
     static void exchangeCells(Cell *cell1, Cell *cell2);
 
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);
+
+    void highlight(Point p);
 };
 
 

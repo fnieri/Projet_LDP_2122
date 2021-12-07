@@ -12,14 +12,15 @@ using namespace std;
 
 class Cell {
     Point center;
-    int cellSize;
+    int cellSize, margin;
     unique_ptr<Candy> candyPtr;
+    bool drawBox = false;
 public:
-    Cell(Point, int, const Candy& candy);
+    Cell(Point, int, const Candy& candy, int margin);
 
     Cell(const Cell &);
 
-    bool contains(Point p);
+    bool contains(Point p) const;
 
     void draw();
 
@@ -37,7 +38,7 @@ public:
 
     void setCenter(Point);
 
-    void animateGravity(Point destination);
+    void setHighlighted(bool val);
 };
 
 #endif
