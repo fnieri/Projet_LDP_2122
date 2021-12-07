@@ -46,7 +46,7 @@ public:
 
     void checkMatches();
 
-    void handleDrag(Point p);
+    void handleMouseEvent(Point p);
 
     void setSelectedCell(Cell*);
 

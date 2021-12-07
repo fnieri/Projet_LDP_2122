@@ -21,7 +21,7 @@ void EventHandler::setSecondPosition(Point p)
     secondPosition = board->getPositionOfCell(p);
 }
 
-void EventHandler::handleDrag(Point p)
+void EventHandler::handleMouseEvent(Point p)
 {
 
     if (!(p.x < 0) && !(p.y < 0))

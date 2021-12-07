@@ -100,8 +100,8 @@ void Board::draw() {
     }
 }
 
-void Board::handleDrag(Point p) { 
-    eventHandler->handleDrag(p);
+void Board::handleMouseEvent(Point p) { 
+    eventHandler->handleMouseEvent(p);
 }
 
 

@@ -49,7 +49,7 @@ public:
             switch (event) {
                 case FL_PUSH:
                 
-                    canvas.mouseClick(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.mouseEvent(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
                 
                 case FL_KEYDOWN:
@@ -59,7 +59,7 @@ public:
 
                 case FL_DRAG:
 
-                    canvas.mouseDrag(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.mouseEvent(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
             }
         }

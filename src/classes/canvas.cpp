@@ -16,13 +16,14 @@ void Canvas::draw() {
     board.draw();
 }
 
-void Canvas::mouseDrag(Point p) {  
-        board.handleDrag(p);
+void Canvas::mouseEvent(Point p) {  
+        board.handleMouseEvent(p);
 }
+/*
 void Canvas::mouseClick(Point p) {
     if (board.contains(p)) return;
 }
-
+*/
 bool Canvas::isInputAllowed() {
     return board.isInputAllowed();
 }

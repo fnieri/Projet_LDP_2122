@@ -20,7 +20,7 @@ class EventHandler{
         Point getSecondPosition();
         void setFirstPosition(Point p);
         void setSecondPosition(Point p);
-        void handleDrag(Point p);
+        void handleMouseEvent(Point p);
 
         void setSelectedCell(Point p);
         void setSwapCell(Point p);
