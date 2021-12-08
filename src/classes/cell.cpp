@@ -99,5 +99,3 @@ void Cell::setCenter(Point newCenter) {
 CandySpeciality Cell::getSpeciality() {
     return candyPtr->getSpeciality();
 }
-
-

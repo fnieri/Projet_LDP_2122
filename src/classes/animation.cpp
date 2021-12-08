@@ -27,11 +27,11 @@ void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellV
 }
 
 void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
-                              vector<vector<int>> cellsToMove) {
-    for (int k = -1; k < 2; ++k) {
-        for (int l = -1; l < 2; ++l) {
+                              vector<vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin) {
+    for (int k = leftDownMargin; k <= rightUpMargin; ++k) {
+        for (int l = leftDownMargin; l <= rightUpMargin; ++l) {
             vector<int> cellToMove = {i + k, j + l};
-            if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+            if ((i + k >= 0 && i + k < (*CellVector)[i].size()) && (j + l >= 0 && j + l < (*CellVector)[j].size())) {
                 cellsToMove.push_back({i + k, j + l});
             }
         }
@@ -61,7 +61,7 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
                 handleStrippedHorizontal(board, CellVector, cellToReplace[0], cellToReplace[1], cellsToReplace);
                 return;
             case CandySpeciality::BOMB:
-                handleWrapped(board, CellVector, cellToReplace[0], cellToReplace[1], cellsToReplace);
+                handleWrapped(board, CellVector, cellToReplace[0], cellToReplace[1], cellsToReplace, -1, 1);
                 return;
             case CandySpeciality::MULTICOLOR:
 //                emptyCell(CellVector, cellToReplace[0], cellToReplace[1]);

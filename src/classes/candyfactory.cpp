@@ -1,3 +1,4 @@
+
 #include "candyfactory.h"
 
 CandyFactory::CandyFactory() = default;

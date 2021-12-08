@@ -20,5 +20,3 @@ void Candy::setColor(Color newColor) {
 CandySpeciality Candy::getSpeciality() const {
     return speciality;
 }
-
-
