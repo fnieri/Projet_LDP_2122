@@ -167,19 +167,22 @@ void
 MatchDetection::doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset,
                                                   int rightOffset) {
     for (int offset = leftOffset; offset <= rightOffset; offset++) {
+        vector<vector<int>> cellsToMove;
         Animation::handleStrippedHorizontal(candyBoard.get(), &CellsVertex, firstCellPosition.x + offset,
-                                            firstCellPosition.y);
+                                            firstCellPosition.y, cellsToMove);
     }
     for (int offset = leftOffset; offset <= rightOffset; offset++) {
+        vector<vector<int>> cellsToMove;
         Animation::handleStrippedVertical(candyBoard.get(), &CellsVertex, firstCellPosition.x,
-                                          firstCellPosition.y + offset);
+                                          firstCellPosition.y + offset, cellsToMove);
     }
-
 }
 
 
 void MatchDetection::doubleWrappedInteraction(Point firstCellPosition, Point secondCellPosition) {
-    Animation::handleWrapped(candyBoard.get(), &CellsVertex, firstCellPosition.x, firstCellPosition.y, -2, 2);
+    vector<vector<int>> cellsToMove;
+    Animation::handleWrapped(candyBoard.get(), &CellsVertex, firstCellPosition.x, firstCellPosition.y, cellsToMove, -2,
+                             2);
 }
 
 void

@@ -76,10 +76,10 @@ bool Board::isInputAllowed() {
 }
 
 Cell *Board::cellAt(Point p) {
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].contains(p)) {
-                return &CellsVertex[i][j];
+    for (auto & i : CellsVertex) {
+        for (auto & j : i) {
+            if (j.contains(p)) {
+                return &j;
             }
         }
     }
@@ -121,10 +121,6 @@ void Board::setAcceptInput(bool newState) {
 
 void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
     CellsVertex[i][j].setCandy(CandyFactory::generateCandy(newSpeciality, newColor));
-}
-
-void Board::checkMatches() {
-    matchDetector->checkMatches();
 }
 
 void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
@@ -171,11 +167,6 @@ void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {
     cell2->setCandy(firstCellCandy);
 
 }
-
-void Board::moveCells(vector<vector<int>> cellsToReplace) {
-    Animation::moveCellsDown(this, std::move(cellsToReplace), &CellsVertex, margin);
-}
-
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {
     if (!matchDetector->checkForCandiesInteraction(cell1, selectedCellPosition, cell2, toSwapCellPosition)) {

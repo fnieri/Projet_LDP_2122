@@ -7,7 +7,7 @@ void Animation::handleStrippedHorizontal(Board *board, vector<vector<Cell>> *Cel
     for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
         vector<int> cellToMove = {i, k};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back({i, k});
+            cellsToMove.push_back(cellToMove);
         }
     }
     emptyCells(cellsToMove, CellVector);
@@ -19,7 +19,7 @@ void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellV
     for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
         vector<int> cellToMove = {k, j};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back({k, j});
+            cellsToMove.push_back(cellToMove);
         }
     }
     emptyCells(cellsToMove, CellVector);
@@ -32,7 +32,7 @@ void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, in
         for (int l = leftDownMargin; l <= rightUpMargin; ++l) {
             vector<int> cellToMove = {i + k, j + l};
             if ((i + k >= 0 && i + k < (*CellVector)[i].size()) && (j + l >= 0 && j + l < (*CellVector)[j].size())) {
-                cellsToMove.push_back({i + k, j + l});
+                cellsToMove.push_back(cellToMove);
             }
         }
     }

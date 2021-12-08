@@ -17,7 +17,6 @@ class EventHandler;
 
 
 class Board {
-    unique_ptr<MatchDetection> matchDetector;
     vector<vector<Cell>> CellsVertex;
     unique_ptr<MatchDetection> matchDetector;
     unique_ptr<EventHandler> eventHandler;
@@ -34,8 +33,6 @@ class Board {
 
 public:
     Board(int cellSize, int margin, int numberOfCells);
-
-    void reset();
 
     void reset();
 
@@ -72,7 +69,7 @@ public:
     void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j);
 
     //Candies interaction
-    void checkMatches();
+    bool checkMatches();
 
     void createSpecialCandy(int, int, CandySpeciality);
 

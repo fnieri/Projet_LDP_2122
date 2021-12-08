@@ -14,7 +14,7 @@ void Canvas::draw() {
     board.draw();
 }
 
-void Canvas::mouseEvent(Point p) {  
+void Canvas::mouseEvent(Point p) {
     board.handleMouseEvent(p);
 }
 
@@ -36,10 +36,7 @@ void Canvas::keyPressed(int keyCode) {
         case 'c':
             board.checkMatches();
             break;
-        case 'r':
-            board.reset();
-            break;
-            case 's':
+        case 's':
             board.shuffle();
     }
 }
