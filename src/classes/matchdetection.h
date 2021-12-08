@@ -1,6 +1,3 @@
-//
-// Created by frann on 27/11/21.
-//
 
 #ifndef __MATCHDETECTION_H
 #define __MATCHDETECTION_H
@@ -14,41 +11,55 @@
 #include "common.h"
 #include <memory>
 #include "candyfactory.h"
+#include "animation.h"
+#include "candyfactory.h"
 
 class Board;
 
 class MatchDetection {
-private:
     unique_ptr<Board> candyBoard;
     vector<vector<Cell>> CellsVertex;
-    static const int matchFive[2][2][4];
-    static const int wrappedCandy[6][2][2];
-    static const int matchHorizontalFour[2][3];
-    static const int matchVerticalFour[2][3];
-    static const int matchHorizontal[2][3];
-    static const int matchVertical[2][3];
+    Color currentCellColor;
+    
 public:
     MatchDetection(Board *board);
 
     Color getCellColor(int x, int y);
 
+    bool cellsColorMatch(int i, int j);
+
     bool checkMatches();
 
-    bool checkMatchFive(int i, int j, Color currentCellColor);
+    bool checkMatch(vector<array<int, 2>> match, int i, int j, CandySpeciality speciality);
 
-    bool checkWrappedCandy(int i, int j, Color currentCellColor);
+    bool checkMatchFive(int i, int j);
 
-    bool checkHorizontalMatchFour(int i, int j, Color currentCellColor);
+    bool checkWrappedCandy(int i, int j);
 
-    bool checkVerticalMatchFour(int i, int j, Color currentCellColor);
+    bool checkHorizontalMatchFour(int i, int j);
 
-    bool checkHorizontalMatch(int i, int j, Color currentCellColor);
+    bool checkVerticalMatchFour(int i, int j);
 
-    bool checkVerticalMatch(int i, int j, Color currentCellColor);
+    bool checkMatchThree(int i, int j);
 
-    bool checkForCandiesInteraction(Candy firstCandy, Candy secondCandy);
+    bool checkForCandiesInteraction(Cell* firstCell, Point firstCellPosition, Cell* secondCell, Point secondCellPosition);
 
-    bool doubleBombInteraction();
+    void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
+
+    void doubleStripedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
+
+    void stripedAndWrappedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
+
+    void doubleWrappedInteraction(Point, Point);
+
+    void stripedMulticolorInteraction(Point, Point, Color);
+
+    void wrappedAndMulticolorInteraction(Point, Point, Color);
+
+    void doubleMulticolorInteraction();
+
+    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset, int rightOffset);
+  
 };
 
 #endif //__MATCHDETECTION_H

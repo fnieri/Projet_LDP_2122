@@ -1,3 +1,4 @@
+
 #include "candyfactory.h"
 
 CandyFactory::CandyFactory() = default;
@@ -75,14 +76,15 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality) {
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
-    return {fullPathChar, color};
+    return {fullPathChar, color, speciality};
 }
 
 Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
     std::string filename = WORKING_DIRECTORY + CandyFactory::generateImageName(color, speciality);
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
-    return {fullPathChar, color};
+    return {fullPathChar, color, speciality};
+
 }
 
 Candy CandyFactory::generateEmptyCandy() {

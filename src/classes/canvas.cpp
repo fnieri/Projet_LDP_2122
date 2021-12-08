@@ -14,15 +14,21 @@ void Canvas::draw() {
     board.draw();
 }
 
-void Canvas::mouseClick(Point p) {
-//    board.checkMatches();
-    if (board.contains(p)) return;
+void Canvas::mouseEvent(Point p) {  
+    board.handleMouseEvent(p);
+}
+
+bool Canvas::isInputAllowed() {
+    return board.isInputAllowed();
 }
 
 void Canvas::keyPressed(int keyCode) {
     switch (keyCode) {
         case 'q':
             exit(0);
+        case 'r':
+            board.reset();
+            break;
         case 'c':
             board.checkMatches();
             break;

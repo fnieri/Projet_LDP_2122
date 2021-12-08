@@ -1,3 +1,4 @@
+
 FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17
 
 CC=g++
@@ -12,12 +13,15 @@ POBJ=\
 	candyfactory.o\
 	animation.o\
 	mainwindow.o\
-	matchdetection.o
+	matchdetection.o\
+	eventhandler.o	
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
 main.out : $(OBJ)
+
 	$(CC) -o $@ $^ $(FLAGS)
+
 
 -include $(OBJDIR)/*.d  # include dependencies
 
@@ -31,4 +35,5 @@ $(OBJDIR)/%.o : classes/%.cpp
 
 .PHONY : clean
 clean :
+
 	rm $(OBJDIR)/*.o
