@@ -8,18 +8,38 @@
 #include <FL/Fl_Box.H>
 #include <utility>
 
-Cell::Cell(Point center, int cellSize, const Candy &candy) : center{center}, cellSize{cellSize},
-                                                             candyPtr{make_unique<Candy>(candy)} {
+Cell::Cell(Point center, int cellSize, const Candy &candy, int margin) : center{center}, cellSize{cellSize},
+                                                                         margin{margin},
+                                                                         candyPtr{make_unique<Candy>(candy)} {
 }
 
 Cell::Cell(const Cell &c) {
     center = c.center;
     cellSize = c.cellSize;
+    margin = c.margin;
     candyPtr = make_unique<Candy>(*c.candyPtr);
 }
 
 void Cell::draw() {
+    if (drawBox) {
+        array<Point, 5> points{
+                Point{center.x - cellSize / 10, center.y - cellSize / 4},
+                Point{center.x - cellSize / 10, center.y + cellSize},
+                Point{center.x + cellSize, center.y + cellSize},
+                Point{center.x + cellSize, center.y - cellSize},
+                Point{center.x + cellSize, center.y - cellSize / 4}};
+        fl_color(FL_LIGHT3);
+        fl_begin_polygon();
+        for (auto &point: points) {
+            fl_vertex(point.x, point.y);
+        }
+        fl_end_polygon();
+    }
     candyPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, candyPtr->w(), candyPtr->h());
+}
+
+void Cell::setHighlighted(bool val) {
+    drawBox = val;
 }
 
 void Cell::animateCandy(Cell *swapCell) {
@@ -44,23 +64,13 @@ void Cell::animateCandy(Cell *swapCell) {
             }
         } else break;
         Fl::wait(0.005);
-//        Fl::redraw(); idk if u need this but i don't
     }
 }
 
-void Cell::animateGravity(Point destination) {
-    if (destination.x == center.x) { // little verification so we don't accidentally break everything lol
-        while (center.y != destination.y) {
-            center.y += 1;
-            Fl::wait(0.003);
-        }
-    }
-}
-
-bool Cell::contains(Point p) {
-    return p.x >= center.x - cellSize &&
+bool Cell::contains(Point p) const {
+    return p.x >= center.x  - cellSize / 10 &&
            p.x < center.x + cellSize &&
-           p.y >= center.y - cellSize &&
+           p.y >= center.y - cellSize / 4 &&
            p.y < center.y + cellSize;
 }
 

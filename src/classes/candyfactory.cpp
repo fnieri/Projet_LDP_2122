@@ -84,7 +84,6 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
     char *fullPathChar = new char[filename.length() + 1];
     strcpy(fullPathChar, filename.c_str());
     return {fullPathChar, color, speciality};
-
 }
 
 Candy CandyFactory::generateEmptyCandy() {

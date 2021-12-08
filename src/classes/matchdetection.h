@@ -1,4 +1,3 @@
-
 #ifndef __MATCHDETECTION_H
 #define __MATCHDETECTION_H
 
@@ -15,6 +14,8 @@
 #include "candyfactory.h"
 
 class Board;
+
+class Animation;
 
 class MatchDetection {
     unique_ptr<Board> candyBoard;
