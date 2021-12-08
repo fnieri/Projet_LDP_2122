@@ -78,12 +78,30 @@ void Board::highlight(Point p) {
     }
 }
 
+void Board::shuffle() {
+    for (int i = 0; i < numberOfCells; ++i) {
+        int size = sqrt(numberOfCells) - 1;
+        int x1 = rand() % size;
+        int y1 = rand() % size;
+        int x2 = rand() % size;
+        int y2 = rand() % size;
+        swapCellsNoAnim(&CellsVertex[x1][y1], &CellsVertex[x2][y2]);
+    }
+    while (checkMatches()) {}
+}
+
 bool Board::checkMatches() {
     return matchDetector->checkMatches();
 }
 
 void Board::moveCells(vector<vector<int>> cellsToReplace) {
     Animation::moveCellsDown(this, std::move(cellsToReplace), &CellsVertex, margin);
+}
+
+void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {
+    Candy firstCellCandy = cell1->getCandy();
+    cell1->setCandy(cell2->getCandy());
+    cell2->setCandy(firstCellCandy);
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {

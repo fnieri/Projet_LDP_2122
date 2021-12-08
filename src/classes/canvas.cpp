@@ -33,5 +33,7 @@ void Canvas::keyPressed(int keyCode) {
         case 'r':
             board.reset();
             break;
+            case 's':
+            board.shuffle();
     }
 }

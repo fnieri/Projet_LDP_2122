@@ -43,8 +43,10 @@ bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, Candy
     catch (const std::out_of_range &e) {
         return false;
     }
-    if (cellsToRemove.size() == match.size()) {
-        if (speciality == CandySpeciality::NONE) cellsToRemove.insert(cellsToRemove.begin()+1, {i, j});
+    int cellsToRemoveSize = cellsToRemove.size();
+    if (cellsToRemoveSize == match.size()) {
+        if (speciality == CandySpeciality::NONE)
+            cellsToRemove.insert(cellsToRemove.begin() + (int) cellsToRemoveSize / 2, {i, j});
         else candyBoard->createSpecialCandy(i, j, speciality);
         candyBoard->moveCells(cellsToRemove);
         return true;
@@ -85,7 +87,7 @@ bool MatchDetection::checkVerticalMatchFour(int i, int j) {
 }
 
 bool MatchDetection::checkMatchThree(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{0, -1}, {0,  1}},
+    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 1}},
                                         {{-1, 0},  {1, 0}}};
     for (auto &matchThree: match) {
         if (checkMatch(matchThree, i, j, CandySpeciality::NONE)) return true;

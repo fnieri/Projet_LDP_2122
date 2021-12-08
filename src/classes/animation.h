@@ -5,6 +5,7 @@
 #include "candyfactory.h"
 #include "board.h"
 #include <vector>
+#include<algorithm>
 
 class Board;
 

@@ -47,6 +47,10 @@ public:
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);
 
     void highlight(Point p);
+
+    void shuffle();
+
+    static void swapCellsNoAnim(Cell *cell1, Cell *cell2);
 };
 
 

@@ -5,7 +5,10 @@ Animation::Animation() = default;
 void Animation::handleStrippedHorizontal(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
                                          vector<vector<int>> cellsToMove) {
     for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
-        cellsToMove.push_back({i, k});
+        vector<int> cellToMove = {i, k};
+        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+            cellsToMove.push_back({i, k});
+        }
     }
     emptyCells(cellsToMove, CellVector);
     board->moveCells(cellsToMove);
@@ -14,7 +17,10 @@ void Animation::handleStrippedHorizontal(Board *board, vector<vector<Cell>> *Cel
 void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
                                        vector<vector<int>> cellsToMove) {
     for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
-        cellsToMove.push_back({k, j});
+        vector<int> cellToMove = {k, j};
+        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+            cellsToMove.push_back({k, j});
+        }
     }
     emptyCells(cellsToMove, CellVector);
     board->moveCells(cellsToMove);
@@ -24,7 +30,10 @@ void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, in
                               vector<vector<int>> cellsToMove) {
     for (int k = -1; k < 2; ++k) {
         for (int l = -1; l < 2; ++l) {
-            cellsToMove.push_back({i + k, j + l});
+            vector<int> cellToMove = {i + k, j + l};
+            if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+                cellsToMove.push_back({i + k, j + l});
+            }
         }
     }
     emptyCells(cellsToMove, CellVector);
