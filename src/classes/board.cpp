@@ -22,13 +22,74 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     }
 }
 
+void Board::reset() {
+    setAcceptInput(false);
+    for (auto &row: CellsVertex) {
+        for (auto &cell: row) {
+            cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
+        }
+    }   
+    CellsVertex[5][6].setCandy(CandyFactory::generateCandy(STRIPED_HORIZONTAL));
+   // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
+    while (matchDetector->checkMatches()) {}
+    setAcceptInput(true);
+};
+
+
+void Board::draw() {
+    for (auto &cellRow: CellsVertex) {
+        for (auto &cell: cellRow) {
+            cell.draw();
+        }
+    }
+}
+
+bool Board::contains(Point p) {
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
+                if (!selectedCell) {
+                    selectedCell = &CellsVertex[i][j];
+                    selectedCellPosition = Point{i, j};
+                } else swapCells(&CellsVertex[i][j], Point{i, j});
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Board::handleMouseEvent(Point p) { 
+    eventHandler->handleMouseEvent(p);
+}
+    
+
 bool Board::isInputAllowed() {
     return acceptInput;
 }
 
+Cell* Board::cellAt(Point p) {
+     for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
+                return &CellsVertex[i][j];
+            }
+        }
+    }
+}
 
-void Board::setAcceptInput(bool newState) {
-    acceptInput = newState;
+vector<vector<Cell>> Board::getCells() {
+    return this->CellsVertex;
+}
+
+Point Board::getPositionOfCell(Point p) {
+     for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
+                return Point{i, j};
+            }
+        }
+    }
 }
 
 void Board::setSelectedCell(Cell* newCell) {
@@ -47,77 +108,12 @@ void Board::setSwapCellPosition(Point p) {
     toSwapCellCenter = getPositionOfCell(p);
 }
 
+void Board::setAcceptInput(bool newState) {
+    acceptInput = newState;
+}
+
 void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
     CellsVertex[i][j].setCandy(CandyFactory::generateCandy(newSpeciality, newColor));
-}
-    
-
-Cell* Board::cellAt(Point p) {
-     for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].contains(p)) {
-                return &CellsVertex[i][j];
-            }
-        }
-    }
-}
-
-
-Point Board::getPositionOfCell(Point p) {
-     for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].contains(p)) {
-                return Point{i, j};
-            }
-        }
-    }
-}
-
-
-vector<vector<Cell>> Board::getCells() {
-    return this->CellsVertex;
-}
-
-void Board::reset() {
-    setAcceptInput(false);
-    for (auto &row: CellsVertex) {
-        for (auto &cell: row) {
-            cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
-        }
-    }   
-    while (matchDetector->checkMatches()) {}
-    CellsVertex[5][6].setCandy(CandyFactory::generateCandy(STRIPED_HORIZONTAL));
-    CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
-    setAcceptInput(true);
-};
-
-
-void Board::draw() {
-    for (auto &cellRow: CellsVertex) {
-        for (auto &cell: cellRow) {
-            cell.draw();
-        }
-    }
-}
-
-void Board::handleMouseEvent(Point p) { 
-    eventHandler->handleMouseEvent(p);
-}
-
-
-bool Board::contains(Point p) {
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].contains(p)) {
-                if (!selectedCell) {
-                    selectedCell = &CellsVertex[i][j];
-                    selectedCellPosition = Point{i, j};
-                } else swapCells(&CellsVertex[i][j], Point{i, j});
-                return true;
-            }
-        }
-    }
-    return false;
 }
 
 void Board::checkMatches() {
@@ -140,6 +136,21 @@ void Board::moveCells(vector<vector<int>> cellsToReplace) {
 }
 
 
+void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
+    setAcceptInput(false);
+    if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
+        toSwapCellPosition = swapCellPosition;
+        exchangeCells(selectedCell, swapCell);
+        if (!matchDetector->checkMatches()) {
+            exchangeCells(selectedCell, swapCell);
+        } else {
+            while (matchDetector->checkMatches()) {}
+        }
+    }
+    selectedCell = nullptr;
+    setAcceptInput(true);
+}
+
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {
     if (!matchDetector->checkForCandiesInteraction(cell1, selectedCellPosition, cell2, toSwapCellPosition)) {
         cell1->animateCandy(cell2);
@@ -160,21 +171,5 @@ bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
         (cell1Position.y == cell2Position.y && std::abs(cell1Position.x - cell2Position.x) == 1))
         return true;
     return false;
-}
-
-void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
-    setAcceptInput(false);
-    if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        toSwapCellPosition = swapCellPosition;
-        exchangeCells(selectedCell, swapCell);
-        if (!matchDetector->checkMatches()) {
-            exchangeCells(selectedCell, swapCell);
-        } else {
-            while (matchDetector->checkMatches()) {}
-        }
-    }
-    selectedCell = nullptr;
-    setAcceptInput(true);
-
 }
 

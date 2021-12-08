@@ -30,23 +30,26 @@ class Board {
     bool acceptInput;
 public:
     Board(int cellSize, int margin, int numberOfCells);
+    
     void reset();
 
     void draw();
 
-    Point getCellCenter(Cell*);
+    bool contains(Point);
 
-    Point getCellCenterFromPoint(Point p);
+    void handleMouseEvent(Point p);
+
+    //Getters
+    bool isInputAllowed();
 
     Cell* cellAt(Point p);
 
-    bool contains(Point);
-
     vector<vector<Cell>> getCells();
 
-    void checkMatches();
 
-    void handleMouseEvent(Point p);
+    Point getPositionOfCell(Point p);
+
+    //Setters
 
     void setSelectedCell(Cell*);
 
@@ -56,20 +59,19 @@ public:
     
     void setSwapCellPosition(Point p);
 
-    Point getPositionOfCell(Point p);
-
-    void moveCells(vector<vector<int>>);
-
-    void createSpecialCandy(int, int, CandySpeciality);
-
-    void swapCells(Cell *, Point);
-
     void setAcceptInput(bool newState);
 
-    bool isInputAllowed();
-    
     void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j);
     
+    //Candies interaction
+    void checkMatches();
+    
+    void createSpecialCandy(int, int, CandySpeciality);
+    
+    void moveCells(vector<vector<int>>);
+    
+    void swapCells(Cell *, Point);
+   
     void exchangeCells(Cell *cell1, Cell *cell2);
 
     static bool isMoveAllowed(Point cell1Position, Point cell2Position);

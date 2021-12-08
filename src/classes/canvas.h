@@ -35,7 +35,6 @@ class Canvas {
 public:
     Canvas();
     void draw();
- //   void mouseClick(Point mouseLoc);
     void keyPressed(int keyCode);
     void mouseEvent(Point p);
     bool isInputAllowed();

@@ -17,13 +17,9 @@ void Canvas::draw() {
 }
 
 void Canvas::mouseEvent(Point p) {  
-        board.handleMouseEvent(p);
+    board.handleMouseEvent(p);
 }
-/*
-void Canvas::mouseClick(Point p) {
-    if (board.contains(p)) return;
-}
-*/
+
 bool Canvas::isInputAllowed() {
     return board.isInputAllowed();
 }

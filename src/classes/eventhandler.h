@@ -14,16 +14,15 @@ class EventHandler{
         Point secondPosition{-1, -1};
         Board* board;
     public:
-        void reset();
         EventHandler(Board* board);
+        void reset();
         Point getFirstPosition();
         Point getSecondPosition();
         void setFirstPosition(Point p);
         void setSecondPosition(Point p);
-        void handleMouseEvent(Point p);
-
         void setSelectedCell(Point p);
         void setSwapCell(Point p);
+        void handleMouseEvent(Point p);
 };
 
 #endif
