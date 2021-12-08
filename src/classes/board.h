@@ -14,7 +14,9 @@
 class MatchDetection;
 class EventHandler;
 
+
 class Board {
+    unique_ptr<MatchDetection> matchDetector;
     vector<vector<Cell>> CellsVertex;
     unique_ptr<MatchDetection> matchDetector;
     unique_ptr<EventHandler> eventHandler;
@@ -28,9 +30,12 @@ class Board {
     Point toSwapCellCenter{0,0};
     Point toSwapCellPosition{0,0};
     bool acceptInput;
+
 public:
     Board(int cellSize, int margin, int numberOfCells);
     
+    void reset();
+
     void reset();
 
     void draw();
@@ -45,7 +50,6 @@ public:
     Cell* cellAt(Point p);
 
     vector<vector<Cell>> getCells();
-
 
     Point getPositionOfCell(Point p);
 

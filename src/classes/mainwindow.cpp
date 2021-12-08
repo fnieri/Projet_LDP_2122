@@ -7,8 +7,6 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Shared_Image.H>
 #include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Box.H>
-#include <math.h>
 #include <time.h>
 #include <chrono>
 #include <iostream>
@@ -43,7 +41,7 @@ public:
         Fl_Window::draw();
         canvas.draw();
     }
-    
+
     int handle(int event) override {
         if (canvas.isInputAllowed()) {
             switch (event) {
@@ -67,7 +65,7 @@ public:
     }
 
     static void Timer_CB(void *userdata) {
-        MainWindow *o = (MainWindow *)userdata;
+        MainWindow *o = (MainWindow *) userdata;
         o->redraw();
         Fl::repeat_timeout(1.0 / refreshPerSecond, Timer_CB, userdata);
     }

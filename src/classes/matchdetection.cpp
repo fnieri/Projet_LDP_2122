@@ -1,3 +1,4 @@
+
 #include "matchdetection.h"
 #include "pthread.h"
 MatchDetection::MatchDetection(Board *board) : candyBoard{board} {}

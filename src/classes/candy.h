@@ -18,6 +18,9 @@ public:
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
     virtual void setColor(Color newColor);
+    void handleMove();
+    void showNormal();
+
 };
 
 #endif

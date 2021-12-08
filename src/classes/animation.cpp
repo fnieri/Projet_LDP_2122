@@ -1,3 +1,4 @@
+
 #include "animation.h"
 
 Animation::Animation() = default;
@@ -105,3 +106,4 @@ void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, 
     }
     
 }
+

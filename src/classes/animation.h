@@ -10,9 +10,6 @@ class Board;
 
 class Animation {
 
-
-
-
 public:
     Animation();
     static void emptyCell(vector<vector<Cell>> *CellVector, int i, int j);
@@ -27,6 +24,7 @@ public:
 
     static void
     moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, vector<vector<Cell>> *CellVector, int margin);
+
 };
 
 #endif

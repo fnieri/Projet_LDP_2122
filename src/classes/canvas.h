@@ -38,6 +38,7 @@ public:
     void keyPressed(int keyCode);
     void mouseEvent(Point p);
     bool isInputAllowed();
+
 };
 
 #endif

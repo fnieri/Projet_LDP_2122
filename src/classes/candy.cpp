@@ -7,6 +7,7 @@ Candy::Candy(const char *filename, Color color, CandySpeciality speciality) :
 Candy::Candy(const Candy &c) :
         Fl_PNG_Image{c.filename}, filename(c.filename), color{c.color}, speciality{c.speciality} {}
 
+
 Candy::~Candy() = default;
 
 Color Candy::getColor() const {

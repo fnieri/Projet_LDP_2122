@@ -7,6 +7,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
                                                             numberOfCells(numberOfCells) {
     matchDetector = make_unique<MatchDetection>(this);
     eventHandler = make_unique<EventHandler>(this);
+
     int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
@@ -22,12 +23,15 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     }
 }
 
+
 void Board::reset() {
     setAcceptInput(false);
+
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
             cell.setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
         }
+
     }   
     CellsVertex[5][6].setCandy(CandyFactory::generateCandy(STRIPED_HORIZONTAL));
    // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
@@ -50,6 +54,7 @@ bool Board::contains(Point p) {
             if (CellsVertex[i][j].contains(p)) {
                 if (!selectedCell) {
                     selectedCell = &CellsVertex[i][j];
+                    selectedCellCenter = selectedCell->getCenter();
                     selectedCellPosition = Point{i, j};
                 } else swapCells(&CellsVertex[i][j], Point{i, j});
                 return true;
@@ -58,6 +63,7 @@ bool Board::contains(Point p) {
     }
     return false;
 }
+
 
 void Board::handleMouseEvent(Point p) { 
     eventHandler->handleMouseEvent(p);
@@ -119,7 +125,6 @@ void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int 
 void Board::checkMatches() {
     matchDetector->checkMatches();
 }
-
 
 void Board::createSpecialCandy(int i, int j, CandySpeciality speciality) {
     if (speciality == CandySpeciality::MULTICOLOR)

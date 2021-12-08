@@ -1,6 +1,5 @@
-FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 
 
-DEBUG = -g
+FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17
 
 CC=g++
 
@@ -20,8 +19,9 @@ POBJ=\
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
 main.out : $(OBJ)
-	$(CC) -o $@ $^ $(FLAGS) $(DEBUG)
-	
+
+	$(CC) -o $@ $^ $(FLAGS)
+
 
 -include $(OBJDIR)/*.d  # include dependencies
 
@@ -35,4 +35,5 @@ $(OBJDIR)/%.o : classes/%.cpp
 
 .PHONY : clean
 clean :
+
 	rm $(OBJDIR)/*.o

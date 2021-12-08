@@ -1,3 +1,4 @@
+
 #ifndef __MATCHDETECTION_H
 #define __MATCHDETECTION_H
 
@@ -62,4 +63,3 @@ public:
 };
 
 #endif //__MATCHDETECTION_H
-
