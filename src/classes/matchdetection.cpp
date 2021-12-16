@@ -46,8 +46,7 @@ bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, Candy
         return false;
     }
     if (cellsToRemove.size() == match.size()) {
-        if (speciality == CandySpeciality::NONE) cellsToRemove.push_back({i, j});
-        else candyBoard->createSpecialCandy(i, j, speciality);
+        if (speciality != CandySpeciality::NONE) candyBoard->createSpecialCandy(i, j, speciality);
         candyBoard->moveCells(cellsToRemove);
         return true;
     }
@@ -87,8 +86,8 @@ bool MatchDetection::checkVerticalMatchFour(int i, int j) {
 }
 
 bool MatchDetection::checkMatchThree(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 1}},
-                                        {{-1, 0},  {1, 0}}};
+    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 0}, {0, 1}},
+                                        {{-1, 0},  {0, 0}, {1, 0}}};
     for (auto &matchThree: match) {
         if (checkMatch(matchThree, i, j, CandySpeciality::NONE)) return true;
     }
@@ -103,52 +102,98 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     Color firstCandyColor = firstCell->getColor();
     Color secondCandyColor = secondCell->getColor();
 
-    if ((firstCandySpeciality == NONE && secondCandySpeciality == MULTICOLOR) ||
-        (firstCandySpeciality == MULTICOLOR && secondCandySpeciality == NONE)) {
+    switch (firstCandySpeciality) {
+        case NONE:
+            switch (secondCandySpeciality) {
+                case MULTICOLOR:
+                    MultiColorInteractions(firstCellPosition, secondCellPosition,
+                                           firstCandyColor, secondCandyColor, vector<CandySpeciality>{NONE});
+                    return true;
+                default:
+                    return false;
+            }
+        case STRIPED_HORIZONTAL:
+        case STRIPED_VERTICAL:
+            switch (secondCandySpeciality) {
+                case STRIPED_HORIZONTAL:
+                case STRIPED_VERTICAL: {
+                    doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, 0, 0);
+                    return true;
+                }
+                case BOMB: {
+                    doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
+                    return true;
+                }
+                case MULTICOLOR:
+                    MultiColorInteractions(firstCellPosition, secondCellPosition,
+                                           firstCandyColor, secondCandyColor,
+                                           vector<CandySpeciality>{STRIPED_HORIZONTAL, STRIPED_VERTICAL});
+                    return true;
+                default:
+                    return false;
+            }
+        case BOMB:
+            switch (secondCandySpeciality) {
+                case STRIPED_VERTICAL:
+                case STRIPED_HORIZONTAL:
+                    doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
+                    return true;
+                case BOMB:
+                    doubleWrappedInteraction(firstCellPosition, secondCellPosition);
+                    return true;
+                case MULTICOLOR:
+                    MultiColorInteractions(firstCellPosition, secondCellPosition,
+                                           firstCandyColor, secondCandyColor, vector<CandySpeciality>{BOMB});
+                    return true;
+                default:
+                    return false;
+            }
+        case MULTICOLOR:
+            vector<CandySpeciality> specialities;
+            switch (secondCandySpeciality) {
+                case NONE:
+                    specialities = {NONE};
+                    break;
+                case STRIPED_HORIZONTAL:
+                case STRIPED_VERTICAL:
+                    specialities = {STRIPED_VERTICAL, STRIPED_HORIZONTAL};
+                    break;
+                case BOMB:
+                    specialities = {BOMB};
+                    break;
+                case MULTICOLOR:
+                    doubleMulticolorInteraction();
+                    return true;
+                default:
+                    return false;
 
-        Color colorToRemove = firstCandyColor != Color::MULTICOLOR ? firstCandyColor : secondCandyColor;
-        Point multicolorPosition = firstCandyColor == Color::MULTICOLOR ? firstCellPosition : secondCellPosition;
-        normalCandyAndMulticolorInteraction(colorToRemove, multicolorPosition);
-        return true;
-    } else if (((firstCandySpeciality == STRIPED_HORIZONTAL || firstCandySpeciality == STRIPED_VERTICAL)) &&
-               (secondCandySpeciality == STRIPED_HORIZONTAL || secondCandySpeciality == STRIPED_VERTICAL)) {
-
-        doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, 0, 0);
-        return true;
-    }
-        //Difference between the latter and the following is the range, double striped range is just above and horizontally
-        //Striped and Wrapped is 3x3
-    else if (firstCandySpeciality == BOMB &&
-             (secondCandySpeciality == STRIPED_HORIZONTAL || secondCandySpeciality == STRIPED_VERTICAL) ||
-
-             ((firstCandySpeciality == STRIPED_HORIZONTAL || firstCandySpeciality == STRIPED_VERTICAL) &&
-              secondCandySpeciality == BOMB)) {
-
-        doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
-        return true;
-    } else if (firstCandySpeciality == BOMB && secondCandySpeciality == BOMB) {
-        doubleWrappedInteraction(firstCellPosition, secondCellPosition);
-        return true;
-    } else if (((firstCandySpeciality == STRIPED_HORIZONTAL || firstCandySpeciality == STRIPED_VERTICAL) &&
-                secondCandySpeciality == MULTICOLOR) ||
-               (firstCandySpeciality == MULTICOLOR &&
-                (secondCandySpeciality == STRIPED_VERTICAL || secondCandySpeciality == STRIPED_HORIZONTAL))) {
-
-        Color colorToStripe = firstCandyColor != Color::MULTICOLOR ? firstCandyColor : secondCandyColor;
-        stripedMulticolorInteraction(firstCellPosition, secondCellPosition, colorToStripe);
-        return true;
-    } else if ((firstCandySpeciality == BOMB && secondCandySpeciality == MULTICOLOR) ||
-               (firstCandySpeciality == BOMB && secondCandySpeciality == MULTICOLOR)) {
-
-        Color colorToWrap = firstCandyColor != Color::MULTICOLOR ? firstCandyColor : secondCandyColor;
-        wrappedAndMulticolorInteraction(firstCellPosition, secondCellPosition, colorToWrap);
-        return true;
-
-    } else if ((firstCandySpeciality == MULTICOLOR && secondCandySpeciality == MULTICOLOR)) {
-        doubleMulticolorInteraction();
-        return true;
+            }
+            //This only occurs if first candy is multicolor because of break
+            MultiColorInteractions(firstCellPosition, secondCellPosition,
+                                   firstCandyColor, secondCandyColor, specialities);
+            return true;
     }
     return false;
+}
+
+void MatchDetection::MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor, vector<CandySpeciality> specialities) {
+    Color colorToHandle = firstColor != Color::MULTICOLOR ? firstColor : secondColor;
+    //Firstly remove multicolor and other candy because they wont be removed after
+    candyBoard->moveCells(vector<vector<int>>({{firstCellPosition.x, firstCellPosition.y}, {secondCellPosition.x, secondCellPosition.y}}));
+
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        vector<vector<int>> cellsToCrush;
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].getColor() == colorToHandle ) {
+
+                candyBoard->setCellAt(static_cast<CandySpeciality>(rand() % specialities.size()), colorToHandle, i, j);
+                //Choose randomly between specialities sent, this is done because of the striped case
+                cellsToCrush.push_back({i,j});
+
+            }
+        }
+        candyBoard->moveCells(cellsToCrush);
+    }
 }
 
 

@@ -83,6 +83,7 @@ Cell *Board::cellAt(Point p) {
             }
         }
     }
+    return nullptr;
 }
 
 vector<vector<Cell>> Board::getCells() {
@@ -97,6 +98,7 @@ Point Board::getPositionOfCell(Point p) {
             }
         }
     }
+    return Point{};
 }
 
 void Board::setSelectedCell(Cell *newCell) {

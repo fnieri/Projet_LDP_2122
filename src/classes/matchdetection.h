@@ -21,7 +21,7 @@ class MatchDetection {
     unique_ptr<Board> candyBoard;
     vector<vector<Cell>> CellsVertex;
     Color currentCellColor;
-    
+
 public:
     MatchDetection(Board *board);
 
@@ -43,7 +43,8 @@ public:
 
     bool checkMatchThree(int i, int j);
 
-    bool checkForCandiesInteraction(Cell* firstCell, Point firstCellPosition, Cell* secondCell, Point secondCellPosition);
+    bool
+    checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell, Point secondCellPosition);
 
     void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
 
@@ -59,8 +60,12 @@ public:
 
     void doubleMulticolorInteraction();
 
-    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset, int rightOffset);
-  
+    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset,
+                                           int rightOffset);
+
+    void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor,
+                                vector<CandySpeciality> specialities);
+
 };
 
 #endif //__MATCHDETECTION_H

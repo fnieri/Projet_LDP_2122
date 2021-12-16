@@ -22,6 +22,8 @@ public:
     static void handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
                               vector<vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin);
 
+
+
     static void emptyCell(vector<vector<Cell>> *CellVector, int i, int j);
 
     static void emptyCells(vector<vector<int>> cellsToEmpty, vector<vector<Cell>> *CellVector);
