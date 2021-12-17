@@ -176,19 +176,21 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     return false;
 }
 
-void MatchDetection::MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor, vector<CandySpeciality> specialities) {
+void MatchDetection::MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor,
+                                            Color secondColor, vector<CandySpeciality> specialities) {
     Color colorToHandle = firstColor != Color::MULTICOLOR ? firstColor : secondColor;
     //Firstly remove multicolor and other candy because they wont be removed after
-    candyBoard->moveCells(vector<vector<int>>({{firstCellPosition.x, firstCellPosition.y}, {secondCellPosition.x, secondCellPosition.y}}));
+    candyBoard->moveCells(vector<vector<int>>({{firstCellPosition.x,  firstCellPosition.y},
+                                               {secondCellPosition.x, secondCellPosition.y}}));
 
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         vector<vector<int>> cellsToCrush;
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToHandle ) {
+            if (CellsVertex[i][j].getColor() == colorToHandle) {
 
                 candyBoard->setCellAt(static_cast<CandySpeciality>(rand() % specialities.size()), colorToHandle, i, j);
                 //Choose randomly between specialities sent, this is done because of the striped case
-                cellsToCrush.push_back({i,j});
+                cellsToCrush.push_back({i, j});
 
             }
         }
@@ -270,3 +272,37 @@ MatchDetection::wrappedAndMulticolorInteraction(Point firstCellPosition, Point s
 void MatchDetection::doubleMulticolorInteraction() {
     candyBoard->reset();
 }
+
+bool MatchDetection::canStillPlay() {
+    vector<vector<Cell>> CellsVector = candyBoard->getCells();
+    vector<array<int, 2>> delta{
+            {-1, 0},
+            {0,  -1},
+            {0,  1},
+            {1,  0},
+    };
+    for (int i = 0; i < (int) CellsVector.size(); i++) {
+        for (int j = 0; j < (int) CellsVector[i].size(); j++) {
+            Point cellPoint1 = {i, j};
+            Cell* cell1 = &CellsVector[cellPoint1.x][cellPoint1.y];;
+            for (array<int, 2> d: delta) {
+                Point cellPoint2 = {i + d[0], j + d[1]};
+                try {
+                    Cell* cell2 = &CellsVector.at(cellPoint2.x).at(cellPoint2.y);
+                    if (candyBoard->isMoveAllowed(cellPoint1, cellPoint2)) {
+                        candyBoard->swapCellsNoAnim(cell1, cell2);
+                        if (candyBoard->checkMatches()) {
+                            candyBoard->swapCellsNoAnim(cell1, cell2);
+                            return true;
+                        }
+                        candyBoard->swapCellsNoAnim(cell1, cell2);
+                    }
+                }
+                catch (const out_of_range &oor) {
+                    continue;
+                }
+            }
+        }
+    }
+    return false;
+};

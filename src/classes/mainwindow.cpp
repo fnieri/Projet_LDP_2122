@@ -29,8 +29,7 @@ MainWindow class.
 --------------------------------------------------*/
 
 class MainWindow : public Fl_Window {
-    Canvas canvas;
-
+    Canvas canvas{50,60,100};
 public:
     MainWindow() : Fl_Window(500, 500, windowWidth, windowHeight, "Candy Crush") {
         Fl::add_timeout(1.0 / refreshPerSecond, Timer_CB, this);
@@ -46,17 +45,19 @@ public:
         if (canvas.isInputAllowed()) {
             switch (event) {
                 case FL_PUSH:
-                    canvas.mouseEvent(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.handleMouseEvent(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
                 case FL_KEYDOWN:
                     canvas.keyPressed(Fl::event_key());
                     return 1;
                 case FL_DRAG:
-                    canvas.mouseEvent(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.handleMouseEvent(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
                 case FL_MOVE:
-                    canvas.mouseMove(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.highlight(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
+                default:
+                    break;
             }
         }
         return 0;

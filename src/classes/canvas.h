@@ -10,35 +10,11 @@
 #include <iostream>
 #include <FL/fl_draw.H>
 
-
-/*--------------------------------------------------
-
-Canvas class.
-
-One instance of the canvas class is made by the
-MainWindow class.
-
-The fltk system via MainWindow calls:
-
-draw 60 times a second
-mouseClick whenever the mouse is clicked
-keyPressed whenever a key is pressed
-
-Any drawing code should be called ONLY in draw
-or methods called by draw. If you try to draw
-elsewhere it will probably crash.
---------------------------------------------------*/
-
-class Canvas {
-    Board board{50,60,100};
-    
+class Canvas: public Board {
 public:
-    Canvas();
-    void draw();
+    Canvas(int cellSize, int margin, int numberOfCells);
+    void draw() override;
     void keyPressed(int keyCode);
-    void mouseEvent(Point p);
-    bool isInputAllowed();
-    void mouseMove(Point p);
 };
 
 #endif

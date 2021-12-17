@@ -76,8 +76,8 @@ bool Board::isInputAllowed() {
 }
 
 Cell *Board::cellAt(Point p) {
-    for (auto & i : CellsVertex) {
-        for (auto & j : i) {
+    for (auto &i: CellsVertex) {
+        for (auto &j: i) {
             if (j.contains(p)) {
                 return &j;
             }
@@ -143,6 +143,14 @@ void Board::highlight(Point p) {
     }
 }
 
+void Board::unHighlightAll(){
+    for (auto &i: CellsVertex) {
+        for (auto &j: i) {
+            j.setHighlighted(false);
+        }
+    }
+}
+
 void Board::shuffle() {
     for (int i = 0; i < numberOfCells; ++i) {
         int size = sqrt(numberOfCells) - 1;
@@ -167,21 +175,19 @@ void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {
     Candy firstCellCandy = cell1->getCandy();
     cell1->setCandy(cell2->getCandy());
     cell2->setCandy(firstCellCandy);
-
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {
     if (!matchDetector->checkForCandiesInteraction(cell1, selectedCellPosition, cell2, toSwapCellPosition)) {
         cell1->animateCandy(cell2);
-
-        Candy selectedCellCandy = cell1->getCandy();
-        Point selectedCellCenter = cell1->getCenter();
+        Candy _selectedCellCandy = cell1->getCandy();
+        Point _selectedCellCenter = cell1->getCenter();
 
         cell1->setCandy(cell2->getCandy());
-        cell2->setCandy(selectedCellCandy);
+        cell2->setCandy(_selectedCellCandy);
 
         cell1->setCenter(cell2->getCenter());
-        cell2->setCenter(selectedCellCenter);
+        cell2->setCenter(_selectedCellCenter);
     }
 }
 
@@ -194,12 +200,24 @@ bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
+    unHighlightAll();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         exchangeCells(selectedCell, swapCell);
         if (!checkMatches()) {
             exchangeCells(selectedCell, swapCell);
-        } else while (checkMatches()) {}
+        } else {
+            while (checkMatches()) {};
+            checkIfShuffleIsNeeded();
+        }
     }
     selectedCell = nullptr;
     setAcceptInput(true);
+}
+
+void Board::checkIfShuffleIsNeeded() {
+//    // doesnt work yet
+//    if (!matchDetector->canStillPlay()) {
+//        shuffle();
+//    }
+return;
 }

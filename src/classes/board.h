@@ -29,14 +29,15 @@ class Board {
     Cell *toSwapCell = nullptr;
     Point toSwapCellCenter{0, 0};
     Point toSwapCellPosition{0, 0};
-    bool acceptInput;
-
+    bool acceptInput = true;
+protected:
+    int score = 42069;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
     void reset();
 
-    void draw();
+    virtual void draw();
 
     bool contains(Point);
 
@@ -82,6 +83,10 @@ public:
     void shuffle();
 
     static void swapCellsNoAnim(Cell *cell1, Cell *cell2);
+
+    void checkIfShuffleIsNeeded();
+
+    void unHighlightAll();
 };
 
 

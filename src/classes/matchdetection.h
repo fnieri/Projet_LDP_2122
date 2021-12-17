@@ -66,6 +66,7 @@ public:
     void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor,
                                 vector<CandySpeciality> specialities);
 
+    bool canStillPlay();
 };
 
 #endif //__MATCHDETECTION_H

@@ -8,6 +8,7 @@ OBJDIR = build
 
 POBJ=\
 	cell.o\
+	game.o\
 	canvas.o\
 	board.o\
 	candy.o\
