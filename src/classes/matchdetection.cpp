@@ -1,7 +1,6 @@
 #include "matchdetection.h"
-#include "pthread.h"
 
-MatchDetection::MatchDetection(Board *board) : candyBoard{board} {}
+MatchDetection::MatchDetection(Board *board) : {}
 
 Color MatchDetection::getCellColor(int i, int j) {
     return CellsVertex.at(i).at(j).getColor();
@@ -12,7 +11,6 @@ bool MatchDetection::cellsColorMatch(int i, int j) {
 }
 
 bool MatchDetection::checkMatches() {
-    CellsVertex = candyBoard->getCells();
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             currentCellColor = CellsVertex[i][j].getColor();
@@ -46,8 +44,8 @@ bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, Candy
         return false;
     }
     if (cellsToRemove.size() == match.size()) {
-        if (speciality != CandySpeciality::NONE) candyBoard->createSpecialCandy(i, j, speciality);
-        candyBoard->moveCells(cellsToRemove);
+        if (speciality != CandySpeciality::NONE) createSpecialCandy(i, j, speciality);
+        moveCells(cellsToRemove);
         return true;
     }
     return false;
@@ -96,7 +94,7 @@ bool MatchDetection::checkMatchThree(int i, int j) {
 
 bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell,
                                                 Point secondCellPosition) {
-    CellsVertex = candyBoard->getCells();
+    CellsVertex = getCells();
     CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
     CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
     Color firstCandyColor = firstCell->getColor();
@@ -176,105 +174,10 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     return false;
 }
 
-void MatchDetection::MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor,
-                                            Color secondColor, vector<CandySpeciality> specialities) {
-    Color colorToHandle = firstColor != Color::MULTICOLOR ? firstColor : secondColor;
-    //Firstly remove multicolor and other candy because they wont be removed after
-    candyBoard->moveCells(vector<vector<int>>({{firstCellPosition.x,  firstCellPosition.y},
-                                               {secondCellPosition.x, secondCellPosition.y}}));
 
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        vector<vector<int>> cellsToCrush;
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToHandle) {
-
-                candyBoard->setCellAt(static_cast<CandySpeciality>(rand() % specialities.size()), colorToHandle, i, j);
-                //Choose randomly between specialities sent, this is done because of the striped case
-                cellsToCrush.push_back({i, j});
-
-            }
-        }
-        candyBoard->moveCells(cellsToCrush);
-    }
-}
-
-
-void MatchDetection::normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition) {
-    candyBoard->moveCells(vector<vector<int>>({{multicolorPosition.x, multicolorPosition.y}}));
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToRemove) {
-                candyBoard->moveCells(vector<vector<int>>({{i, j}}));
-            }
-        }
-    }
-}
-
-void
-MatchDetection::doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset,
-                                                  int rightOffset) {
-    for (int offset = leftOffset; offset <= rightOffset; offset++) {
-        vector<vector<int>> cellsToMove;
-        Animation::handleStrippedHorizontal(candyBoard.get(), &CellsVertex, firstCellPosition.x + offset,
-                                            firstCellPosition.y, cellsToMove);
-    }
-    for (int offset = leftOffset; offset <= rightOffset; offset++) {
-        vector<vector<int>> cellsToMove;
-        Animation::handleStrippedVertical(candyBoard.get(), &CellsVertex, firstCellPosition.x,
-                                          firstCellPosition.y + offset, cellsToMove);
-    }
-}
-
-
-void MatchDetection::doubleWrappedInteraction(Point firstCellPosition, Point secondCellPosition) {
-    vector<vector<int>> cellsToMove;
-    Animation::handleWrapped(candyBoard.get(), &CellsVertex, firstCellPosition.x, firstCellPosition.y, cellsToMove, -2,
-                             2);
-}
-
-void
-MatchDetection::stripedMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToStripe) {
-    candyBoard->moveCells(vector<vector<int>>{{firstCellPosition.x,  firstCellPosition.y},
-                                              {secondCellPosition.x, secondCellPosition.y}});
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        vector<vector<int>> cellsToCrush;
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToStripe) {
-                candyBoard->setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), colorToStripe, i,
-                                      j);      //Choose randomly between striped horizontal and vertical
-                //Choose randomly between striped orientation
-                cellsToCrush.push_back({i, j});
-            }
-        }
-        Fl::wait(0.3);
-        candyBoard->moveCells(cellsToCrush);
-
-    }
-}
-
-
-void
-MatchDetection::wrappedAndMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToWrap) {
-    Animation::emptyCells(vector<vector<int>>{{firstCellPosition.x,  firstCellPosition.y},
-                                              {secondCellPosition.x, secondCellPosition.y}}, &CellsVertex);
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        vector<vector<int>> cellsToCrush;
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToWrap) {
-                CellsVertex[i][j].setCandy(CandyFactory::generateCandy(BOMB, colorToWrap));
-                cellsToCrush.push_back({i, j});
-            }
-            candyBoard->moveCells(cellsToCrush);
-        }
-    }
-}
-
-void MatchDetection::doubleMulticolorInteraction() {
-    candyBoard->reset();
-}
 
 bool MatchDetection::canStillPlay() {
-    vector<vector<Cell>> CellsVector = candyBoard->getCells();
+    vector<vector<Cell>> CellsVector = getCells();
     vector<array<int, 2>> delta{
             {-1, 0},
             {0,  -1},
@@ -289,13 +192,13 @@ bool MatchDetection::canStillPlay() {
                 Point cellPoint2 = {i + d[0], j + d[1]};
                 try {
                     Cell* cell2 = &CellsVector.at(cellPoint2.x).at(cellPoint2.y);
-                    if (candyBoard->isMoveAllowed(cellPoint1, cellPoint2)) {
-                        candyBoard->swapCellsNoAnim(cell1, cell2);
-                        if (candyBoard->checkMatches()) {
-                            candyBoard->swapCellsNoAnim(cell1, cell2);
+                    if (isMoveAllowed(cellPoint1, cellPoint2)) {
+                        swapCellsNoAnim(cell1, cell2);
+                        if (checkMatches()) {
+                            swapCellsNoAnim(cell1, cell2);
                             return true;
                         }
-                        candyBoard->swapCellsNoAnim(cell1, cell2);
+                        swapCellsNoAnim(cell1, cell2);
                     }
                 }
                 catch (const out_of_range &oor) {

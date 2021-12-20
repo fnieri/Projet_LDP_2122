@@ -6,15 +6,12 @@
 #include "board.h"
 #include "common.h"
 
-class Board;
-
 class EventHandler{
     private:
         Point firstPosition{-1, -1};
         Point secondPosition{-1, -1};
-        Board* board;
     public:
-        EventHandler(Board* board);
+        EventHandler();
         void reset();
         Point getFirstPosition();
         Point getSecondPosition();

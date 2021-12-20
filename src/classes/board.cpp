@@ -5,9 +5,6 @@
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
                                                             numberOfCells(numberOfCells) {
-    matchDetector = make_unique<MatchDetection>(this);
-    eventHandler = make_unique<EventHandler>(this);
-
     int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {

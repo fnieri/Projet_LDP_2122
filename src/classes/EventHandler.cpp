@@ -1,6 +1,6 @@
-#include "eventhandler.h"
+#include "EventHandler.h"
 
-EventHandler::EventHandler(Board *board) : board{board} {}
+EventHandler::EventHandler() : {}
 
 
 void EventHandler::reset() {
@@ -17,24 +17,23 @@ Point EventHandler::getSecondPosition() {
 }
 
 void EventHandler::setFirstPosition(Point p) {
-    firstPosition = board->getPositionOfCell(p);
+    firstPosition = getPositionOfCell(p);
 }
 
 void EventHandler::setSecondPosition(Point p) {
-    secondPosition = board->getPositionOfCell(p);
+    secondPosition = getPositionOfCell(p);
 }
-
 
 void EventHandler::setSelectedCell(Point p) {
     setFirstPosition(p);
-    board->setSelectedCell(board->cellAt(p));
-    board->setSelectedCellPosition(p);
+    setSelectedCell(cellAt(p));
+    setSelectedCellPosition(p);
 }
 
 
 void EventHandler::setSwapCell(Point p) {
-    board->setSwapCell(board->cellAt(p));
-    board->setSwapCellPosition(p);
+    setSwapCell(cellAt(p));
+    setSwapCellPosition(p);
 }
 
 void EventHandler::handleMouseEvent(Point p) {
@@ -47,8 +46,8 @@ void EventHandler::handleMouseEvent(Point p) {
         setSecondPosition(p);
         if (getSecondPosition() != getFirstPosition()) {
 
-            board->setAcceptInput(false);
-            board->swapCells(board->cellAt(p), secondPosition);
+            setAcceptInput(false);
+            swapCells(cellAt(p), secondPosition);
             reset(); //Pls don't hurt me it's to recognise board reset and this reset
 
         } else {

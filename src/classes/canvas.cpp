@@ -13,7 +13,8 @@ void Canvas::draw() {
 
     string scoreStr = "Score: " + to_string(score);
 
-    fl_draw(scoreStr.c_str(), 60, 20);
+    fl_draw(scoreStr.c_str(), 60
+            , 20);
 
     // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
     Board::draw();

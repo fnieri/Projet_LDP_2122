@@ -8,11 +8,6 @@
 #include <experimental/filesystem>
 
 
-class Board;
-class MatchDetection;   //We define classes now because they are interdependent,
-//so they need to know the existence of the other class 
-
-
 struct Point {
     int x, y;
 

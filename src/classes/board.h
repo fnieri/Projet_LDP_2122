@@ -7,19 +7,13 @@
 #include <iostream>
 #include "common.h"
 #include <memory>
+#include "game.h"
 #include "candyfactory.h"
+#include "EventHandler.h"
 #include "matchdetection.h"
-#include "eventhandler.h"
-
-class MatchDetection;
-
-class EventHandler;
 
 
-class Board {
-    vector<vector<Cell>> CellsVertex;
-    unique_ptr<MatchDetection> matchDetector;
-    unique_ptr<EventHandler> eventHandler;
+class Board : public EventHandler, public MatchDetection {
     int cellSize;
     int margin;
     int numberOfCells;

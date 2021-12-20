@@ -3,27 +3,21 @@
 
 #include <memory>
 #include <vector>
-#include "board.h"
 #include "candyspeciality.h"
 #include <cmath>
 #include <iostream>
 #include "common.h"
 #include <memory>
 #include "candyfactory.h"
-#include "animation.h"
 #include "candyfactory.h"
+#include "game.h"
 
-class Board;
 
-class Animation;
-
-class MatchDetection {
-    unique_ptr<Board> candyBoard;
-    vector<vector<Cell>> CellsVertex;
+class MatchDetection : virtual public Game, public MatchHandler {
     Color currentCellColor;
 
 public:
-    MatchDetection(Board *board);
+    MatchDetection();
 
     Color getCellColor(int x, int y);
 
@@ -45,26 +39,6 @@ public:
 
     bool
     checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell, Point secondCellPosition);
-
-    void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
-
-    void doubleStripedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
-
-    void stripedAndWrappedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
-
-    void doubleWrappedInteraction(Point, Point);
-
-    void stripedMulticolorInteraction(Point, Point, Color);
-
-    void wrappedAndMulticolorInteraction(Point, Point, Color);
-
-    void doubleMulticolorInteraction();
-
-    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset,
-                                           int rightOffset);
-
-    void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor,
-                                vector<CandySpeciality> specialities);
 
     bool canStillPlay();
 };

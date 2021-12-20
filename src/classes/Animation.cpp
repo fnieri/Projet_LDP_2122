@@ -1,53 +1,6 @@
-#include "animation.h"
+#include "Animation.h"
 
 Animation::Animation() = default;
-
-void Animation::handleStrippedHorizontal(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
-                                         vector<vector<int>> cellsToMove) {
-    for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
-        vector<int> cellToMove = {i, k};
-        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back(cellToMove);
-        }
-    }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
-}
-
-void Animation::handleStrippedVertical(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
-                                       vector<vector<int>> cellsToMove) {
-    for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
-        vector<int> cellToMove = {k, j};
-        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back(cellToMove);
-        }
-    }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
-}
-
-void Animation::handleWrapped(Board *board, vector<vector<Cell>> *CellVector, int i, int j,
-                              vector<vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin) {
-    for (int k = leftDownMargin; k <= rightUpMargin; ++k) {
-        for (int l = leftDownMargin; l <= rightUpMargin; ++l) {
-            vector<int> cellToMove = {i + k, j + l};
-            if ((i + k >= 0 && i + k < (*CellVector)[i].size()) && (j + l >= 0 && j + l < (*CellVector)[j].size())) {
-                cellsToMove.push_back(cellToMove);
-            }
-        }
-    }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
-}
-
-void Animation::emptyCell(vector<vector<Cell>> *CellVector, int i, int j) {
-    (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
-}
-
-void Animation::emptyCells(vector<vector<int>> cellsToEmpty, vector<vector<Cell>> *CellVector) {
-    for (auto &cellToEmpty: cellsToEmpty)
-        emptyCell(CellVector, cellToEmpty[0], cellToEmpty[1]);
-}
 
 void Animation::moveCellsDown(Board *board, vector<vector<int>> cellsToReplace, vector<vector<Cell>> *CellVector,
                               int margin) {
