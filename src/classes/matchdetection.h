@@ -3,21 +3,17 @@
 
 #include <memory>
 #include <vector>
-#include "candyspeciality.h"
 #include <cmath>
 #include <iostream>
-#include "common.h"
 #include <memory>
-#include "candyfactory.h"
-#include "candyfactory.h"
-#include "game.h"
+
+#include "CandySpeciality.h"
+#include "MatchHandler.h"
 
 
-class MatchDetection : virtual public Game, public MatchHandler {
+class MatchDetection : public MatchHandler {
     Color currentCellColor;
-
 public:
-    MatchDetection();
 
     Color getCellColor(int x, int y);
 
@@ -25,7 +21,7 @@ public:
 
     bool checkMatches();
 
-    bool checkMatch(vector<array<int, 2>> match, int i, int j, CandySpeciality speciality);
+    bool checkMatch(vector <array<int, 2>> match, int i, int j, CandySpeciality speciality);
 
     bool checkMatchFive(int i, int j);
 

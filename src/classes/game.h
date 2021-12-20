@@ -5,43 +5,67 @@
 #ifndef PROJET_LDP_2122_GAME_H
 #define PROJET_LDP_2122_GAME_H
 
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <memory>
 #include <vector>
-#include "cell.h"
+#include <algorithm>
+
+#include "Candy.h"
+#include "Cell.h"
+#include "CandyFactory.h"
+#include "Common.h"
 
 
-class Game {
+class Game : public CandyFactory {
 protected:
-    vector<vector<Cell>> CellsVertex;
+    int margin;
+    vector <vector<Cell>> CellsVertex;
     int score = 42069;
+    bool acceptInput = true;
 public:
-    Game();
-    virtual void moveCells(vector<vector<int>>) {};
+    bool contains(Point p);
 
-    virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {};
+    void highlight(Point p);
 
-    virtual void createSpecialCandy(int, int, CandySpeciality) {};
+    void unHighlightAll();
 
-    virtual vector<vector<Cell>> getCells() {};
+    vector <vector<Cell>> getCells();
 
-    virtual void reset() {};
+    void setAcceptInput(bool newState);
 
-    virtual bool isMoveAllowed(Point cell1Position, Point cell2Position);
+    bool isInputAllowed();
 
-    virtual void swapCellsNoAnim(Cell *cell1, Cell *cell2);
+    virtual void moveCellsDown(vector <vector<int>>) = 0;
 
-    virtual bool checkMatches() {};
+    virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 
-    virtual Point getPositionOfCell(Point p) {};
+    void createSpecialCandy(int, int, CandySpeciality);
 
-    virtual void setSelectedCell(Cell *) {};
+    virtual void reset() = 0;
 
-    virtual Cell *cellAt(Point p) {};
+    virtual bool isMoveAllowed(Point cell1Position, Point cell2Position) = 0;
 
-    virtual void setSwapCell(Cell *) {};
+    virtual void swapCellsNoAnim(Cell *cell1, Cell *cell2) = 0;
 
-    virtual void setAcceptInput(bool newState) {};
+    virtual bool checkMatches() = 0;
 
-    virtual void swapCells(Cell *, Point) {};
+    virtual Point getPositionOfCell(Point p) = 0;
+
+    virtual void setSelectedCell(Cell *) = 0;
+
+    virtual Cell *cellAt(Point p) = 0;
+
+    virtual void setSwapCell(Cell *) = 0;
+
+    virtual void setSelectedCellPosition(Point p) = 0;
+
+    virtual void swapCells(Cell *, Point) = 0;
+
+    virtual void setSwapCellPosition(Point p) = 0;
+
+    virtual void emptyCells(vector <vector<int>> cellsToEmpty) = 0;
 };
 
 

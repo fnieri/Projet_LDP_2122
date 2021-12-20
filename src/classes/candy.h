@@ -2,10 +2,9 @@
 #define __CANDY_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "common.h"
-#include "color.h"
-#include "candyspeciality.h"
-#include <string>
+#include "Common.h"
+#include "Color.h"
+#include "CandySpeciality.h"
 
 class Candy : public Fl_PNG_Image {
     const char *filename;

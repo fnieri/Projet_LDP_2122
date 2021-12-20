@@ -2,13 +2,13 @@
 #define __CANVAS_H
 
 #include <vector>
-#include "common.h"
-#include "cell.h"
-#include "board.h"
-#include "board.h"
 #include <cmath>
 #include <iostream>
 #include <FL/fl_draw.H>
+
+#include "Cell.h"
+#include "Common.h"
+#include "Board.h"
 
 class Canvas: public Board {
 public:

@@ -1,4 +1,4 @@
-#include "canvas.h"
+#include "Canvas.h"
 
 Canvas::Canvas(int cellSize, int margin, int numberOfCells) : Board(cellSize, margin, numberOfCells) {
 
@@ -13,25 +13,27 @@ void Canvas::draw() {
 
     string scoreStr = "Score: " + to_string(score);
 
-    fl_draw(scoreStr.c_str(), 60
-            , 20);
+    fl_draw(scoreStr.c_str(), 60, 20);
 
     // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
     Board::draw();
 }
 
 void Canvas::keyPressed(int keyCode) {
-    switch (keyCode) {
-        case 'q':
-            exit(0);
-        case 'r':
-            reset();
-            break;
-        case 'c':
-            checkMatches();
-            break;
-        case 's':
-            shuffle();
+    if (isInputAllowed()) {
+        switch (keyCode) {
+            case 'q':
+                exit(0);
+            case 'r':
+                reset();
+                break;
+            case 'c':
+                checkMatches();
+                break;
+            case 's':
+                shuffle();
+                break;
+        }
     }
 }
 

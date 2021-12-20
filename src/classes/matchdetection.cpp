@@ -1,6 +1,4 @@
-#include "matchdetection.h"
-
-MatchDetection::MatchDetection(Board *board) : {}
+#include "MatchDetection.h"
 
 Color MatchDetection::getCellColor(int i, int j) {
     return CellsVertex.at(i).at(j).getColor();
@@ -30,8 +28,8 @@ bool MatchDetection::checkMatches() {
     return false;
 }
 
-bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, CandySpeciality speciality) {
-    vector<vector<int>> cellsToRemove;
+bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, CandySpeciality speciality) {
+    vector <vector<int>> cellsToRemove;
     try {
         for (auto &matchArray: match) {
             int matchI = i + matchArray[0];
@@ -45,15 +43,15 @@ bool MatchDetection::checkMatch(vector<array<int, 2>> match, int i, int j, Candy
     }
     if (cellsToRemove.size() == match.size()) {
         if (speciality != CandySpeciality::NONE) createSpecialCandy(i, j, speciality);
-        moveCells(cellsToRemove);
+        moveCellsDown(cellsToRemove);
         return true;
     }
     return false;
 }
 
 bool MatchDetection::checkWrappedCandy(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{1,  0}, {2,  0}, {0, 1},  {0, 2}},
-                                        {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}}};
+    vector < vector < array < int, 2>>> match{{{1,  0}, {2,  0}, {0, 1},  {0, 2}},
+                                              {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}}};
     for (auto &matchWrapped: match) {
         if (checkMatch(matchWrapped, i, j, CandySpeciality::BOMB)) return true;
     }
@@ -61,8 +59,8 @@ bool MatchDetection::checkWrappedCandy(int i, int j) {
 }
 
 bool MatchDetection::checkMatchFive(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 1}, {0, 2}, {0, 3}},
-                                        {{-1, 0},  {1, 0}, {2, 0}, {3, 0}}};
+    vector < vector < array < int, 2>>> match{{{0,  -1}, {0, 1}, {0, 2}, {0, 3}},
+                                              {{-1, 0},  {1, 0}, {2, 0}, {3, 0}}};
     for (auto &matchFive: match) {
         if (checkMatch(matchFive, i, j, CandySpeciality::MULTICOLOR)) return true;
     }
@@ -70,22 +68,22 @@ bool MatchDetection::checkMatchFive(int i, int j) {
 }
 
 bool MatchDetection::checkHorizontalMatchFour(int i, int j) {
-    vector<array<int, 2>> match{{0, -1},
-                                {0, 1},
-                                {0, 2}};
+    vector <array<int, 2>> match{{0, -1},
+                                 {0, 1},
+                                 {0, 2}};
     return checkMatch(match, i, j, CandySpeciality::STRIPED_VERTICAL);
 }
 
 bool MatchDetection::checkVerticalMatchFour(int i, int j) {
-    vector<array<int, 2>> match{{-1, 0},
-                                {1,  0},
-                                {2,  0}};
+    vector <array<int, 2>> match{{-1, 0},
+                                 {1,  0},
+                                 {2,  0}};
     return checkMatch(match, i, j, CandySpeciality::STRIPED_HORIZONTAL);
 }
 
 bool MatchDetection::checkMatchThree(int i, int j) {
-    vector<vector<array<int, 2>>> match{{{0,  -1}, {0, 0}, {0, 1}},
-                                        {{-1, 0},  {0, 0}, {1, 0}}};
+    vector < vector < array < int, 2>>> match{{{0,  -1}, {0, 0}, {0, 1}},
+                                              {{-1, 0},  {0, 0}, {1, 0}}};
     for (auto &matchThree: match) {
         if (checkMatch(matchThree, i, j, CandySpeciality::NONE)) return true;
     }
@@ -105,7 +103,7 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
             switch (secondCandySpeciality) {
                 case MULTICOLOR:
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                           firstCandyColor, secondCandyColor, vector<CandySpeciality>{NONE});
+                                           firstCandyColor, secondCandyColor, vector < CandySpeciality > {NONE});
                     return true;
                 default:
                     return false;
@@ -125,7 +123,7 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
                 case MULTICOLOR:
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
                                            firstCandyColor, secondCandyColor,
-                                           vector<CandySpeciality>{STRIPED_HORIZONTAL, STRIPED_VERTICAL});
+                                           vector < CandySpeciality > {STRIPED_HORIZONTAL, STRIPED_VERTICAL});
                     return true;
                 default:
                     return false;
@@ -141,13 +139,13 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
                     return true;
                 case MULTICOLOR:
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                           firstCandyColor, secondCandyColor, vector<CandySpeciality>{BOMB});
+                                           firstCandyColor, secondCandyColor, vector < CandySpeciality > {BOMB});
                     return true;
                 default:
                     return false;
             }
         case MULTICOLOR:
-            vector<CandySpeciality> specialities;
+            vector <CandySpeciality> specialities;
             switch (secondCandySpeciality) {
                 case NONE:
                     specialities = {NONE};
@@ -174,11 +172,9 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     return false;
 }
 
-
-
 bool MatchDetection::canStillPlay() {
-    vector<vector<Cell>> CellsVector = getCells();
-    vector<array<int, 2>> delta{
+    vector <vector<Cell>> CellsVector = getCells();
+    vector <array<int, 2>> delta{
             {-1, 0},
             {0,  -1},
             {0,  1},
@@ -187,11 +183,11 @@ bool MatchDetection::canStillPlay() {
     for (int i = 0; i < (int) CellsVector.size(); i++) {
         for (int j = 0; j < (int) CellsVector[i].size(); j++) {
             Point cellPoint1 = {i, j};
-            Cell* cell1 = &CellsVector[cellPoint1.x][cellPoint1.y];;
+            Cell *cell1 = &CellsVector[cellPoint1.x][cellPoint1.y];;
             for (array<int, 2> d: delta) {
                 Point cellPoint2 = {i + d[0], j + d[1]};
                 try {
-                    Cell* cell2 = &CellsVector.at(cellPoint2.x).at(cellPoint2.y);
+                    Cell *cell2 = &CellsVector.at(cellPoint2.x).at(cellPoint2.y);
                     if (isMoveAllowed(cellPoint1, cellPoint2)) {
                         swapCellsNoAnim(cell1, cell2);
                         if (checkMatches()) {

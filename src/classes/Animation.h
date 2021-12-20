@@ -1,18 +1,16 @@
-#ifndef __ANIMATION_H
-#define __ANIMATION_H
+//
+// Created by louis on 19/12/2021.
+//
 
-#include "cell.h"
-#include "candyfactory.h"
-#include "board.h"
-#include <vector>
-#include<algorithm>
+#ifndef TEMP_CLASSES_ANIMATION_H
+#define TEMP_CLASSES_ANIMATION_H
 
-class Animation : public Game {
+#include "Game.h"
+
+
+class Animation : virtual public Game {
 public:
-    Animation();
-
-    static void
-    moveCellsDown(vector<vector<int>> cellsToReplace, vector<vector<Cell>> *CellVector, int margin);
+    void moveCellsDown(vector <vector<int>> cellsToReplace) override;
 };
 
-#endif
+#endif //TEMP_CLASSES_ANIMATION_H

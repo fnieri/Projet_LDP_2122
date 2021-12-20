@@ -1,12 +1,17 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include <Fl/Fl.H>
-#include "common.h"
-#include "candy.h"
-#include <memory>
-#include <Fl/Fl_Box.H>
-#include "color.h"
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Shared_Image.H>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Box.H>
+#include <utility>
+
+#include "Common.h"
+#include "Candy.h"
+#include "Color.h"
 
 using namespace std;
 

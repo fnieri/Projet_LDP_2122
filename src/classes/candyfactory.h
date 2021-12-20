@@ -1,15 +1,16 @@
 #ifndef __CANDYFACTORY_H
 #define __CANDYFACTORY_H
 
-#include "common.h"
-#include "color.h"
 #include <string>
-#include "candy.h"
-#include "candyspeciality.h"
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
 #include <utility>
+
+#include "Candy.h"
+#include "CandySpeciality.h"
+#include "Common.h"
+#include "Color.h"
 
 class CandyFactory {
 public:

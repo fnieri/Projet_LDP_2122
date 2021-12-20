@@ -1,4 +1,4 @@
-#include "candy.h"
+#include "Candy.h"
 
 
 Candy::Candy(const char *filename, Color color, CandySpeciality speciality) :

@@ -2,28 +2,23 @@
 // Created by louis on 19/12/2021.
 //
 
-#ifndef PROJET_LDP_2122_MATCHHANDLER_H
-#define PROJET_LDP_2122_MATCHHANDLER_H
+#ifndef TEMP_CLASSES_MATCHHANDLER_H
+#define TEMP_CLASSES_MATCHHANDLER_H
 
+#include "Animation.h"
+#include "CandyFactory.h"
 
-#include <game.h>
-#include <candyfactory.h>
-
-class MatchHandler : virtual public Game, virtual public CandyFactory, public Animation {
+class MatchHandler : public Animation {
 public:
-    void handleStrippedHorizontal(vector <vector<Cell>> *CellVector, int i, int j,
-                                         vector <vector<int>> cellsToMove);
+    void handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove);
 
-    void handleStrippedVertical(vector <vector<Cell>> *CellVector, int i, int j,
-                                       vector <vector<int>> cellsToMove);
+    void handleStrippedVertical(int i, int j, vector <vector<int>> cellsToMove);
 
-    void handleWrapped(vector <vector<Cell>> *CellVector, int i, int j,
-                              vector <vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin);
+    void handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin);
 
+    void emptyCell(int i, int j);
 
-    void emptyCell(vector <vector<Cell>> *CellVector, int i, int j);
-
-    void emptyCells(vector <vector<int>> cellsToEmpty, vector <vector<Cell>> *CellVector);
+    void emptyCells(vector<vector<int>> cellsToEmpty) override;
 
     void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
 
@@ -48,4 +43,5 @@ public:
 };
 
 
-#endif //PROJET_LDP_2122_MATCHHANDLER_H
+
+#endif //TEMP_CLASSES_MATCHHANDLER_H

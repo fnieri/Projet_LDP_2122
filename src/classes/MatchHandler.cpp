@@ -5,51 +5,50 @@
 #include "MatchHandler.h"
 
 
-void MatchHandler::handleStrippedHorizontal(vector <vector<Cell>> *CellVector, int i, int j,
-                                            vector <vector<int>> cellsToMove) {
-    for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
+void MatchHandler::handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove) {
+    for (int k = 0; k < (int) CellsVertex[i].size(); ++k) {
         vector<int> cellToMove = {i, k};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
             cellsToMove.push_back(cellToMove);
         }
     }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
+    emptyCells(cellsToMove);
+    moveCellsDown(cellsToMove);
 }
 
-void MatchHandler::handleStrippedVertical(vector <vector<Cell>> *CellVector, int i, int j,
+void MatchHandler::handleStrippedVertical(int i, int j,
                                           vector <vector<int>> cellsToMove) {
-    for (int k = 0; k < (int) (*CellVector)[i].size(); ++k) {
+    for (int k = 0; k < (int) CellsVertex[i].size(); ++k) {
         vector<int> cellToMove = {k, j};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
             cellsToMove.push_back(cellToMove);
         }
     }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
+    emptyCells(cellsToMove);
+    moveCellsDown(cellsToMove);
 }
 
-void MatchHandler::handleWrapped(vector <vector<Cell>> *CellVector, int i, int j,
-                                 vector <vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin) {
+void
+MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin) {
     for (int k = leftDownMargin; k <= rightUpMargin; ++k) {
         for (int l = leftDownMargin; l <= rightUpMargin; ++l) {
             vector<int> cellToMove = {i + k, j + l};
-            if ((i + k >= 0 && i + k < (*CellVector)[i].size()) && (j + l >= 0 && j + l < (*CellVector)[j].size())) {
+            if ((i + k >= 0 && i + k < CellsVertex[i].size()) && (j + l >= 0 && j + l < CellsVertex[j].size())) {
                 cellsToMove.push_back(cellToMove);
             }
         }
     }
-    emptyCells(cellsToMove, CellVector);
-    board->moveCells(cellsToMove);
+    emptyCells(cellsToMove);
+    moveCellsDown(cellsToMove);
 }
 
-void MatchHandler::emptyCell(vector <vector<Cell>> *CellVector, int i, int j) {
-    (*CellVector)[i][j].setCandy(CandyFactory::generateEmptyCandy());
+void MatchHandler::emptyCell(int i, int j) {
+    CellsVertex[i][j].setCandy(CandyFactory::generateEmptyCandy());
 }
 
-void MatchHandler::emptyCells(vector <vector<int>> cellsToEmpty, vector <vector<Cell>> *CellVector) {
+void MatchHandler::emptyCells(vector <vector<int>> cellsToEmpty) {
     for (auto &cellToEmpty: cellsToEmpty)
-        emptyCell(CellVector, cellToEmpty[0], cellToEmpty[1]);
+        emptyCell(cellToEmpty[0], cellToEmpty[1]);
 }
 
 
@@ -57,7 +56,7 @@ void MatchHandler::MultiColorInteractions(Point firstCellPosition, Point secondC
                                           Color secondColor, vector <CandySpeciality> specialities) {
     Color colorToHandle = firstColor != Color::MULTICOLOR ? firstColor : secondColor;
     //Firstly remove multicolor and other candy because they wont be removed after
-    moveCells(vector < vector < int >> ({
+    moveCellsDown(vector < vector < int >> ({
         { firstCellPosition.x, firstCellPosition.y },
         { secondCellPosition.x, secondCellPosition.y }
     }));
@@ -73,16 +72,16 @@ void MatchHandler::MultiColorInteractions(Point firstCellPosition, Point secondC
 
             }
         }
-        moveCells(cellsToCrush);
+        moveCellsDown(cellsToCrush);
     }
 }
 
 void MatchHandler::normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition) {
-    moveCells(vector < vector < int >> ({{ multicolorPosition.x, multicolorPosition.y }}));
+    moveCellsDown(vector < vector < int >> ({{ multicolorPosition.x, multicolorPosition.y }}));
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (CellsVertex[i][j].getColor() == colorToRemove) {
-                moveCells(vector < vector < int >> ({{ i, j }}));
+                moveCellsDown(vector < vector < int >> ({{ i, j }}));
             }
         }
     }
@@ -93,39 +92,36 @@ MatchHandler::doubleStripedOrWrappedInteraction(Point firstCellPosition, Point s
                                                 int rightOffset) {
     for (int offset = leftOffset; offset <= rightOffset; offset++) {
         vector <vector<int>> cellsToMove;
-        handleStrippedHorizontal(candyBoard.get(), &CellsVertex, firstCellPosition.x + offset,
-                                 firstCellPosition.y, cellsToMove);
+        handleStrippedHorizontal(firstCellPosition.x + offset, firstCellPosition.y, cellsToMove);
     }
     for (int offset = leftOffset; offset <= rightOffset; offset++) {
         vector <vector<int>> cellsToMove;
-        handleStrippedVertical(candyBoard.get(), &CellsVertex, firstCellPosition.x,
-                               firstCellPosition.y + offset, cellsToMove);
+        handleStrippedVertical(firstCellPosition.x, firstCellPosition.y + offset, cellsToMove);
     }
 }
 
 
 void MatchHandler::doubleWrappedInteraction(Point firstCellPosition, Point secondCellPosition) {
     vector <vector<int>> cellsToMove;
-    handleWrapped(candyBoard.get(), &CellsVertex, firstCellPosition.x, firstCellPosition.y, cellsToMove, -2,
-                  2);
+    handleWrapped(firstCellPosition.x, firstCellPosition.y, cellsToMove, -2, 2);
 }
 
 void
 MatchHandler::stripedMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToStripe) {
-    moveCells(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
+    moveCellsDown(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
                                         {secondCellPosition.x, secondCellPosition.y}});
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         vector <vector<int>> cellsToCrush;
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (CellsVertex[i][j].getColor() == colorToStripe) {
-                setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), colorToStripe, i,
-                          j);      //Choose randomly between striped horizontal and vertical
+                //Choose randomly between striped horizontal and vertical
+                setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), colorToStripe, i, j);
                 //Choose randomly between striped orientation
                 cellsToCrush.push_back({i, j});
             }
         }
         Fl::wait(0.3);
-        moveCells(cellsToCrush);
+        moveCellsDown(cellsToCrush);
 
     }
 }
@@ -133,8 +129,8 @@ MatchHandler::stripedMulticolorInteraction(Point firstCellPosition, Point second
 
 void
 MatchHandler::wrappedAndMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToWrap) {
-    Animation::emptyCells(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
-                                                    {secondCellPosition.x, secondCellPosition.y}}, &CellsVertex);
+    emptyCells(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
+                                         {secondCellPosition.x, secondCellPosition.y}});
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         vector <vector<int>> cellsToCrush;
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
@@ -142,7 +138,7 @@ MatchHandler::wrappedAndMulticolorInteraction(Point firstCellPosition, Point sec
                 CellsVertex[i][j].setCandy(CandyFactory::generateCandy(BOMB, colorToWrap));
                 cellsToCrush.push_back({i, j});
             }
-            moveCells(cellsToCrush);
+            moveCellsDown(cellsToCrush);
         }
     }
 }

@@ -1,12 +1,4 @@
-#include "cell.h"
-#include "common.h"
-#include <FL/Fl.H>
-#include <FL/fl_draw.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Shared_Image.H>
-#include <FL/Fl_PNG_Image.H>
-#include <FL/Fl_Box.H>
-#include <utility>
+#include "Cell.h"
 
 Cell::Cell(Point center, int cellSize, const Candy &candy, int margin) : center{center}, cellSize{cellSize},
                                                                          margin{margin},

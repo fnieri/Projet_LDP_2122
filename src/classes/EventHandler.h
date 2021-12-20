@@ -1,25 +1,28 @@
-#ifndef __EVENTHANDLER_H
-#define __EVENTHANDLER_H
+//
+// Created by louis on 19/12/2021.
+//
 
-#include<memory>
-#include <vector>
-#include "board.h"
-#include "common.h"
+#ifndef TEMP_CLASSES_EVENTHANDLER_H
+#define TEMP_CLASSES_EVENTHANDLER_H
 
-class EventHandler{
-    private:
-        Point firstPosition{-1, -1};
-        Point secondPosition{-1, -1};
-    public:
-        EventHandler();
-        void reset();
-        Point getFirstPosition();
-        Point getSecondPosition();
-        void setFirstPosition(Point p);
-        void setSecondPosition(Point p);
-        void setSelectedCell(Point p);
-        void setSwapCell(Point p);
-        void handleMouseEvent(Point p);
+#include "Common.h"
+#include "Game.h"
+
+
+class EventHandler : virtual public Game{
+private:
+    Point firstPosition{-1 , -1};
+    Point secondPosition{-1 , -1};
+public:
+    void eventReset();
+    Point getFirstPosition();
+    Point getSecondPosition();
+    void setFirstPosition(Point p);
+    void setSecondPosition(Point p);
+    void setEventSelectedCell(Point p);
+    void setEventSwapCell(Point p);
+    void handleMouseEvent(Point p);
 };
 
-#endif
+
+#endif //TEMP_CLASSES_EVENTHANDLER_H

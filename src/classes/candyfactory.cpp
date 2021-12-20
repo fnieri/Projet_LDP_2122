@@ -1,5 +1,5 @@
 
-#include "candyfactory.h"
+#include "CandyFactory.h"
 
 CandyFactory::CandyFactory() = default;
 
