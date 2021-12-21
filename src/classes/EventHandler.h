@@ -11,16 +11,16 @@
 
 class EventHandler : virtual public Game{
 private:
-    Point firstPosition{-1 , -1};
-    Point secondPosition{-1 , -1};
+//    Point firstPosition{-1 , -1};
+//    Point secondPosition{-1 , -1};
 public:
-    void eventReset();
-    Point getFirstPosition();
-    Point getSecondPosition();
-    void setFirstPosition(Point p);
-    void setSecondPosition(Point p);
-    void setEventSelectedCell(Point p);
-    void setEventSwapCell(Point p);
+//    void eventReset();
+//    Point getFirstPosition();
+//    Point getSecondPosition();
+//    void setFirstPosition(Point p);
+//    void setSecondPosition(Point p);
+//    void setEventSelectedCell(Point p);
+//    void setEventSwapCell(Point p);
     void handleMouseEvent(Point p);
 };
 

@@ -17,8 +17,6 @@ class Board : public EventHandler, public MatchDetection {
     Cell *toSwapCell = nullptr;
     Point toSwapCellCenter{0, 0};
     Point toSwapCellPosition{0, 0};
-protected:
-    int margin;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -44,14 +42,14 @@ public:
 
     bool isMoveAllowed(Point cell1Position, Point cell2Position) override;
 
+    bool handleBoardContains(Point p) override;
+
     virtual void draw();
 
-    bool handleBoardContains(Point p);
 
     void shuffle();
 
     void exchangeCells(Cell *cell1, Cell *cell2);
-
 };
 
 

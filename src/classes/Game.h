@@ -31,6 +31,8 @@ public:
 
     void unHighlightAll();
 
+    void setMargin(int m);
+
     vector <vector<Cell>> getCells();
 
     void setAcceptInput(bool newState);
@@ -44,6 +46,8 @@ public:
     void createSpecialCandy(int, int, CandySpeciality);
 
     virtual void reset() = 0;
+
+    virtual bool handleBoardContains(Point p) = 0;
 
     virtual bool isMoveAllowed(Point cell1Position, Point cell2Position) = 0;
 

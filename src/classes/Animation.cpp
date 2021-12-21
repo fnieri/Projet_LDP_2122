@@ -4,6 +4,7 @@
 
 #include "Animation.h"
 
+// still need to handle candy speciality
 void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
 //    for (auto &cellToReplace: cellsToReplace) {
 //        CandySpeciality cellSpeciality = (*CellsVertex)[cellToReplace[0]][cellToReplace[1]].getSpeciality();
@@ -51,6 +52,6 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
                                  (CellsVertex)[k - 1][j].getCenter().y - margin};
             (CellsVertex)[k - 1][j].setCenter(originalCenter);
         }
-        (CellsVertex)[0][j].setCandy(CandyFactory::generateCandy(CandySpeciality::NONE));
+        (CellsVertex)[0][j].setCandy(generateCandy(CandySpeciality::NONE));
     }
 }

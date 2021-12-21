@@ -21,6 +21,7 @@ void Canvas::draw() {
 
 void Canvas::keyPressed(int keyCode) {
     if (isInputAllowed()) {
+        setAcceptInput(false);
         switch (keyCode) {
             case 'q':
                 exit(0);
@@ -33,7 +34,10 @@ void Canvas::keyPressed(int keyCode) {
             case 's':
                 shuffle();
                 break;
+            default:
+                break;
         }
     }
+    setAcceptInput(true);
 }
 

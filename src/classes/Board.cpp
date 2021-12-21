@@ -4,12 +4,12 @@
 
 #include "Board.h"
 
-Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), margin(margin),
-                                                            numberOfCells(numberOfCells) {
+Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
+    setMargin(margin);
     int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
-        vector <Cell> cellRow;
+        vector<Cell> cellRow;
         for (int j = 0; j < size; ++j) {
             Point center{margin * j + margin, y};
             Candy candy = generateCandy(CandySpeciality::NONE);
@@ -22,8 +22,6 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
 }
 
 void Board::reset() {
-    setAcceptInput(false);
-
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
             cell.setCandy(generateCandy(CandySpeciality::NONE));
@@ -34,7 +32,6 @@ void Board::reset() {
     CellsVertex[5][6].setCandy(generateCandy(STRIPED_HORIZONTAL));
     // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
     while (checkMatches()) {}
-    setAcceptInput(true);
 };
 
 void Board::draw() {
@@ -88,7 +85,7 @@ void Board::setSelectedCell(Cell *newCell) {
 }
 
 void Board::setSelectedCellPosition(Point p) {
-    selectedCellPosition = getPositionOfCell(p);
+    selectedCellCenter = getPositionOfCell(p);
 }
 
 void Board::setSwapCell(Cell *newCell) {
@@ -96,7 +93,7 @@ void Board::setSwapCell(Cell *newCell) {
 }
 
 void Board::setSwapCellPosition(Point p) {
-    toSwapCellCenter = getPositionOfCell(p);
+    toSwapCellPosition = getPositionOfCell(p);
 }
 
 void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
@@ -116,19 +113,18 @@ void Board::shuffle() {
 }
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
-    setAcceptInput(false);
     unHighlightAll();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         exchangeCells(selectedCell, swapCell);
         if (!checkMatches()) {
             exchangeCells(selectedCell, swapCell);
-        } else {
+        }
+        else {
             while (checkMatches()) {};
 //            checkIfShuffleIsNeeded();
         }
     }
     selectedCell = nullptr;
-    setAcceptInput(true);
 }
 
 void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {

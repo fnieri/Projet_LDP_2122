@@ -92,7 +92,6 @@ bool MatchDetection::checkMatchThree(int i, int j) {
 
 bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell,
                                                 Point secondCellPosition) {
-    CellsVertex = getCells();
     CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
     CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
     Color firstCandyColor = firstCell->getColor();
