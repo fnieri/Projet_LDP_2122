@@ -8,6 +8,10 @@ bool MatchDetection::cellsColorMatch(int i, int j) {
     return currentCellColor == getCellColor(i, j);
 }
 
+void MatchDetection::setHandleMatch(bool handleM) {
+    handleMatch = handleM;
+}
+
 bool MatchDetection::checkMatches() {
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
@@ -38,12 +42,14 @@ bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, Cand
             cellsToRemove.push_back({matchI, matchJ});
         }
     }
-    catch (const std::out_of_range &e) {
+    catch (const out_of_range &e) {
         return false;
     }
     if (cellsToRemove.size() == match.size()) {
-        if (speciality != CandySpeciality::NONE) createSpecialCandy(i, j, speciality);
-        handleCellsToReplace(cellsToRemove);
+        if (handleMatch) {
+            if (speciality != CandySpeciality::NONE) createSpecialCandy(i, j, speciality);
+            handleCellsToReplace(cellsToRemove);
+        }
         return true;
     }
     return false;

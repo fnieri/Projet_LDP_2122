@@ -24,7 +24,6 @@ OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 main.out : $(OBJ)
 	$(CC) -o $@ $^ $(FLAGS)
 
-
 -include $(OBJDIR)/*.d  # include dependencies
 
 $(OBJ): | $(OBJDIR)

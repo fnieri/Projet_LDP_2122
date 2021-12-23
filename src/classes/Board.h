@@ -46,6 +46,8 @@ public:
 
     void handleBoardDrag(Point p1, Point p2) override;
 
+    bool checkIfShuffleIsNeeded();
+
     Cell *getCellFromPosition(Point p);
 
     virtual void draw();

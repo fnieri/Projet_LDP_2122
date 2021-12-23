@@ -12,11 +12,14 @@
 
 class MatchDetection : public MatchHandler {
     Color currentCellColor;
+    Bool handleMatch;
 public:
 
     Color getCellColor(int x, int y);
 
     bool cellsColorMatch(int i, int j);
+
+    void setHandleMatch(bool handleM);
 
     bool checkMatches();
 

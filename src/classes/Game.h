@@ -56,7 +56,7 @@ public:
 
     virtual void swapCellsNoAnim(Cell *cell1, Cell *cell2) = 0;
 
-    virtual bool checkMatches() = 0;
+//    virtual bool checkMatches() = 0;
 
     virtual Point getPositionOfCell(Point p) = 0;
 
