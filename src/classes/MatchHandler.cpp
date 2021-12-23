@@ -74,7 +74,7 @@ MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int 
 }
 
 void MatchHandler::emptyCell(int i, int j) {
-    CellsVertex[i][j].setCandy(generateEmptyCandy());
+    CellsVertex[i][j].setObject(makeEmptyCandy());
 }
 
 void MatchHandler::emptyCells(vector <vector<int>> cellsToEmpty) {
@@ -170,7 +170,7 @@ MatchHandler::wrappedAndMulticolorInteraction(Point firstCellPosition, Point sec
         vector <vector<int>> cellsToCrush;
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (CellsVertex[i][j].getColor() == colorToWrap) {
-                CellsVertex[i][j].setCandy(generateCandy(BOMB, colorToWrap));
+                CellsVertex[i][j].setObject(generateCandy(BOMB, colorToWrap));
                 cellsToCrush.push_back({i, j});
             }
             moveCellsDown(cellsToCrush);

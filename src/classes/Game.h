@@ -17,9 +17,9 @@
 #include "CandyFactory.h"
 #include "CandySpeciality.h"
 #include "Common.h"
+#include "ClickableFactory.h"
 
-
-class Game : public CandyFactory {
+class Game : public ClickableFactory {
 protected:
     int margin;
     vector <vector<Cell>> CellsVertex;

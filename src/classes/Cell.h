@@ -12,19 +12,27 @@
 #include "Common.h"
 #include "Candy.h"
 #include "Color.h"
+#include "Clickable.h"
+#include "IcingStatus.h"
+#include "Icing.h"
+#include "Wall.h"
 
 using namespace std;
 
 class Cell {
     Point center;
-    int cellSize, margin;
-    unique_ptr<Candy> candyPtr;
+    int cellSize;
+    shared_ptr<Clickable> cellObjectPtr;
+    int margin;
     bool drawBox = false;
 public:
-    Cell(Point, int, const Candy& candy, int margin);
+    Cell(Point, int, Clickable*, int);
 
     Cell(const Cell &);
 
+    void castClickable(shared_ptr<Clickable>);
+    void castClickable(Clickable*);
+    
     bool contains(Point p) const;
 
     void draw();
@@ -33,15 +41,34 @@ public:
 
     CandySpeciality getSpeciality();
 
-    void setCandy(const Candy&);
+    void setObject(const Clickable&);
 
-    Candy getCandy();
+    void setObject(Clickable*);
+
+    template <class objectClass>
+    //Check if current cellObjectPtr is of certain class
+    bool isClass();
+
+    template <class objectClass>
+    bool isClass(Clickable*);
+    
+    template <class objectClass>
+    bool isClass(const Clickable*);
+    
+    template <class objectClass>
+    bool isClass(shared_ptr<Clickable>);
+
+    Candy* getCandy();
+
+    IcingStatus getStatus();
 
     void animateCandy(Cell*);
 
     Point getCenter();
 
     void setCenter(Point);
+
+    void animateGravity(Point destination);
 
     void setHighlighted(bool val);
 };

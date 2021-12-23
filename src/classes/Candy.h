@@ -5,15 +5,16 @@
 #include "Common.h"
 #include "Color.h"
 #include "CandySpeciality.h"
+#include "Clickable.h"
 
-class Candy : public Fl_PNG_Image {
+class Candy :  public Clickable {
     const char *filename;
     Color color;
     CandySpeciality speciality;
 public:
     Candy(const char *filename, Color color, CandySpeciality speciality=CandySpeciality::NONE);
     Candy(const Candy &c);
-    virtual ~Candy();
+    ~Candy();
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
     virtual void setColor(Color newColor);

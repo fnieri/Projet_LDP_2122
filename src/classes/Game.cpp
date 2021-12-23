@@ -17,10 +17,10 @@ bool Game::contains(Point p) {
 
 void Game::createSpecialCandy(int i, int j, CandySpeciality speciality) {
     if (speciality == CandySpeciality::MULTICOLOR)
-        CellsVertex[i][j].setCandy(
-                generateCandy(speciality));
+        CellsVertex[i][j].setObject(
+                makeCandy(speciality));
     else
-        CellsVertex[i][j].setCandy(generateCandy(speciality, CellsVertex[i][j].getColor()));
+        CellsVertex[i][j].setObject(makeCandy(speciality, CellsVertex[i][j].getColor()));
 }
 
 void Game::highlight(Point p) {
@@ -30,7 +30,7 @@ void Game::highlight(Point p) {
             else j.setHighlighted(false);
         }
     }
-}
+};
 
 void Game::unHighlightAll() {
     for (auto &i: CellsVertex) {

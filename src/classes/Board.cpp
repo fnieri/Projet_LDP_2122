@@ -13,7 +13,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
         for (int j = 0; j < size; ++j) {
             Point center{margin * j + margin, y};
             Candy candy = generateCandy(CandySpeciality::NONE);
-            Cell cell{center, cellSize, candy, margin};
+            Cell cell{center, cellSize, &candy, margin};
             cellRow.push_back(cell);
         }
         CellsVertex.push_back(cellRow);
@@ -25,13 +25,13 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
 void Board::reset() {
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
-            cell.setCandy(generateCandy(CandySpeciality::NONE));
+            cell.setObject(generateCandy(CandySpeciality::NONE));
         }
     }
     while (checkMatches());
 
-    CellsVertex[5][6].setCandy(generateCandy(STRIPED_VERTICAL));
-    // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
+    CellsVertex[5][6].setObject(generateCandy(STRIPED_VERTICAL));
+    // CellsVertex[5][5].setObject(CandyFactory::generateCandy(MULTICOLOR));
 };
 
 void Board::draw() {
@@ -113,7 +113,7 @@ void Board::setSwapCellPosition(Point p) {
 }
 
 void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
-    CellsVertex[i][j].setCandy(generateCandy(newSpeciality, newColor));
+    CellsVertex[i][j].setObject(generateCandy(newSpeciality, newColor));
 }
 
 void Board::shuffle() {
@@ -175,18 +175,18 @@ bool Board::checkIfShuffleIsNeeded() {
 }
 
 void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {
-    Candy firstCellCandy = cell1->getCandy();
-    cell1->setCandy(cell2->getCandy());
-    cell2->setCandy(firstCellCandy);
+    Candy firstCellCandy = *cell1->getCandy();
+    cell1->setObject(*cell2->getCandy());
+    cell2->setObject(firstCellCandy);
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {
     cell1->animateCandy(cell2);
-    Candy _selectedCellCandy = cell1->getCandy();
+    Candy _selectedCellCandy = *cell1->getCandy();
     Point _selectedCellCenter = cell1->getCenter();
 
-    cell1->setCandy(cell2->getCandy());
-    cell2->setCandy(_selectedCellCandy);
+    cell1->setObject(*cell2->getCandy());
+    cell2->setObject(_selectedCellCandy);
 
     cell1->setCenter(cell2->getCenter());
     cell2->setCenter(_selectedCellCenter);

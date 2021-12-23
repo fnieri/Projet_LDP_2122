@@ -6,6 +6,7 @@
 #define TEMP_CLASSES_MATCHHANDLER_H
 
 #include "Animation.h"
+#include "ClickableFactory.h"
 
 class MatchHandler : public Animation {
 public:

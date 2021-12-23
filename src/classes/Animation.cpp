@@ -47,11 +47,11 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
         int i = cellToReplace[0];
         int j = cellToReplace[1];
         for (int k = i; k > 0; k--) {
-            (CellsVertex)[k][j].setCandy((CellsVertex)[k - 1][j].getCandy());
+            (CellsVertex)[k][j].setObject(*(CellsVertex)[k - 1][j].getCandy());
             Point originalCenter{(CellsVertex)[k - 1][j].getCenter().x,
                                  (CellsVertex)[k - 1][j].getCenter().y - margin};
             (CellsVertex)[k - 1][j].setCenter(originalCenter);
         }
-        (CellsVertex)[0][j].setCandy(generateCandy(CandySpeciality::NONE));
+        (CellsVertex)[0][j].setObject(generateCandy(CandySpeciality::NONE));
     }
 }

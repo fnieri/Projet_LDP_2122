@@ -1,15 +1,51 @@
 #include "Cell.h"
 
-Cell::Cell(Point center, int cellSize, const Candy &candy, int margin) : center{center}, cellSize{cellSize},
-                                                                         margin{margin},
-                                                                         candyPtr{make_unique<Candy>(candy)} {
+Cell::Cell(Point center, int cellSize, Clickable *cellObject, int margin) : center{center}, cellSize{cellSize},
+                                                                         margin{margin} {
+    
+    castClickable(cellObject); //Cast from base class to derived class
+    setObject(*cellObject);              
 }
 
 Cell::Cell(const Cell &c) {
     center = c.center;
     cellSize = c.cellSize;
     margin = c.margin;
-    candyPtr = make_unique<Candy>(*c.candyPtr);
+    
+    castClickable(c.cellObjectPtr);
+    cellObjectPtr = std::move(c.cellObjectPtr);
+}
+
+
+void Cell::castClickable(Clickable* cellClickable) {
+    if (isClass<Candy>(cellClickable)) {
+        cellClickable = dynamic_cast<Candy*>(cellClickable);
+    }
+
+    else if (isClass<Wall>(cellClickable)) {
+       cellClickable = dynamic_cast<Wall*>(cellClickable);
+    }
+
+    else if (isClass<Icing>(cellClickable)) {
+        cellClickable = dynamic_cast<Icing*>(cellClickable);
+    }
+    
+}  
+
+void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
+    if (isClass<Candy>(cellClickable)) {
+        cellClickable = dynamic_pointer_cast<Candy>(cellClickable);
+    }
+
+    else if (isClass<Wall>(cellClickable)) {
+        cellClickable = dynamic_pointer_cast<Wall>(cellClickable);
+    }
+
+    else if (isClass<Icing>(cellClickable)) {
+      
+        cellClickable = dynamic_pointer_cast<Icing>(cellClickable);
+    }
+    
 }
 
 void Cell::draw() {
@@ -27,7 +63,7 @@ void Cell::draw() {
         }
         fl_end_polygon();
     }
-    candyPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, candyPtr->w(), candyPtr->h());
+    cellObjectPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, cellObjectPtr->w(), cellObjectPtr->h());
 }
 
 void Cell::setHighlighted(bool val) {
@@ -66,28 +102,87 @@ bool Cell::contains(Point p) const {
            p.y < center.y + cellSize;
 }
 
-Color Cell::getColor() {
-    return candyPtr->getColor();
+
+
+void Cell::setObject(const Clickable &clickable) {
+    if (isClass<Candy>(&clickable))  {
+        auto tmp = dynamic_cast<const Candy*>(&clickable);  
+        cellObjectPtr = make_shared<Candy>(*tmp);
+    }
+    if (isClass<Wall>(&clickable))  {
+        auto tmp = dynamic_cast<const Wall*>(&clickable);  
+        cellObjectPtr = make_shared<Wall>(*tmp);
+    }
+
+    if (isClass<Icing>(&clickable))  {
+        auto tmp = dynamic_cast<const Icing*>(&clickable);  
+        cellObjectPtr = make_shared<Icing>(*tmp);
+    }
 }
 
-void Cell::setCandy(const Candy &candy) {
-    unique_ptr<Candy> ca = make_unique<Candy>(candy);
-    candyPtr = std::move(ca);
+template <class objectClass>
+bool Cell::isClass(){
+    if (auto tmp = dynamic_pointer_cast<objectClass>(cellObjectPtr)) {
+        return true;
+    }
+    return false;
 }
 
-Candy Cell::getCandy() {
-    return *candyPtr;
+template <class objectClass>
+bool Cell::isClass(const Clickable* clickable){
+    if (auto tmp = dynamic_cast<const objectClass*>(clickable)) {
+        return true;
+    }
+    return false;
 }
+
+template <class objectClass>
+bool Cell::isClass(Clickable* clickable){
+    if (auto tmp = dynamic_cast<objectClass*>(clickable)) {
+        return true;
+    }
+    return false;
+}
+
+
+template <class objectClass>
+bool Cell::isClass(shared_ptr<Clickable> clickable) {
+    if (auto tmp = dynamic_pointer_cast<objectClass>(clickable)) {
+        return true;
+    }
+    return false;
+}
+
+
+Candy* Cell::getCandy() {
+     return dynamic_cast<Candy*>(cellObjectPtr.get());
+}
+
 
 Point Cell::getCenter() {
     return center;
 }
+
 
 void Cell::setCenter(Point newCenter) {
     center.x = newCenter.x;
     center.y = newCenter.y;
 }
 
+
 CandySpeciality Cell::getSpeciality() {
-    return candyPtr->getSpeciality();
+    if (isClass<Candy>()) 
+        return dynamic_pointer_cast<Candy>(cellObjectPtr)->getSpeciality();  
+}
+
+
+Color Cell::getColor() {
+    if (isClass<Candy>()) 
+        return dynamic_pointer_cast<Candy>(cellObjectPtr)->getColor();  
+}
+
+IcingStatus Cell::getStatus() {
+    if (isClass<Icing>())
+        return dynamic_pointer_cast<Icing>(cellObjectPtr)->getStatus();  
+
 }
