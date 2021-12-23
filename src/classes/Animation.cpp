@@ -7,7 +7,7 @@
 // still need to handle candy speciality
 void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
 //    for (auto &cellToReplace: cellsToReplace) {
-//        CandySpeciality cellSpeciality = (*CellsVertex)[cellToReplace[0]][cellToReplace[1]].getSpeciality();
+//        CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
 //        switch (cellSpeciality) {
 //            case CandySpeciality::STRIPED_VERTICAL:
 //                handleStrippedVertical(cellToReplace[0], cellToReplace[1], cellsToReplace);

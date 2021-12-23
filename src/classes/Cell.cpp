@@ -60,7 +60,7 @@ void Cell::animateCandy(Cell *swapCell) {
 }
 
 bool Cell::contains(Point p) const {
-    return p.x >= center.x  - cellSize / 10 &&
+    return p.x >= center.x  - cellSize / 4 &&
            p.x < center.x + cellSize &&
            p.y >= center.y - cellSize / 4 &&
            p.y < center.y + cellSize;

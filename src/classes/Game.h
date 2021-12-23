@@ -15,6 +15,7 @@
 #include "Candy.h"
 #include "Cell.h"
 #include "CandyFactory.h"
+#include "CandySpeciality.h"
 #include "Common.h"
 
 
@@ -48,6 +49,8 @@ public:
     virtual void reset() = 0;
 
     virtual bool handleBoardContains(Point p) = 0;
+
+    virtual void handleBoardDrag(Point p1, Point p2) = 0;
 
     virtual bool isMoveAllowed(Point cell1Position, Point cell2Position) = 0;
 

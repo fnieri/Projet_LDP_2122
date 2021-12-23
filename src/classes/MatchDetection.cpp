@@ -43,7 +43,7 @@ bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, Cand
     }
     if (cellsToRemove.size() == match.size()) {
         if (speciality != CandySpeciality::NONE) createSpecialCandy(i, j, speciality);
-        moveCellsDown(cellsToRemove);
+        handleCellsToReplace(cellsToRemove);
         return true;
     }
     return false;
@@ -98,17 +98,19 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     Color secondCandyColor = secondCell->getColor();
 
     switch (firstCandySpeciality) {
-        case NONE:
+        case NONE: {
             switch (secondCandySpeciality) {
-                case MULTICOLOR:
+                case MULTICOLOR: {
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
                                            firstCandyColor, secondCandyColor, vector < CandySpeciality > {NONE});
                     return true;
+                }
                 default:
                     return false;
             }
+        }
         case STRIPED_HORIZONTAL:
-        case STRIPED_VERTICAL:
+        case STRIPED_VERTICAL: {
             switch (secondCandySpeciality) {
                 case STRIPED_HORIZONTAL:
                 case STRIPED_VERTICAL: {
@@ -119,46 +121,56 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
                     doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
                     return true;
                 }
-                case MULTICOLOR:
+                case MULTICOLOR: {
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
                                            firstCandyColor, secondCandyColor,
                                            vector < CandySpeciality > {STRIPED_HORIZONTAL, STRIPED_VERTICAL});
                     return true;
+                }
                 default:
                     return false;
             }
-        case BOMB:
+        }
+        case BOMB: {
             switch (secondCandySpeciality) {
                 case STRIPED_VERTICAL:
-                case STRIPED_HORIZONTAL:
+                case STRIPED_HORIZONTAL: {
                     doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
                     return true;
-                case BOMB:
+                }
+                case BOMB: {
                     doubleWrappedInteraction(firstCellPosition, secondCellPosition);
                     return true;
-                case MULTICOLOR:
+                }
+                case MULTICOLOR: {
                     MultiColorInteractions(firstCellPosition, secondCellPosition,
                                            firstCandyColor, secondCandyColor, vector < CandySpeciality > {BOMB});
                     return true;
+                }
                 default:
                     return false;
             }
-        case MULTICOLOR:
+        }
+        case MULTICOLOR: {
             vector <CandySpeciality> specialities;
             switch (secondCandySpeciality) {
-                case NONE:
+                case NONE: {
                     specialities = {NONE};
                     break;
+                }
                 case STRIPED_HORIZONTAL:
-                case STRIPED_VERTICAL:
+                case STRIPED_VERTICAL: {
                     specialities = {STRIPED_VERTICAL, STRIPED_HORIZONTAL};
                     break;
-                case BOMB:
+                }
+                case BOMB: {
                     specialities = {BOMB};
                     break;
-                case MULTICOLOR:
+                }
+                case MULTICOLOR: {
                     doubleMulticolorInteraction();
                     return true;
+                }
                 default:
                     return false;
 
@@ -167,6 +179,7 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
             MultiColorInteractions(firstCellPosition, secondCellPosition,
                                    firstCandyColor, secondCandyColor, specialities);
             return true;
+        }
     }
     return false;
 }

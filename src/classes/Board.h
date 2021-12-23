@@ -44,8 +44,11 @@ public:
 
     bool handleBoardContains(Point p) override;
 
-    virtual void draw();
+    void handleBoardDrag(Point p1, Point p2) override;
 
+    Cell *getCellFromPosition(Point p);
+
+    virtual void draw();
 
     void shuffle();
 

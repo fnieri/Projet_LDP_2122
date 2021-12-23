@@ -50,7 +50,7 @@ public:
                     canvas.keyPressed(Fl::event_key());
                     return 1;
                 case FL_DRAG:
-                    canvas.handleMouseEvent(Point{Fl::event_x(), Fl::event_y()});
+                    canvas.handleMouseDrag(Point{Fl::event_x(), Fl::event_y()});
                     return 1;
                 case FL_MOVE:
                     canvas.highlight(Point{Fl::event_x(), Fl::event_y()});

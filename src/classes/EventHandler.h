@@ -9,19 +9,23 @@
 #include "Game.h"
 
 
-class EventHandler : virtual public Game{
+class EventHandler : virtual public Game {
 private:
-//    Point firstPosition{-1 , -1};
+    Point firstPosition{};
 //    Point secondPosition{-1 , -1};
 public:
-//    void eventReset();
+    void resetEvent();
 //    Point getFirstPosition();
 //    Point getSecondPosition();
-//    void setFirstPosition(Point p);
+    void setFirstPosition(Point p);
+
 //    void setSecondPosition(Point p);
 //    void setEventSelectedCell(Point p);
 //    void setEventSwapCell(Point p);
+    void handleMouseDrag(Point p);
+
     void handleMouseEvent(Point p);
+
 };
 
 

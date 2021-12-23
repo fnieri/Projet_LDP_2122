@@ -6,10 +6,11 @@
 #define TEMP_CLASSES_MATCHHANDLER_H
 
 #include "Animation.h"
-#include "CandyFactory.h"
 
 class MatchHandler : public Animation {
 public:
+    void handleCellsToReplace(vector <vector<int>> cellsToReplace);
+
     void handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove);
 
     void handleStrippedVertical(int i, int j, vector <vector<int>> cellsToMove);
