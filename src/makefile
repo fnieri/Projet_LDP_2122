@@ -18,7 +18,12 @@ POBJ=\
 	MainWindow.o\
 	MatchDetection.o\
 	MatchHandler.o\
-
+	ClickableFactory.o\
+	IcingFactory.o\
+	Clickable.o\
+	Icing.o\
+	Wall.o\
+	
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
 main.out : $(OBJ)
@@ -37,3 +42,4 @@ $(OBJDIR)/%.o : classes/%.cpp
 .PHONY : clean
 clean :
 	rm $(OBJDIR)/*.o
+	rm $(OBJDIR)/*.d
