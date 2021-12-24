@@ -30,7 +30,7 @@ void Board::reset() {
     }
     while (checkMatches());
 
-    CellsVertex[5][6].setCandy(generateCandy(STRIPED_VERTICAL));
+    CellsVertex[5][6].setCandy(generateCandy(BOMB));
     // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
 };
 

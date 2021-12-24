@@ -27,14 +27,14 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
 //        }
 //    }
 
-    emptyCells(cellsToReplace);
+//    emptyCells(cellsToReplace);
 
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToReplace: cellsToReplace) {
             int i = cellToReplace[0];
             int j = cellToReplace[1];
             // drops all candy one cell under then generates candy for top cell
-            for (int k = i; k > 0; k--) {
+            for (int k = i; k > 0; --k) {
                 Point movingCenter{(CellsVertex)[k - 1][j].getCenter().x,
                                    (CellsVertex)[k - 1][j].getCenter().y + 1};
                 (CellsVertex)[k - 1][j].setCenter(movingCenter);

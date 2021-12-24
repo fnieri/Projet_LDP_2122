@@ -5,38 +5,49 @@
 #include "MatchHandler.h"
 
 void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
+    vector <vector<int>> specialCells;
+    for (auto &cell: cellsToReplace) {
+        CandySpeciality speciality = CellsVertex[cell[0]][cell[1]].getSpeciality();
+        if (speciality != NONE) {
+            specialCells.push_back(cell);
+        } else {
+            emptyCell(cell[0], cell[1]);
+        }
+    }
 //    emptyCells(cellsToReplace);
-    for (auto &cellToReplace: cellsToReplace) {
+    int i = 0;
+    for (auto &cellToReplace: specialCells) {
         CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
         emptyCell(cellToReplace[0], cellToReplace[1]);
+        vector <vector<int>> recursiveVector = {cellsToReplace.begin() + i, cellsToReplace.end()};
         switch (cellSpeciality) {
             case STRIPED_VERTICAL: {
-                handleStrippedVertical(cellToReplace[0], cellToReplace[1], cellsToReplace);
-                break;
+                handleStrippedVertical(cellToReplace[0], cellToReplace[1], recursiveVector);
+                return;
             }
             case STRIPED_HORIZONTAL: {
-                handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], cellsToReplace);
-                break;
+                handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], recursiveVector);
+                return;
             }
             case BOMB: {
-                handleWrapped(cellToReplace[0], cellToReplace[1], cellsToReplace, -1, 1);
-                break;
+                handleWrapped(cellToReplace[0], cellToReplace[1], recursiveVector, -1, 1);
+                return;
             }
             case MULTICOLOR: {
                 break;
             }
-            case NONE:
             default: {
                 break;
             }
         }
+        ++i;
     }
     moveCellsDown(cellsToReplace);
 }
 
 
 void MatchHandler::handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove) {
-    cellsToMove.push_back({i, j});
+//    cellsToMove.push_back({i, j});
     for (int k = 0; k < (int) CellsVertex[i].size(); ++k) {
         vector<int> cellToMove = {i, k};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
@@ -48,12 +59,12 @@ void MatchHandler::handleStrippedHorizontal(int i, int j, vector <vector<int>> c
 
 void MatchHandler::handleStrippedVertical(int i, int j,
                                           vector <vector<int>> cellsToMove) {
-    cellsToMove.push_back({i, j});
+//    cellsToMove.push_back({i, j});
     for (int k = 0; k < (int) CellsVertex.size(); ++k) {
         vector<int> cellToMove = {k, j};
-        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back(cellToMove);
-        }
+        cellsToMove.push_back(cellToMove);
+//        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+//        }
     }
     handleCellsToReplace(cellsToMove);
 }
@@ -65,7 +76,9 @@ MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int 
             vector<int> cellToMove = {i + k, j + l};
             if ((i + k >= 0 && i + k < (int) CellsVertex[i].size()) &&
                 (j + l >= 0 && j + l < (int) CellsVertex[j].size())) {
-                cellsToMove.push_back(cellToMove);
+                if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+                    cellsToMove.push_back(cellToMove);
+                }
             }
         }
     }
