@@ -4,6 +4,18 @@
 
 #include "Animation.h"
 
+void Animation::destroyCandy(Cell *cell) {
+    vector <Fl_Color> colors = {FL_LIGHT2, FL_LIGHT1, FL_BLACK, FL_LIGHT3};
+    cell->setHighlighted(true);
+    for (auto color: colors) {
+        cell->setHighlightColor(color);
+//    Fl::redraw();
+        Fl::wait(0.1);
+    }
+    cell->setHighlighted(false);
+    cell->setHighlightColor(FL_LIGHT3);
+}
+
 // still need to handle candy speciality
 void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
 //    for (auto &cellToReplace: cellsToReplace) {

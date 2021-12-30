@@ -87,6 +87,7 @@ MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int 
 }
 
 void MatchHandler::emptyCell(int i, int j) {
+    destroyCandy(&CellsVertex[i][j]);
     CellsVertex[i][j].setCandy(generateEmptyCandy());
 }
 

@@ -11,6 +11,7 @@
 class Animation : virtual public Game {
 public:
     void moveCellsDown(vector <vector<int>> cellsToReplace) override;
+    void destroyCandy(Cell *cell);
 };
 
 #endif //TEMP_CLASSES_ANIMATION_H

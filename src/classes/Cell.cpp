@@ -14,13 +14,14 @@ Cell::Cell(const Cell &c) {
 
 void Cell::draw() {
     if (drawBox) {
+        cout << "yes" << endl;
         array<Point, 5> points{
                 Point{center.x - cellSize / 10, center.y - cellSize / 4},
                 Point{center.x - cellSize / 10, center.y + cellSize},
                 Point{center.x + cellSize, center.y + cellSize},
                 Point{center.x + cellSize, center.y - cellSize},
                 Point{center.x + cellSize, center.y - cellSize / 4}};
-        fl_color(FL_LIGHT3);
+        fl_color(highlightColor);
         fl_begin_polygon();
         for (auto &point: points) {
             fl_vertex(point.x, point.y);
@@ -32,6 +33,10 @@ void Cell::draw() {
 
 void Cell::setHighlighted(bool val) {
     drawBox = val;
+}
+
+void Cell::setHighlightColor(Fl_Color color) {
+    highlightColor = color;
 }
 
 void Cell::animateCandy(Cell *swapCell) {

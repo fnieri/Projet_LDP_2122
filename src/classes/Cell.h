@@ -20,6 +20,7 @@ class Cell {
     int cellSize, margin;
     unique_ptr<Candy> candyPtr;
     bool drawBox = false;
+    Fl_Color highlightColor = FL_LIGHT3;
 public:
     Cell(Point, int, const Candy& candy, int margin);
 
@@ -44,6 +45,8 @@ public:
     void setCenter(Point);
 
     void setHighlighted(bool val);
+
+    void setHighlightColor(Fl_Color);
 };
 
 #endif
