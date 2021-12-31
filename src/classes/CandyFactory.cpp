@@ -1,8 +1,6 @@
 
 #include "CandyFactory.h"
 
-CandyFactory::CandyFactory() = default;
-
 Color CandyFactory::generateColor() {
     return static_cast<Color>(rand() % NUMBER_OF_COLORS);;
 }

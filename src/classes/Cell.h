@@ -45,8 +45,8 @@ public:
 
     void setObject(Clickable*);
 
-    template <class objectClass>
     //Check if current cellObjectPtr is of certain class
+    template <class objectClass>
     bool isClass();
 
     template <class objectClass>
@@ -58,8 +58,12 @@ public:
     template <class objectClass>
     bool isClass(shared_ptr<Clickable>);
 
+    bool hasObject();
+    
     Candy* getCandy();
 
+    Clickable* getClickable();
+    
     IcingStatus getStatus();
 
     void animateCandy(Cell*);

@@ -7,6 +7,8 @@
 
 #include "EventHandler.h"
 #include "MatchDetection.h"
+#include "LevelFactory.h"
+
 
 class Board : public EventHandler, public MatchDetection {
     int cellSize;

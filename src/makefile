@@ -23,7 +23,9 @@ POBJ=\
 	Clickable.o\
 	Icing.o\
 	Wall.o\
-	
+	LevelFactory.o
+
+
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
 main.out : $(OBJ)

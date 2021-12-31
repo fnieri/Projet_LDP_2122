@@ -5,38 +5,62 @@
 #include "MatchHandler.h"
 
 void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
-//    emptyCells(cellsToReplace);
-    for (auto &cellToReplace: cellsToReplace) {
-        CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
-        emptyCell(cellToReplace[0], cellToReplace[1]);
-        switch (cellSpeciality) {
-            case STRIPED_VERTICAL: {
-                handleStrippedVertical(cellToReplace[0], cellToReplace[1], cellsToReplace);
-                break;
+
+    vector <vector<int>> specialCells;
+    for (auto &cell: cellsToReplace) {
+        Cell currentCell = CellsVertex[cell[0]][cell[1]];
+        if (currentCell.isClass<Candy>()) {
+            CandySpeciality speciality = CellsVertex[cell[0]][cell[1]].getSpeciality();
+            if (speciality != NONE) {
+                specialCells.push_back(cell);
+            } else {
+                emptyCell(cell[0], cell[1]);
             }
-            case STRIPED_HORIZONTAL: {
-                handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], cellsToReplace);
-                break;
-            }
-            case BOMB: {
-                handleWrapped(cellToReplace[0], cellToReplace[1], cellsToReplace, -1, 1);
-                break;
-            }
-            case MULTICOLOR: {
-                break;
-            }
-            case NONE:
-            default: {
-                break;
+        }
+        else if (currentCell.isClass<Icing>()) {
+            IcingStatus status = currentCell.getStatus();
+            if (status == COMPLETE_ICING) {
+                currentCell.setObject(ClickableFactory::generateIcing(HALF_ICING));
+            } else {
+                emptyCell(cell[0], cell[1]);
             }
         }
     }
+
+    int i = 0;
+    for (auto &cellToReplace: specialCells) {
+            CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
+            emptyCell(cellToReplace[0], cellToReplace[1]);
+            vector <vector<int>> recursiveVector = {cellsToReplace.begin() + i, cellsToReplace.end()};
+            switch (cellSpeciality) {
+                case STRIPED_VERTICAL: {
+                    handleStrippedVertical(cellToReplace[0], cellToReplace[1], recursiveVector);
+                    return;
+                }
+                case STRIPED_HORIZONTAL: {
+                    handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], recursiveVector);
+                    return;
+                }
+                case BOMB: {
+                    handleWrapped(cellToReplace[0], cellToReplace[1], recursiveVector, -1, 1);
+                    return;
+                }
+                case MULTICOLOR: {
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+            ++i;
+        }
     moveCellsDown(cellsToReplace);
 }
 
 
+
 void MatchHandler::handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove) {
-    cellsToMove.push_back({i, j});
+   // cellsToMove.push_back({i, j});
     for (int k = 0; k < (int) CellsVertex[i].size(); ++k) {
         vector<int> cellToMove = {i, k};
         if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
@@ -48,12 +72,12 @@ void MatchHandler::handleStrippedHorizontal(int i, int j, vector <vector<int>> c
 
 void MatchHandler::handleStrippedVertical(int i, int j,
                                           vector <vector<int>> cellsToMove) {
-    cellsToMove.push_back({i, j});
+   //    cellsToMove.push_back({i, j});
     for (int k = 0; k < (int) CellsVertex.size(); ++k) {
         vector<int> cellToMove = {k, j};
-        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
-            cellsToMove.push_back(cellToMove);
-        }
+        cellsToMove.push_back(cellToMove);
+//        if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+//        }
     }
     handleCellsToReplace(cellsToMove);
 }
@@ -65,16 +89,51 @@ MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int 
             vector<int> cellToMove = {i + k, j + l};
             if ((i + k >= 0 && i + k < (int) CellsVertex[i].size()) &&
                 (j + l >= 0 && j + l < (int) CellsVertex[j].size())) {
-                cellsToMove.push_back(cellToMove);
+                if (find(cellsToMove.begin(), cellsToMove.end(), cellToMove) == cellsToMove.end()) {
+                    cellsToMove.push_back(cellToMove);
+                }
             }
         }
     }
-    handleCellsToReplace(cellsToMove);
-
 }
 
 void MatchHandler::emptyCell(int i, int j) {
-    CellsVertex[i][j].setObject(makeEmptyCandy());
+    
+    if (CellsVertex[i][j].isClass<Candy>()) {
+        CellsVertex[i][j].setObject(ClickableFactory::makeEmptyCandy());
+    }
+
+    else if (CellsVertex[i][j].isClass<Icing>()) {
+        if (CellsVertex[i][j].getStatus() == COMPLETE_ICING) {
+            CellsVertex[i][j].setObject(ClickableFactory::makeIcing(HALF_ICING));
+        }
+        else {
+            CellsVertex[i][j].setObject(ClickableFactory::makeEmptyCandy());       
+        }
+    }
+
+    vector <array<int, 2>> deltas = {{0,  1},
+                                     {1,  0},
+                                     {0,  -1},
+                                     {-1, 0}};
+    
+    //Check if there are are neighboring icing cells
+    for (auto d: deltas) {
+        int dx = i + d[0];
+        int dy = j + d[1];
+        try {
+            if (CellsVertex.at(dx).at(dy).isClass<Icing>()) {
+                IcingStatus status = CellsVertex.at(dx).at(dy).getStatus();
+                if (status == COMPLETE_ICING) {
+                    CellsVertex[dx][dy].setObject(ClickableFactory::makeIcing(HALF_ICING));
+                }
+                else {
+                    CellsVertex[dx][dy].setObject(ClickableFactory::makeEmptyCandy());
+                }
+            }
+        } 
+        catch (std::out_of_range &e) {continue;}
+    }
 }
 
 void MatchHandler::emptyCells(vector <vector<int>> cellsToEmpty) {
@@ -86,28 +145,20 @@ void MatchHandler::emptyCells(vector <vector<int>> cellsToEmpty) {
 void MatchHandler::MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor,
                                           Color secondColor, vector <CandySpeciality> specialities) {
     Color colorToHandle = firstColor != Color::MULTICOLOR ? firstColor : secondColor;
-    //Firstly remove multicolor and other candy because they wont be removed after
-//    moveCellsDown(vector < vector < int >> ({
-//        { firstCellPosition.x, firstCellPosition.y },
-//        { secondCellPosition.x, secondCellPosition.y }
-//    }));
 
     vector <vector<int>> cellsToCrush = {{firstCellPosition.x,  firstCellPosition.y},
                                          {secondCellPosition.x, secondCellPosition.y}};
-//    if (firstColor == Color::MULTICOLOR) cellsToCrush.push_back({firstCellPosition.x, firstCellPosition.y});
-//    else cellsToCrush.push_back({secondCellPosition.x, secondCellPosition.y});
 
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (CellsVertex[i][j].getColor() == colorToHandle) {
-                setCellAt(static_cast<CandySpeciality>(rand() % specialities.size()), colorToHandle, i, j);
+                setCellAt(specialities.at(rand() % specialities.size()), colorToHandle, i, j);
                 //Choose randomly between specialities sent, this is done because of the striped case
-                // that makes no fucking sense my guy
                 cellsToCrush.push_back({i, j});
             }
         }
+        handleCellsToReplace(cellsToCrush);
     }
-    handleCellsToReplace(cellsToCrush);
 }
 
 void MatchHandler::normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition) {
@@ -116,7 +167,6 @@ void MatchHandler::normalCandyAndMulticolorInteraction(Color colorToRemove, Poin
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (CellsVertex[i][j].getColor() == colorToRemove) {
                 handleCellsToReplace(vector < vector < int >> ({{ i, j }}));
-//                moveCellsDown(vector < vector < int >> ({{ i, j }}));
             }
         }
     }
@@ -141,42 +191,6 @@ void MatchHandler::doubleWrappedInteraction(Point firstCellPosition, Point secon
     handleWrapped(firstCellPosition.x, firstCellPosition.y, cellsToMove, -2, 2);
 }
 
-void
-MatchHandler::stripedMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToStripe) {
-    moveCellsDown(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
-                                            {secondCellPosition.x, secondCellPosition.y}});
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        vector <vector<int>> cellsToCrush;
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToStripe) {
-                //Choose randomly between striped horizontal and vertical
-                setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), colorToStripe, i, j);
-                //Choose randomly between striped orientation
-                cellsToCrush.push_back({i, j});
-            }
-        }
-        Fl::wait(0.3);
-        moveCellsDown(cellsToCrush);
-
-    }
-}
-
-
-void
-MatchHandler::wrappedAndMulticolorInteraction(Point firstCellPosition, Point secondCellPosition, Color colorToWrap) {
-    emptyCells(vector < vector < int >> {{firstCellPosition.x,  firstCellPosition.y},
-                                         {secondCellPosition.x, secondCellPosition.y}});
-    for (int i = 0; i < (int) CellsVertex.size(); i++) {
-        vector <vector<int>> cellsToCrush;
-        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].getColor() == colorToWrap) {
-                CellsVertex[i][j].setObject(generateCandy(BOMB, colorToWrap));
-                cellsToCrush.push_back({i, j});
-            }
-            moveCellsDown(cellsToCrush);
-        }
-    }
-}
 
 void MatchHandler::doubleMulticolorInteraction() {
     reset();

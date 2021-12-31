@@ -11,12 +11,10 @@ Cell::Cell(const Cell &c) {
     center = c.center;
     cellSize = c.cellSize;
     margin = c.margin;
-    
-    castClickable(c.cellObjectPtr);
     cellObjectPtr = std::move(c.cellObjectPtr);
 }
 
-
+// https://en.cppreference.com/w/cpp/language/dynamic_cast
 void Cell::castClickable(Clickable* cellClickable) {
     if (isClass<Candy>(cellClickable)) {
         cellClickable = dynamic_cast<Candy*>(cellClickable);
@@ -46,6 +44,13 @@ void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
         cellClickable = dynamic_pointer_cast<Icing>(cellClickable);
     }
     
+}
+
+bool Cell::hasObject() {
+    if (cellObjectPtr) {
+        return true;
+    }
+    return false;
 }
 
 void Cell::draw() {

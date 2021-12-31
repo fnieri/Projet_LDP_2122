@@ -6,32 +6,25 @@
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
     setMargin(margin);
-    int y = margin;
-    int size = sqrt(numberOfCells);
-    for (int i = 0; i < size; ++i) {
-        vector <Cell> cellRow;
-        for (int j = 0; j < size; ++j) {
-            Point center{margin * j + margin, y};
-            Candy candy = generateCandy(CandySpeciality::NONE);
-            Cell cell{center, cellSize, &candy, margin};
-            cellRow.push_back(cell);
-        }
-        CellsVertex.push_back(cellRow);
-        y += margin;
-    }
-    while (checkMatches());
+    CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
+  
+    //while (checkMatches());
 }
 
 void Board::reset() {
+    
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
-            cell.setObject(generateCandy(CandySpeciality::NONE));
+            cell.setObject(ClickableFactory::generateCandy(CandySpeciality::NONE));
         }
     }
     while (checkMatches());
-
-    CellsVertex[5][6].setObject(generateCandy(STRIPED_VERTICAL));
-    // CellsVertex[5][5].setObject(CandyFactory::generateCandy(MULTICOLOR));
+    CellsVertex[5][4].setObject(ClickableFactory::makeIcing(HALF_ICING));
+    CellsVertex[5][3].setObject(ClickableFactory::makeIcing(COMPLETE_ICING));
+    CellsVertex[5][5].setObject(ClickableFactory::makeCandy(MULTICOLOR));
+    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(BOMB));
+    CellsVertex[5][7].setObject(ClickableFactory::makeWall());
+    
 };
 
 void Board::draw() {
@@ -47,7 +40,7 @@ void Board::handleBoardDrag(Point p1, Point p2) {
     unHighlightAll();
     selectedCell = getCellFromPosition(p1);
     Cell *secondCell = getCellFromPosition(p2);
-    if (selectedCell && secondCell) {
+    if ((selectedCell && secondCell) && (selectedCell->isClass<Candy>() && secondCell->isClass<Candy>())) {
         selectedCellCenter = selectedCell->getCenter();
         selectedCellPosition = p1;
         swapCells(secondCell, p2);
@@ -84,7 +77,7 @@ Cell *Board::cellAt(Point p) {
     }
     return nullptr;
 }
-
+ 
 Point Board::getPositionOfCell(Point p) {
     for (int i = 0; i < (int) CellsVertex.size(); ++i) {
         for (int j = 0; j < (int) CellsVertex[i].size(); ++j) {
@@ -113,7 +106,7 @@ void Board::setSwapCellPosition(Point p) {
 }
 
 void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) {
-    CellsVertex[i][j].setObject(generateCandy(newSpeciality, newColor));
+    CellsVertex[i][j].setObject(ClickableFactory::makeCandy(newSpeciality, newColor));
 }
 
 void Board::shuffle() {
@@ -129,17 +122,21 @@ void Board::shuffle() {
 }
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
+    setAcceptInput(false);
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        exchangeCells(selectedCell, swapCell);
-        checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition);
-        if (!checkMatches()) {
+        if (selectedCell->isClass<Candy>() && swapCell->isClass<Candy>()) {
             exchangeCells(selectedCell, swapCell);
-        } else {
-            while (checkMatches());
-            while (!checkIfShuffleIsNeeded()) shuffle();
+            checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition);
+            if (!checkMatches()) {
+                exchangeCells(selectedCell, swapCell);
+            } else {
+                while (checkMatches());
+                while (!checkIfShuffleIsNeeded()) shuffle();
+            }
         }
     }
     selectedCell = nullptr;
+    setAcceptInput(true);
 }
 
 bool Board::checkIfShuffleIsNeeded() {

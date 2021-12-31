@@ -13,9 +13,7 @@
 #include "Color.h"
 
 class CandyFactory {
-public:
-
-    CandyFactory();
+private:
 
     static Color generateColor();
 
@@ -27,6 +25,8 @@ public:
     generateFullPath(CandySpeciality speciality, const std::string &colorPrefix, const std::string &specialityPath);
 
     static std::string generateImageName(Color color, CandySpeciality speciality);
+    
+public:
 
     static Candy generateCandy( CandySpeciality speciality);
 

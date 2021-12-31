@@ -7,6 +7,8 @@
 
 #include "Animation.h"
 #include "ClickableFactory.h"
+#include "ScoreCalculator.h"
+
 
 class MatchHandler : public Animation {
 public:
@@ -29,10 +31,6 @@ public:
     void stripedAndWrappedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
 
     void doubleWrappedInteraction(Point, Point);
-
-    void stripedMulticolorInteraction(Point, Point, Color);
-
-    void wrappedAndMulticolorInteraction(Point, Point, Color);
 
     void doubleMulticolorInteraction();
 

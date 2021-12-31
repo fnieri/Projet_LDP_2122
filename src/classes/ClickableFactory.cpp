@@ -9,7 +9,7 @@ Candy ClickableFactory::makeCandy(CandySpeciality speciality, Color color) {
 }
 
 Candy ClickableFactory::makeEmptyCandy() {
-    return CandyFactory::generateEmptyCandy();
+    return generateEmptyCandy();
 }
 
 Icing ClickableFactory::makeIcing(IcingStatus status) {

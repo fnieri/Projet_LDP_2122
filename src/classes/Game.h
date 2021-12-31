@@ -12,14 +12,17 @@
 #include <vector>
 #include <algorithm>
 
+#include "Clickable.h"
 #include "Candy.h"
 #include "Cell.h"
 #include "CandyFactory.h"
 #include "CandySpeciality.h"
 #include "Common.h"
 #include "ClickableFactory.h"
+#include "Icing.h"
+#include "Wall.h"
 
-class Game : public ClickableFactory {
+class Game{
 protected:
     int margin;
     vector <vector<Cell>> CellsVertex;
@@ -45,7 +48,7 @@ public:
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 
     void createSpecialCandy(int, int, CandySpeciality);
-
+    
     virtual void reset() = 0;
 
     virtual bool handleBoardContains(Point p) = 0;
@@ -73,6 +76,8 @@ public:
     virtual void setSwapCellPosition(Point p) = 0;
 
     virtual void emptyCells(vector <vector<int>> cellsToEmpty) = 0;
+
+
 };
 
 
