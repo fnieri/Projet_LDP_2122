@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "Canvas.h"
+#include "Splashscreen.h"
 
 
 using namespace std;
@@ -27,12 +28,14 @@ MainWindow class.
 
 --------------------------------------------------*/
 
+
 class MainWindow : public Fl_Window {
-    Canvas canvas{50,60,100};
+    Canvas canvas{50, 60, 100, "splashscreen.png"};
+    Splashscreen splashscreen{"classes/index.png"};
 public:
     MainWindow() : Fl_Window(500, 500, windowWidth, windowHeight, "Candy Crush") {
         Fl::add_timeout(1.0 / refreshPerSecond, Timer_CB, this);
-        resizable(this);
+//        resizable(this);
     }
 
     void draw() override {
@@ -67,8 +70,6 @@ public:
         o->redraw();
         Fl::repeat_timeout(1.0 / refreshPerSecond, Timer_CB, userdata);
     }
-
-
 };
 
 /*--------------------------------------------------

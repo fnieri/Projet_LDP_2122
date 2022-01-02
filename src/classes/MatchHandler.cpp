@@ -12,6 +12,7 @@ void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
             specialCells.push_back(cell);
         } else {
             emptyCell(cell[0], cell[1]);
+
         }
     }
 //    emptyCells(cellsToReplace);

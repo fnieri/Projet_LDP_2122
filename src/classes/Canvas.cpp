@@ -1,10 +1,16 @@
 #include "Canvas.h"
 
-Canvas::Canvas(int cellSize, int margin, int numberOfCells) : Board(cellSize, margin, numberOfCells) {
-
+Canvas::Canvas(int cellSize, int margin, int numberOfCells, const char *filename) :
+        Board(cellSize, margin, numberOfCells), Splashscreen(filename) {
 }
 
 void Canvas::draw() {
+    if (showSplashscreen) {
+        Splashscreen::draw(0, 0, w(), h());
+        Fl::check();
+        sleep(2);
+        showSplashscreen = false;
+    }
     fl_color(FL_WHITE);
     fl_rectf(50, 45, 605, 605, FL_WHITE);
     fl_rect(50, 45, 605, 605, FL_BLACK);

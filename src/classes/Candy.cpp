@@ -9,10 +9,10 @@ Candy::Candy(const Candy &c) :
 
 Candy::~Candy() = default;
 
-void Candy::setSize(int size) {
-    h( size);
-    w(size+1);
-}
+//void Candy::setSize(int size) {
+//    h( size);
+//    w(size+1);
+//}
 
 Color Candy::getColor() const {
     return color;

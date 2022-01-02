@@ -15,7 +15,7 @@ public:
     Candy(const char *filename, Color color, CandySpeciality speciality=CandySpeciality::NONE);
     Candy(const Candy &c);
     virtual ~Candy();
-    void setSize(int size);
+//    void setSize(int size);
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
     virtual void setColor(Color newColor);

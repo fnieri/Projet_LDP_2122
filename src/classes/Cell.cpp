@@ -14,7 +14,6 @@ Cell::Cell(const Cell &c) {
 
 void Cell::draw() {
     if (drawBox) {
-        cout << "yes" << endl;
         array<Point, 5> points{
                 Point{center.x - cellSize / 10, center.y - cellSize / 4},
                 Point{center.x - cellSize / 10, center.y + cellSize},

@@ -18,6 +18,7 @@ POBJ=\
 	MainWindow.o\
 	MatchDetection.o\
 	MatchHandler.o\
+	Splashscreen.o\
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
