@@ -1,7 +1,6 @@
 #include "LevelFactory.h"
 
 Cell LevelFactory::buildCell(int id, Point center, int cellSize, int margin) {
-       std::cout << id << std::endl;
        if (id == 0) {
             Candy candy = ClickableFactory::makeCandy(NONE);
             return {center, cellSize, &candy, margin};
@@ -53,12 +52,13 @@ vector <vector <Cell> >
                 Cell cell = buildCell(item, center, cellSize, margin);
                 column++;
                 cellRow.push_back(cell);
-           }
+            }
             y+=margin;
             column = 0;
             cellsVector.push_back(cellRow);
             cellRow.clear();
         }
+    levelFile.close();
     }
     return cellsVector;
 }

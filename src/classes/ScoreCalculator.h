@@ -2,6 +2,7 @@
 #define __SCORECALCULATOR_H
 
 #include "CandySpeciality.h"
+#include "IcingStatus.h"
 
 enum Interaction {
     NONE_MULTICOLOR = 5,
@@ -16,8 +17,10 @@ enum Interaction {
 class ScoreCalculator {
 
     public:
-        int returnInteractionScore(Interaction);
-        int returnCandyScore(CandySpeciality);
+        static int returnInteractionScore(Interaction);
+        static int returnCandyScore(CandySpeciality);
+        static int returnIcingScore(IcingStatus);
+
 };
 
 #endif

@@ -7,7 +7,7 @@
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
     setMargin(margin);
     CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
-  
+    getInitialHighScore();
     //while (checkMatches());
 }
 
@@ -22,7 +22,7 @@ void Board::reset() {
     CellsVertex[5][4].setObject(ClickableFactory::makeIcing(HALF_ICING));
     CellsVertex[5][3].setObject(ClickableFactory::makeIcing(COMPLETE_ICING));
     CellsVertex[5][5].setObject(ClickableFactory::makeCandy(MULTICOLOR));
-    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(BOMB));
+    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(MULTICOLOR));
     CellsVertex[5][7].setObject(ClickableFactory::makeWall());
     
 };
@@ -40,7 +40,7 @@ void Board::handleBoardDrag(Point p1, Point p2) {
     unHighlightAll();
     selectedCell = getCellFromPosition(p1);
     Cell *secondCell = getCellFromPosition(p2);
-    if ((selectedCell && secondCell) && (selectedCell->isClass<Candy>() && secondCell->isClass<Candy>())) {
+    if ((selectedCell && secondCell) && (isCandy(selectedCell) && isCandy(selectedCell))) {
         selectedCellCenter = selectedCell->getCenter();
         selectedCellPosition = p1;
         swapCells(secondCell, p2);
@@ -124,7 +124,7 @@ void Board::shuffle() {
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        if (selectedCell->isClass<Candy>() && swapCell->isClass<Candy>()) {
+        if (isCandy(selectedCell) && isCandy(swapCell)) {
             exchangeCells(selectedCell, swapCell);
             checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition);
             if (!checkMatches()) {
@@ -172,9 +172,11 @@ bool Board::checkIfShuffleIsNeeded() {
 }
 
 void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {
-    Candy firstCellCandy = *cell1->getCandy();
-    cell1->setObject(*cell2->getCandy());
-    cell2->setObject(firstCellCandy);
+    if (isCandy(cell1) && isCandy(cell2)) {
+        Candy firstCellCandy = *cell1->getCandy();
+        cell1->setObject(*cell2->getCandy());
+        cell2->setObject(firstCellCandy);
+    }
 }
 
 void Board::exchangeCells(Cell *cell1, Cell *cell2) {

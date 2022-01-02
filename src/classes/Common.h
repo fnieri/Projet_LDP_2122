@@ -8,6 +8,8 @@
 #include <experimental/filesystem>
 
 
+namespace fs = std::experimental::filesystem;
+
 struct Point {
     int x, y;
 
@@ -21,7 +23,8 @@ struct Point {
 };
 
 #define NUMBER_OF_COLORS 6
-#define WORKING_DIRECTORY std::string(std::experimental::filesystem::current_path())
+#define WORKING_DIRECTORY std::string(fs::current_path())
+#define BEST_SCORE_FILE std::string("best_score/best_score.txt")
 
 
 #endif

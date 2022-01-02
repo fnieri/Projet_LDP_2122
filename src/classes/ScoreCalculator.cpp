@@ -21,3 +21,7 @@ int ScoreCalculator::returnCandyScore(CandySpeciality speciality) {
     }
 
 }
+
+int ScoreCalculator::returnIcingScore(IcingStatus status) {
+    return ((int) status + 1) * 5;
+}

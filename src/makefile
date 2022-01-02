@@ -23,8 +23,8 @@ POBJ=\
 	Clickable.o\
 	Icing.o\
 	Wall.o\
-	LevelFactory.o
-
+	LevelFactory.o\
+	ScoreCalculator.o
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 

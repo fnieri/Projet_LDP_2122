@@ -26,9 +26,13 @@ class Game{
 protected:
     int margin;
     vector <vector<Cell>> CellsVertex;
-    int score = 42069;
+    int score = 0;
+    int hiScore;
     bool acceptInput = true;
+    
 public:
+    void getInitialHighScore();
+    
     bool contains(Point p);
 
     void highlight(Point p);
@@ -48,6 +52,17 @@ public:
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 
     void createSpecialCandy(int, int, CandySpeciality);
+    
+    bool isCandy(Cell *cell) {return cell->isClass<Candy>();};
+
+    bool isCandy(Cell cell) {return cell.isClass<Candy>();};
+
+    bool isIcing(Cell cell) {return cell.isClass<Icing>();};
+    
+    void addToScore(int scoreToAdd);
+    
+    void saveHighscore();
+
     
     virtual void reset() = 0;
 

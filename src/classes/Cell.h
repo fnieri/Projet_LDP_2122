@@ -25,6 +25,7 @@ class Cell {
     shared_ptr<Clickable> cellObjectPtr;
     int margin;
     bool drawBox = false;
+    Fl_Color highlightColor = FL_LIGHT3;
 public:
     Cell(Point, int, Clickable*, int);
 
@@ -34,6 +35,8 @@ public:
     void castClickable(Clickable*);
     
     bool contains(Point p) const;
+
+    void setHighlightColor(Fl_Color);
 
     void draw();
 

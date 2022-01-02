@@ -40,6 +40,14 @@ public:
     void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor,
                                 vector <CandySpeciality> specialities);
 
+    void sendInteractionScore(Interaction);
+
+    void sendScoreMulticolor(CandySpeciality);
+
+    void sendIcingScore(IcingStatus);
+
+    void sendSpecialityScore(CandySpeciality);
+
 };
 
 

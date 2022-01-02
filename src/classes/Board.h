@@ -2,8 +2,8 @@
 // Created by louis on 19/12/2021.
 //
 
-#ifndef TEMP_CLASSES_BOARD_H
-#define TEMP_CLASSES_BOARD_H
+#ifndef __BOARD_H
+#define __BOARD_H
 
 #include "EventHandler.h"
 #include "MatchDetection.h"

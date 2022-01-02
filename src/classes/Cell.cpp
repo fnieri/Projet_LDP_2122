@@ -61,7 +61,7 @@ void Cell::draw() {
                 Point{center.x + cellSize, center.y + cellSize},
                 Point{center.x + cellSize, center.y - cellSize},
                 Point{center.x + cellSize, center.y - cellSize / 4}};
-        fl_color(FL_LIGHT3);
+        fl_color(highlightColor);
         fl_begin_polygon();
         for (auto &point: points) {
             fl_vertex(point.x, point.y);
@@ -69,6 +69,11 @@ void Cell::draw() {
         fl_end_polygon();
     }
     cellObjectPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, cellObjectPtr->w(), cellObjectPtr->h());
+}
+
+
+void Cell::setHighlightColor(Fl_Color color) {
+    highlightColor = color;
 }
 
 void Cell::setHighlighted(bool val) {
