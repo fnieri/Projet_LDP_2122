@@ -12,9 +12,9 @@ void Canvas::draw() {
     fl_rect(50, 0, 605, 40, FL_BLACK);
 
     string scoreStr = "Score: " + to_string(score);
-
+    string hiScoreStr = "High score: " + to_string(hiScore);
     fl_draw(scoreStr.c_str(), 60, 20);
-
+    fl_draw(hiScoreStr.c_str(), 450, 20);
     // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
     Board::draw();
 }
