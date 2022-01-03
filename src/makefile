@@ -24,8 +24,7 @@ POBJ=\
 	Icing.o\
 	Wall.o\
 	LevelFactory.o\
-	ScoreCalculator.o\
-	GameObjective.o
+	ScoreCalculator.o
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 

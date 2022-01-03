@@ -1,4 +1,6 @@
 #ifndef __COLOR_H
+
+
 #define __COLOR_H
 
 enum class Color {

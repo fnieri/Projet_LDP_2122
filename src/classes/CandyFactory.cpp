@@ -14,12 +14,18 @@ std::string CandyFactory::generateSpecialityPath(CandySpeciality speciality) {
 
 std::string CandyFactory::generateColorPrefix(Color color) {
     switch (color) {
-        case Color::RED: return "red";
-        case Color::ORANGE: return "orange";
-        case Color::YELLOW: return "yellow";
-        case Color::GREEN: return "green";
-        case Color::BLUE: return "blue";
-        case Color::PURPLE: return "purple";
+        case Color::RED:
+            return "red_";
+        case Color::ORANGE:
+            return "orange_";
+        case Color::YELLOW:
+            return "yellow_";
+        case Color::GREEN:
+            return "green_";
+        case Color::BLUE:
+            return "blue_";
+        case Color::PURPLE:
+            return "purple_";
         default:
             break;
     }
@@ -32,16 +38,16 @@ CandyFactory::generateFullPath(CandySpeciality speciality, const std::string &co
     std::string candyPath;
     switch (speciality) {
         case CandySpeciality::NONE:
-            candyPath = "_01.png";
+            candyPath = "01.png";
             break;
         case CandySpeciality::STRIPED_HORIZONTAL:
-            candyPath = "_horizontal.png";
+            candyPath = "horizontal.png";
             break;
         case CandySpeciality::STRIPED_VERTICAL:
-            candyPath = "_vertical.png";
+            candyPath = "vertical.png";
             break;
         case CandySpeciality::BOMB:
-            candyPath = "_bomb.png";
+            candyPath = "bomb.png";
             break;
         case CandySpeciality::MULTICOLOR:
             return specialityPath + "multicolor.png";
@@ -80,5 +86,4 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
 
 Candy CandyFactory::generateEmptyCandy() {
     return {nullptr, Color::BLUE};
-
 }

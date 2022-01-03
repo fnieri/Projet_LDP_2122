@@ -3,8 +3,8 @@
 
 #include <Fl/Fl_PNG_Image.H>
 #include "Common.h"
-#include "Enums/Color.h"
-#include "Enums/CandySpeciality.h"
+#include "Color.h"
+#include "CandySpeciality.h"
 #include "Clickable.h"
 
 class Candy :  public Clickable {
@@ -17,6 +17,7 @@ public:
     ~Candy();
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
+    virtual void setColor(Color newColor);
 };
 
 #endif

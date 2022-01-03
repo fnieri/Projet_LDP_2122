@@ -4,7 +4,7 @@
 
 #include "Candy.h"
 #include "ClickableFactory.h"
-#include "Enums/IcingStatus.h"
+#include "IcingStatus.h"
 #include "Cell.h"
 #include <cstdlib>
 #include <iostream> 

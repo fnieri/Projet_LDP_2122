@@ -36,11 +36,9 @@ vector <vector <Cell> >
     vector < vector < int >> lineInfo;
     if (levelFile.is_open()) {
 
-        while(std::getline(levelFile, clickableID)) { 
-            //Read file content line by line
+        while(std::getline(levelFile, clickableID)) { //Read file content line by line
             
             for (int i = 0; i < (int) clickableID.size(); i++) {
-                //Push each line into a vector
                 idRow.push_back((int) clickableID[i] - asciiCharDiff);
             }
      
@@ -49,7 +47,6 @@ vector <vector <Cell> >
         }
 
         for (auto &line: lineInfo) {
-            //Create level from vector
             for (auto &item: line) {
                 Point center{margin * column + margin, y};
                 Cell cell = buildCell(item, center, cellSize, margin);

@@ -8,10 +8,9 @@
 #include "Animation.h"
 #include "ClickableFactory.h"
 #include "ScoreCalculator.h"
-#include "Enums/Interaction.h"
-#include "GameObjective.h"
 
-class MatchHandler : public Animation, public GameObjective {
+
+class MatchHandler : public Animation {
 public:
     void handleCellsToReplace(vector <vector<int>> cellsToReplace);
 

@@ -3,7 +3,7 @@
 
 #include <Fl/Fl_PNG_Image.H>
 #include "Common.h"
-#include "Enums/IcingStatus.h"
+#include "IcingStatus.h"
 #include "Clickable.h"
 
 class Icing : public Clickable {

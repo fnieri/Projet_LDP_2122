@@ -8,8 +8,7 @@
 #include "EventHandler.h"
 #include "MatchDetection.h"
 #include "LevelFactory.h"
-#include "GameObjective.h"
-#include "Enums/Interaction.h"
+
 
 class Board : public EventHandler, public MatchDetection {
     int cellSize;
