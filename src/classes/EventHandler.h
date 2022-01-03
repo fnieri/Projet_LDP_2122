@@ -12,17 +12,10 @@
 class EventHandler : virtual public Game {
 private:
     Point firstPosition{};
-//    Point secondPosition{-1 , -1};
 public:
     void resetEvent();
-//    Point getFirstPosition();
-//    Point getSecondPosition();
     void setFirstPosition(Point p);
-
-//    void setSecondPosition(Point p);
-//    void setEventSelectedCell(Point p);
-//    void setEventSwapCell(Point p);
-    void handleMouseDrag(Point p);
+ void handleMouseDrag(Point p);
 
     void handleMouseEvent(Point p);
 

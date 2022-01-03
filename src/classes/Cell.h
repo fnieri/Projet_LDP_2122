@@ -11,9 +11,9 @@
 
 #include "Common.h"
 #include "Candy.h"
-#include "Color.h"
+#include "Enums/Color.h"
 #include "Clickable.h"
-#include "IcingStatus.h"
+#include "Enums/IcingStatus.h"
 #include "Icing.h"
 #include "Wall.h"
 
@@ -78,6 +78,7 @@ public:
     void animateGravity(Point destination);
 
     void setHighlighted(bool val);
+    void removeObject() {cellObjectPtr = nullptr;}; 
 };
 
 #endif
