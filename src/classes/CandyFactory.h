@@ -33,6 +33,8 @@ public:
     static Candy generateCandy(CandySpeciality speciality, Color color);
 
     static Candy generateEmptyCandy();
+
+    Candy generateBoomCandy();
 };
 
 

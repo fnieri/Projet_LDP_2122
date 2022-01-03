@@ -9,7 +9,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     int y = margin;
     int size = sqrt(numberOfCells);
     for (int i = 0; i < size; ++i) {
-        vector <Cell> cellRow;
+        vector<Cell> cellRow;
         for (int j = 0; j < size; ++j) {
             Point center{margin * j + margin, y};
             Candy candy = generateCandy(CandySpeciality::NONE);
@@ -30,8 +30,9 @@ void Board::reset() {
     }
     while (checkMatches());
 
-    CellsVertex[5][6].setCandy(generateCandy(BOMB));
-    // CellsVertex[5][5].setCandy(CandyFactory::generateCandy(MULTICOLOR));
+    CellsVertex[5][6].setCandy(generateCandy(STRIPED_HORIZONTAL));
+//    CellsVertex[6][6].setCandy(generateCandy(BOMB));
+     CellsVertex[5][5].setCandy(CandyFactory::generateCandy(BOMB));
 };
 
 void Board::draw() {
@@ -131,7 +132,12 @@ void Board::shuffle() {
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         exchangeCells(selectedCell, swapCell);
-        checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition);
+        if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, swapCellPosition)) {
+            selectedCell = nullptr;
+            while (checkMatches());
+            while (!checkIfShuffleIsNeeded()) shuffle();
+            return;
+        }
         if (!checkMatches()) {
             exchangeCells(selectedCell, swapCell);
         } else {
@@ -143,10 +149,10 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
 }
 
 bool Board::checkIfShuffleIsNeeded() {
-    vector <array<int, 2>> deltas = {{0,  1},
-                                     {1,  0},
-                                     {0,  -1},
-                                     {-1, 0}};
+    vector<array<int, 2>> deltas = {{0,  1},
+                                    {1,  0},
+                                    {0,  -1},
+                                    {-1, 0}};
     for (int i = 0; i < (int) CellsVertex.size(); ++i) {
         for (int j = 0; j < (int) CellsVertex[i].size(); ++j) {
             Cell *tempCell = &CellsVertex[i][j];

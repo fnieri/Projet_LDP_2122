@@ -12,6 +12,10 @@ Cell::Cell(const Cell &c) {
     candyPtr = make_unique<Candy>(*c.candyPtr);
 }
 
+bool Cell::isEmpty() {
+    return candyPtr->isEmpty();
+}
+
 void Cell::draw() {
     if (drawBox) {
         array<Point, 5> points{
@@ -20,7 +24,7 @@ void Cell::draw() {
                 Point{center.x + cellSize, center.y + cellSize},
                 Point{center.x + cellSize, center.y - cellSize},
                 Point{center.x + cellSize, center.y - cellSize / 4}};
-        fl_color(highlightColor);
+        fl_color(FL_LIGHT3);
         fl_begin_polygon();
         for (auto &point: points) {
             fl_vertex(point.x, point.y);
@@ -32,10 +36,6 @@ void Cell::draw() {
 
 void Cell::setHighlighted(bool val) {
     drawBox = val;
-}
-
-void Cell::setHighlightColor(Fl_Color color) {
-    highlightColor = color;
 }
 
 void Cell::animateCandy(Cell *swapCell) {

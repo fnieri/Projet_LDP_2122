@@ -10,6 +10,7 @@ void Canvas::draw() {
         Fl::check();
         sleep(2);
         showSplashscreen = false;
+        Fl::check();
     }
     fl_color(FL_WHITE);
     fl_rectf(50, 45, 605, 605, FL_WHITE);

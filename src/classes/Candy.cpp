@@ -14,6 +14,10 @@ Candy::~Candy() = default;
 //    w(size+1);
 //}
 
+bool Candy::isEmpty() const {
+    return getColor() == Color::NONE;
+}
+
 Color Candy::getColor() const {
     return color;
 }

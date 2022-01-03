@@ -11,6 +11,11 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "Candy.h"
 #include "Cell.h"
