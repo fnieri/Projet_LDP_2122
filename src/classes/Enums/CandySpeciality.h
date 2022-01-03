@@ -5,8 +5,9 @@ enum CandySpeciality {
     NONE,
     STRIPED_HORIZONTAL,
     STRIPED_VERTICAL,
-    BOMB,
-    MULTICOLOR
+    BOMB,   
+    MULTICOLOR,
+    SPECIALITY_COUNT
 };
 
 #endif

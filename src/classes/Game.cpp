@@ -92,8 +92,8 @@ void Game::saveHighscore()
         {
             //Save high score
             bestScoreFile << to_string(hiScore);
-            bestScoreFile.close();
         }
+        bestScoreFile.close();
     }
 }
 
@@ -105,6 +105,42 @@ void Game::getInitialHighScore()
     {
         std::getline(bestScoreFile, currentBestScore);
         hiScore = stoi(currentBestScore);
-        bestScoreFile.close();
     }
+    bestScoreFile.close();
+}
+
+int Game::getScore() {
+    return score;
+}
+
+int Game::getMovesLeft() {
+    return movesLeft;
+}
+
+bool Game::gameIsOver() {
+    if (movesLeft <= 0) {
+        setGameState(true);
+        return true;
+    }
+    return false;
+}
+
+void Game::setGameState(bool newState) {
+    gameOver = false;
+}
+
+void Game::decreaseMovesLeft() {
+    if (!gameIsOver())
+    movesLeft -= 1;
+}
+
+void Game::setMovesLeft(int newMoves) {
+    movesLeft = newMoves;
+}
+
+void Game::resetGame() {
+    setMovesLeft(30);
+    setGameState(false);
+    score = 0;
+
 }

@@ -9,22 +9,19 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
     CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
     getInitialHighScore();
     //while (checkMatches());
+    
 }
 
-void Board::reset() {
-    
+void Board::reset() {  
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
             cell.setObject(ClickableFactory::generateCandy(CandySpeciality::NONE));
         }
     }
     while (checkMatches());
-    CellsVertex[5][4].setObject(ClickableFactory::makeIcing(HALF_ICING));
-    CellsVertex[5][3].setObject(ClickableFactory::makeIcing(COMPLETE_ICING));
     CellsVertex[5][5].setObject(ClickableFactory::makeCandy(MULTICOLOR));
     CellsVertex[5][6].setObject(ClickableFactory::makeCandy(MULTICOLOR));
-    CellsVertex[5][7].setObject(ClickableFactory::makeWall());
-    
+    CellsVertex[5][7].setObject(ClickableFactory::makeWall());   
 };
 
 void Board::draw() {
@@ -133,6 +130,7 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
                 while (checkMatches());
                 while (!checkIfShuffleIsNeeded()) shuffle();
             }
+            decreaseMovesLeft();
         }
     }
     selectedCell = nullptr;

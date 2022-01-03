@@ -9,6 +9,7 @@ void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
     vector <vector<int>> specialCells;
     for (auto &cell: cellsToReplace) {
         Cell currentCell = CellsVertex[cell[0]][cell[1]];
+        decreaseObjective(currentCell);
         if (isCandy(currentCell)) {
             CandySpeciality speciality = CellsVertex[cell[0]][cell[1]].getSpeciality();
             sendSpecialityScore(speciality);
@@ -34,32 +35,32 @@ void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
 
     int i = 0;
     for (auto &cellToReplace: specialCells) {
-            CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
-            emptyCell(cellToReplace[0], cellToReplace[1]);
-            vector <vector<int>> recursiveVector = {cellsToReplace.begin() + i, cellsToReplace.end()};
-            switch (cellSpeciality) {
-                case STRIPED_VERTICAL: {
-                    handleStrippedVertical(cellToReplace[0], cellToReplace[1], recursiveVector);
-                    return;
-                }
-                case STRIPED_HORIZONTAL: {
-                    handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], recursiveVector);
-                    return;
-                }
-                case BOMB: {
-                    handleWrapped(cellToReplace[0], cellToReplace[1], recursiveVector, -1, 1);
-                    return;
-                }
-                case MULTICOLOR: {
-                    break;
-                }
-                default: {
-                    break;
-                }
+        CandySpeciality cellSpeciality = CellsVertex[cellToReplace[0]][cellToReplace[1]].getSpeciality();
+        emptyCell(cellToReplace[0], cellToReplace[1]);
+        vector <vector<int>> recursiveVector = {cellsToReplace.begin() + i, cellsToReplace.end()};
+        switch (cellSpeciality) {
+            case STRIPED_VERTICAL: {
+                handleStrippedVertical(cellToReplace[0], cellToReplace[1], recursiveVector);
+                return;
             }
-            ++i;
+            case STRIPED_HORIZONTAL: {
+                handleStrippedHorizontal(cellToReplace[0], cellToReplace[1], recursiveVector);
+                return;
+            }
+            case BOMB: {
+                handleWrapped(cellToReplace[0], cellToReplace[1], recursiveVector, -1, 1);
+                return;
+            }
+            case MULTICOLOR: {
+                break;
+            }
+            default: {
+                break;
+            }
         }
-     
+        ++i;
+    }
+    
     moveCellsDown(cellsToReplace);
 }
 
@@ -241,13 +242,21 @@ void MatchHandler::doubleMulticolorInteraction() {
     sendInteractionScore(DOUBLE_MULTICOLOR);
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            emptyCell(i,j);
+            //Check cell for objective
+            decreaseObjective(CellsVertex[i][j]);
+            
+            //Calculate score for each cell
             if (isCandy(CellsVertex[i][j])) {
                 sendSpecialityScore(CellsVertex[i][j].getSpeciality()); }
             else if (isIcing(CellsVertex[i][j])) {
                 sendIcingScore(CellsVertex[i][j].getStatus());}
             else {}
+            
+            //Empty cell and animate its destruction
+
+            emptyCell(i,j);
             destroyObject(&CellsVertex[i][j]);
+            
         }
     }
     reset();

@@ -1,12 +1,12 @@
 #ifndef __CLICKABLEFACTORY_H
 #define __CLICKABLEFACTORY_H
 
-#include "CandySpeciality.h"
-#include "Color.h"
+#include "Enums/CandySpeciality.h"
+#include "Enums/Color.h"
 #include "Candy.h"
 #include "Wall.h"
 #include "Icing.h"
-#include "IcingStatus.h"
+#include "Enums/IcingStatus.h"
 #include "CandyFactory.h"
 #include "IcingFactory.h"
 

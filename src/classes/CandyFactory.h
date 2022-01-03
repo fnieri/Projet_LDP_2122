@@ -8,18 +8,16 @@
 #include <utility>
 
 #include "Candy.h"
-#include "CandySpeciality.h"
+#include "Enums/CandySpeciality.h"
 #include "Common.h"
-#include "Color.h"
+#include "Enums/Color.h"
 
 class CandyFactory {
 private:
 
-    static Color generateColor();
 
     static std::string generateSpecialityPath(CandySpeciality speciality);
 
-    static std::string generateColorPrefix(Color color);
 
     static std::string
     generateFullPath(CandySpeciality speciality, const std::string &colorPrefix, const std::string &specialityPath);
@@ -27,6 +25,9 @@ private:
     static std::string generateImageName(Color color, CandySpeciality speciality);
     
 public:
+    static Color generateColor();
+
+    static std::string generateColorPrefix(Color color);
 
     static Candy generateCandy( CandySpeciality speciality);
 

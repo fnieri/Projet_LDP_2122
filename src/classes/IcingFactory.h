@@ -2,7 +2,7 @@
 #define __ICINGFACTORY_H
 
 
-#include "IcingStatus.h"
+#include "Enums/IcingStatus.h"
 #include "Icing.h"
 #include <cstdlib>
 #include <cstring>

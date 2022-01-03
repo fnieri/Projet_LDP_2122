@@ -16,11 +16,13 @@
 #include "Candy.h"
 #include "Cell.h"
 #include "CandyFactory.h"
-#include "CandySpeciality.h"
+#include "Enums/CandySpeciality.h"
 #include "Common.h"
 #include "ClickableFactory.h"
 #include "Icing.h"
 #include "Wall.h"
+#include "Enums/Objective.h"
+
 
 class Game{
 protected:
@@ -29,7 +31,8 @@ protected:
     int score = 0;
     int hiScore;
     bool acceptInput = true;
-    
+    bool gameOver = false;
+    int movesLeft = 1; 
 public:
     void getInitialHighScore();
     
@@ -62,8 +65,20 @@ public:
     void addToScore(int scoreToAdd);
     
     void saveHighscore();
+ 
+    int getScore();
 
+    void resetScore() {score = 0;};
+    int getMovesLeft(); 
+
+    void setMovesLeft(int);
+
+    void setGameState(bool);
+
+    bool gameIsOver();
     
+    void decreaseMovesLeft();
+
     virtual void reset() = 0;
 
     virtual bool handleBoardContains(Point p) = 0;
@@ -92,8 +107,9 @@ public:
 
     virtual void emptyCells(vector <vector<int>> cellsToEmpty) = 0;
 
-
+    void resetGame();
 };
+
 
 
 #endif //PROJET_LDP_2122_GAME_H

@@ -12,10 +12,6 @@ Color Candy::getColor() const {
     return color;
 }
 
-void Candy::setColor(Color newColor) {
-    color = newColor;
-}
-
 CandySpeciality Candy::getSpeciality() const {
     return speciality;
 }
