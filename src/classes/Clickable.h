@@ -11,6 +11,10 @@ class Clickable : public Fl_PNG_Image {
         Clickable(const char* filename);
         Clickable(const Clickable &c);
         virtual ~Clickable()=default;
+        virtual bool visitCandy()=0;
+        virtual bool visitIcing()=0;
+        virtual bool visitWall()=0;
+        virtual bool isEmpty() const=0;
 };
 
 #endif

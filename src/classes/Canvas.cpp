@@ -1,7 +1,7 @@
 #include "Canvas.h"
 
 Canvas::Canvas(int cellSize, int margin, int numberOfCells, const char* filename) : 
-Board(cellSize, margin, numberOfCells), Splashscreen{filename} {
+Board(cellSize, margin, numberOfCells), splashscreen{filename} {
     objectiveInit();
 }
 
@@ -15,7 +15,7 @@ void Canvas::draw() {
 
 void Canvas::showSplashScreen() {
     if (showSplashscreen) {
-        Splashscreen::draw(0, 0, w(), h());
+        splashscreen.draw(0, 0, splashscreen.w(), splashscreen.h());
         Fl::check();
         sleep(2);
         showSplashscreen = false;
@@ -59,7 +59,6 @@ void Canvas::checkLevelDone() {
 }
 
 void Canvas::keyPressed(int keyCode) {
-    if (isKeyInputAllowed()) {
         setKeyInputAllowed(false); setAcceptInput(false);
         switch (keyCode) {
             case 'q':
@@ -76,7 +75,7 @@ void Canvas::keyPressed(int keyCode) {
             default:
                 break;
         }
-    }
+    
     setKeyInputAllowed(true); setAcceptInput(true);
 }
 
@@ -91,9 +90,9 @@ void Canvas::setKeyInputAllowed(bool newState) {
 }
 
 void Canvas::resetCurrentLevel() {
+    reset();
     resetScore();
     setMovesLeft(30);
     setDrawAchievement(true);
     objectiveInit();
-    reset();
 }

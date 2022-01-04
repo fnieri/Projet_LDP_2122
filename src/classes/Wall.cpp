@@ -6,6 +6,6 @@ Wall::Wall(const char* filename) :
 
 Wall::Wall(const Wall &w) : Clickable{w.filename}, filename{w.filename} {}
 
-bool Wall::isEmpty() {
+bool Wall::isEmpty() const  {
     return false;
 }

@@ -16,55 +16,36 @@ Cell::Cell(const Cell &c) {
 
 // https://en.cppreference.com/w/cpp/language/dynamic_cast
 void Cell::castClickable(Clickable* cellClickable) {
-    if (isClass<Candy>(cellClickable)) {
+    if (cellClickable->visitCandy()) 
         cellClickable = dynamic_cast<Candy*>(cellClickable);
-    }
-
-    else if (isClass<Wall>(cellClickable)) {
+    
+    else if (cellClickable->visitWall())
        cellClickable = dynamic_cast<Wall*>(cellClickable);
-    }
 
-    else if (isClass<Icing>(cellClickable)) {
+    else if (cellClickable->visitIcing())
         cellClickable = dynamic_cast<Icing*>(cellClickable);
-    }
     
 } 
 
 void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
-    if (isClass<Candy>(cellClickable)) {
+    if (cellClickable->visitCandy())
         cellClickable = dynamic_pointer_cast<Candy>(cellClickable);
-    }
 
-    else if (isClass<Wall>(cellClickable)) {
+    else if (cellClickable->visitWall())
         cellClickable = dynamic_pointer_cast<Wall>(cellClickable);
-    }
 
-    else if (isClass<Icing>(cellClickable)) {
-      
+    else if (cellClickable->visitIcing()) 
         cellClickable = dynamic_pointer_cast<Icing>(cellClickable);
-    }
     
 }
 
-template <class objectClass>
-
-shared_ptr<objectClass> Cell::returnCasted(){
-    return dynamic_pointer_cast<objectClass>(cellObjectPtr);
+template <class bs>
+shared_ptr<bs> Cell::returnCasted(){
+    return dynamic_pointer_cast<bs>(cellObjectPtr);
 }
 
 bool Cell::isEmpty() {
-    if (isClass<Candy>())
-        return returnCasted<Candy>()->isEmpty();
-    else if (isClass<Icing>()) 
-        return returnCasted<Icing>()->isEmpty();
-    return false;
-}
-
-bool Cell::hasObject() {
-    if (cellObjectPtr) {
-        return true;
-    }
-    return false;
+    return cellObjectPtr->isEmpty();
 }
 
 void Cell::draw() {
@@ -129,52 +110,16 @@ bool Cell::contains(Point p) const {
 
 
 void Cell::setObject(const Clickable &clickable) {
-    if (isClass<Candy>(&clickable))  {
-        auto tmp = dynamic_cast<const Candy*>(&clickable);  
+    if (auto tmp = dynamic_cast<const Candy*>(&clickable))  {
         cellObjectPtr = make_shared<Candy>(*tmp);
     }
-    if (isClass<Wall>(&clickable))  {
-        auto tmp = dynamic_cast<const Wall*>(&clickable);  
+    if (auto tmp = dynamic_cast<const Wall*>(&clickable))  {
         cellObjectPtr = make_shared<Wall>(*tmp);
     }
 
-    if (isClass<Icing>(&clickable))  {
-        auto tmp = dynamic_cast<const Icing*>(&clickable);  
+    if (auto tmp = dynamic_cast<const Icing*>(&clickable))  {
         cellObjectPtr = make_shared<Icing>(*tmp);
     }
-}
-
-template <class objectClass>
-bool Cell::isClass(){
-    if (auto tmp = dynamic_pointer_cast<objectClass>(cellObjectPtr)) {
-        return true;
-    }
-    return false;
-}
-
-template <class objectClass>
-bool Cell::isClass(const Clickable* clickable){
-    if (auto tmp = dynamic_cast<const objectClass*>(clickable)) {
-        return true;
-    }
-    return false;
-}
-
-template <class objectClass>
-bool Cell::isClass(Clickable* clickable){
-    if (auto tmp = dynamic_cast<objectClass*>(clickable)) {
-        return true;
-    }
-    return false;
-}
-
-
-template <class objectClass>
-bool Cell::isClass(shared_ptr<Clickable> clickable) {
-    if (auto tmp = dynamic_pointer_cast<objectClass>(clickable)) {
-        return true;
-    }
-    return false;
 }
 
 
@@ -195,18 +140,31 @@ void Cell::setCenter(Point newCenter) {
 
 
 CandySpeciality Cell::getSpeciality() {
-    if (isClass<Candy>()) 
+    if (cellObjectPtr->visitCandy()) 
         return dynamic_pointer_cast<Candy>(cellObjectPtr)->getSpeciality();  
 }
 
 
 Color Cell::getColor() {
-    if (isClass<Candy>()) 
+    if (cellObjectPtr->visitCandy()) 
         return dynamic_pointer_cast<Candy>(cellObjectPtr)->getColor();  
+
 }
 
 IcingStatus Cell::getStatus() {
-    if (isClass<Icing>())
+    if (cellObjectPtr->visitIcing())
         return dynamic_pointer_cast<Icing>(cellObjectPtr)->getStatus();  
+    
+}
 
+bool Cell::isCandy() {
+    return cellObjectPtr->visitCandy();
+}
+
+bool Cell::isIcing() {
+    return cellObjectPtr->visitIcing();
+}
+
+bool Cell::isWall() {
+    return cellObjectPtr->visitWall();
 }

@@ -143,17 +143,19 @@ bool MatchDetection::canStillPlay() {
 
 bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell,
                                                 Point secondCellPosition) {
-    CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
-    CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
-    Color firstCandyColor = firstCell->getColor();
-    Color secondCandyColor = secondCell->getColor();
+    if (isCandy(firstCell) && isCandy(secondCell)) {
+        CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
+        CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
+        Color firstCandyColor = firstCell->getColor();
+        Color secondCandyColor = secondCell->getColor();
 
-    // call it twice with reversed arguments instead of having a long switch-case
-    if (doubleSpecialCandyInteraction(firstCellPosition, secondCellPosition, firstCandyColor, secondCandyColor,
-                                      firstCandySpeciality, secondCandySpeciality))
-        return true;
-    else
-        return doubleSpecialCandyInteraction(secondCellPosition, firstCellPosition, secondCandyColor, firstCandyColor,
-                                             secondCandySpeciality, firstCandySpeciality);
-
+        // call it twice with reversed arguments instead of having a long switch-case
+        if (doubleSpecialCandyInteraction(firstCellPosition, secondCellPosition, firstCandyColor, secondCandyColor,
+                                        firstCandySpeciality, secondCandySpeciality))
+            return true;
+        else
+            return doubleSpecialCandyInteraction(secondCellPosition, firstCellPosition, secondCandyColor, firstCandyColor,
+                                                secondCandySpeciality, firstCandySpeciality);
+        }
+    return false;
 }

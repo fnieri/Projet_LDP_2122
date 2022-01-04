@@ -11,10 +11,11 @@
 #include "Board.h"
 #include "Splashscreen.h"
 
-class Canvas: public Board, public Splashscreen {
+class Canvas: public Board {
     bool drawAchievement = true;
     bool keyInputAllowed = true;
     bool showSplashscreen = true;
+    Splashscreen splashscreen;
 public:
     Canvas(int cellSize, int margin, int numberOfCells, const char* filename);
     void draw() override;

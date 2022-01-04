@@ -20,6 +20,7 @@ std::string CandyFactory::generateColorPrefix(Color color) {
         case Color::GREEN: return "green";
         case Color::BLUE: return "blue";
         case Color::PURPLE: return "purple";
+        case Color::NONE: return " ";
         default:
             break;
     }
@@ -79,6 +80,11 @@ Candy CandyFactory::generateCandy(CandySpeciality speciality, Color color) {
 }
 
 Candy CandyFactory::generateEmptyCandy() {
-    return {nullptr, Color::BLUE};
-
+    return {nullptr, Color::NONE};
+}
+Candy CandyFactory::generateBoomCandy() {
+    std::string filename = WORKING_DIRECTORY + "/sprites/normal_candies/explosion.png";
+    char *fullPathChar = new char[filename.length() + 1];
+    strcpy(fullPathChar, filename.c_str());
+    return {fullPathChar, Color::NONE};
 }

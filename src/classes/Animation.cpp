@@ -6,8 +6,6 @@
 
 void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
 
-    emptyCells(cellsToReplace);
-
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToReplace: cellsToReplace) {
             
@@ -20,7 +18,9 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
                 (CellsVertex)[k - 1][j].setCenter(movingCenter);
             }
         }
-    Fl::wait(0.003);
+        
+        usleep(700);
+        Fl::check();
     }
 
     for (auto &cellToReplace: cellsToReplace) {
@@ -36,24 +36,9 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
         }
         (CellsVertex)[0][j].setObject(ClickableFactory::makeCandy(CandySpeciality::NONE));
     }
-        usleep(700);
-        Fl::check();
 }
-
 void Animation::destroyObject(Cell *cell) {
-    vector <Fl_Color> colors = {FL_LIGHT2, FL_LIGHT1, FL_BLACK, FL_LIGHT3};
-    cell->setHighlighted(true);
-    for (auto color: colors) {
-        cell->setHighlightColor(color);
-
-        Fl::wait(0.1);
-    }
-    cell->setHighlighted(false);
-    cell->setHighlightColor(FL_LIGHT3);
-
-
-    /*cell->setCandy(generateBoomCandy());
+    cell->setObject(CandyFactory::generateBoomCandy());
     Fl::check();
     usleep(70000);
-    */
 }

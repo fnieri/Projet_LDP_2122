@@ -6,10 +6,10 @@ Icing::Icing(const char* filename, IcingStatus status) :
 Icing::Icing(const Icing &i) :
     Clickable{i.filename}, filename{i.filename}, status{i.status} {}
 
-IcingStatus Icing::getStatus() {
+IcingStatus Icing::getStatus() const {
     return status;
 }
 
-bool Icing::isEmpty() {
+bool Icing::isEmpty() const {
     return getStatus() == IcingStatus::EMPTY;
 }

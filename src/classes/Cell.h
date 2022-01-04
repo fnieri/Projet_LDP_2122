@@ -1,5 +1,5 @@
-#ifndef CELL_H
-#define CELL_H
+#ifndef __CELL_H
+#define __CELL_H
 
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
@@ -48,23 +48,14 @@ public:
 
     void setObject(Clickable*);
 
-    //Check if current cellObjectPtr is of certain class
-    template <class objectClass>
-    bool isClass();
+    bool isCandy();
 
-    template <class objectClass>
-    bool isClass(Clickable*);
+    bool isIcing();
     
-    template <class objectClass>
-    bool isClass(const Clickable*);
-    
-    template <class objectClass>
-    bool isClass(shared_ptr<Clickable>);
+    bool isWall();
 
-    template <class objectClass>
-    shared_ptr<objectClass> returnCasted();
-    
-    bool hasObject();
+    template <class cellObject>
+    shared_ptr<cellObject> returnCasted();
     
     Candy* getCandy();
 
@@ -81,8 +72,6 @@ public:
     void animateGravity(Point destination);
 
     void setHighlighted(bool val);
-
-    void removeObject() {cellObjectPtr = nullptr;}; 
 
     bool isEmpty();
 };

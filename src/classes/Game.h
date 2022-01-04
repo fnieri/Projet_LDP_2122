@@ -57,11 +57,11 @@ public:
 
     void createSpecialCandy(int, int, CandySpeciality);
     
-    bool isCandy(Cell *cell) {return cell->isClass<Candy>();};
+    bool isCandy(Cell *cell) {return cell->isCandy();;};
 
-    bool isCandy(Cell cell) {return cell.isClass<Candy>();};
+    bool isCandy(Cell cell) {return cell.isCandy();};
 
-    bool isIcing(Cell cell) {return cell.isClass<Icing>();};
+    bool isIcing(Cell cell);
     
     void addToScore(int scoreToAdd);
     
@@ -70,6 +70,7 @@ public:
     int getScore();
 
     void resetScore() {score = 0;};
+    
     int getMovesLeft(); 
 
     void setMovesLeft(int);

@@ -144,3 +144,6 @@ void Game::resetGame() {
     score = 0;
 
 }
+
+bool Game::isIcing(Cell cell) {return cell.isIcing();}
+    

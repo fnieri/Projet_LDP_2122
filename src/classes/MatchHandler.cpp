@@ -5,21 +5,23 @@
 #include "MatchHandler.h"
 
 void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
-
     vector <vector<int>> specialCells;
     for (auto &cell: cellsToReplace) {
         Cell currentCell = CellsVertex[cell[0]][cell[1]];
         decreaseObjective(currentCell);
         
         if (isCandy(currentCell)) {
-            CandySpeciality speciality = CellsVertex[cell[0]][cell[1]].getSpeciality();
-            Color color = CellsVertex[cell[0]][cell[1]].getColor();
+            CandySpeciality speciality = currentCell.getSpeciality();
+            Color color = currentCell.getColor();
             sendSpecialityScore(speciality);
             
-            if (speciality != NONE) 
-                specialCells.push_back(cell);
-            else 
+            if (speciality != NONE) {
+                if (interactionColor != color && interactionSpeciality != speciality) {
+                    specialCells.push_back(cell);
+                }
+            } else if (!CellsVertex[cell[0]][cell[1]].isEmpty()) {
                 emptyCell(cell[0], cell[1]);
+            }
         }
 
         else if (isIcing(currentCell)) {
@@ -71,7 +73,7 @@ void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
         }
     }
 
-    moveCellsDown(cellsToReplace);
+    moveCellsDown(cellsToDrop);
 }
 
 
@@ -83,6 +85,7 @@ void MatchHandler::handleStripedHorizontal(int i, int j, vector <vector<int>> ce
             cellsToMove.push_back(cellToMove);
         }
     }
+    
     handleCellsToReplace(cellsToMove);
 }
 
@@ -108,6 +111,7 @@ MatchHandler::handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int 
             }
         }
     }
+    handleCellsToReplace(cellsToMove);
 }
 
 
@@ -120,17 +124,18 @@ bool MatchHandler::wrappedInRange(int i, int j, int partialVerticalOffset, int p
 
 void MatchHandler::emptyCell(int i, int j) {
     
-    if (isCandy(CellsVertex[i][j]))
+    destroyObject(&CellsVertex[i][j]);
+    
+    if (isCandy(CellsVertex[i][j])) {
         CellsVertex[i][j].setObject(ClickableFactory::makeEmptyCandy());
-
+    }
     else if (isIcing(CellsVertex[i][j])) {
         if (CellsVertex[i][j].getStatus() == COMPLETE_ICING)
             CellsVertex[i][j].setObject(ClickableFactory::makeIcing(HALF_ICING));
         else
-            CellsVertex[i][j].setObject(ClickableFactory::makeEmptyCandy());       
+            CellsVertex[i][j].setObject(ClickableFactory::makeIcing(EMPTY));       
     }
     
-    destroyObject(&CellsVertex[i][j]);
 
     vector <array<int, 2>> deltas = {{0,  1},
                                      {1,  0},
@@ -212,10 +217,12 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
         }
     }
 }
+
 void
 MatchHandler::handleWrappedStriped(Point firstCellPosition, Point secondCellPosition,
                                    vector<vector<int>> cellsToMove, bool isHorizontal) {
-     vector<vector<int>> cellsToEmpty = {{firstCellPosition.x,  firstCellPosition.y},
+    sendInteractionScore(STRIPED_WRAPPED);
+    vector<vector<int>> cellsToEmpty = {{firstCellPosition.x,  firstCellPosition.y},
                                         {secondCellPosition.x, secondCellPosition.y}};
     emptyCells(cellsToEmpty);
     int i = firstCellPosition.x;
@@ -299,6 +306,7 @@ void MatchHandler::doubleWrapped(Point firstCellPosition, Point secondCellPositi
 
 void
 MatchHandler::doubleStriped(Point firstCellPosition, Point secondCellPosition, const vector<vector<int>> &cellsToMove) {
+    sendInteractionScore(DOUBLE_STRIPED);
     handleStripedHorizontal(firstCellPosition.x, firstCellPosition.y, cellsToMove);
     handleStripedVertical(secondCellPosition.x, secondCellPosition.y, cellsToMove);
 }
@@ -351,10 +359,22 @@ void MatchHandler::doubleMulticolorInteraction() {
             
             //Empty cell and animate its destruction
 
-            emptyCell(i,j);
             destroyObject(&CellsVertex[i][j]);
+            emptyCell(i,j);
             
         }
     }
     reset();
+}
+
+void MatchHandler::setInteraction(bool interacting, Color color, CandySpeciality speciality) {
+    if (interacting) {
+        isInteracting = true;
+        interactionColor = color;
+        interactionSpeciality = speciality;
+    } else {
+        isInteracting = false;
+        interactionColor = Color::NONE;
+        interactionSpeciality = CandySpeciality::NONE;
+    }
 }

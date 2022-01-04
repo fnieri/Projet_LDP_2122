@@ -18,7 +18,10 @@ public:
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
 
-    bool isEmpty() const;
+    bool isEmpty() const override;
+    bool visitCandy() override {return true;};
+    bool visitIcing() override {return false;};
+    bool visitWall() override {return false;};
 
 };
 

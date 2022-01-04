@@ -12,7 +12,11 @@ class Wall : public Clickable {
         ~Wall()=default;
         Wall(const char* filename);
         Wall(const Wall &w);
-        bool isEmpty();
+        bool isEmpty() const override;
+        bool visitCandy() override {return false;};
+        bool visitIcing() override {return false;};
+        bool visitWall() override {return true;};
+
 };
 
 #endif

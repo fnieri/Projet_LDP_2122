@@ -6,7 +6,7 @@
 #define __ANIMATION_H
 
 #include "Game.h"
-
+#include "Cell.h"
 
 class Animation : virtual public Game {
 public:

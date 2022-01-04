@@ -15,8 +15,12 @@ class Icing : public Clickable {
         ~Icing()=default;
         Icing(const char* filename, IcingStatus status);
         Icing(const Icing &i);
-        IcingStatus getStatus();
-        bool isEmpty();
+        IcingStatus getStatus() const;
+        bool isEmpty() const override;
+        bool visitCandy() override {return false;};
+        bool visitIcing() override {return true;};
+        bool visitWall() override {return false;};
+
 };
 
 #endif
