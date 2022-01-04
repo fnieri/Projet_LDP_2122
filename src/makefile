@@ -13,20 +13,20 @@ POBJ=\
 	Candy.o\
 	CandyFactory.o\
 	Cell.o\
+	ClickableFactory.o\
+	Clickable.o\
 	EventHandler.o\
 	Game.o\
+	GameObjective.o\
+	Icing.o\
+	IcingFactory.o\
+	LevelFactory.o\
 	MainWindow.o\
 	MatchDetection.o\
 	MatchHandler.o\
-	ClickableFactory.o\
-	IcingFactory.o\
-	Clickable.o\
-	Icing.o\
-	Wall.o\
-	LevelFactory.o\
 	ScoreCalculator.o\
-	GameObjective.o\
-	Splashscreen.o
+	Splashscreen.o\
+	Wall.o
 
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))

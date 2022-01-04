@@ -11,6 +11,7 @@ Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), 
 }
 
 void Board::reset() {  
+    
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
             cell.setObject(ClickableFactory::generateCandy(CandySpeciality::NONE));
@@ -18,7 +19,7 @@ void Board::reset() {
     }
     while (checkMatches());
     CellsVertex[5][5].setObject(ClickableFactory::makeCandy(MULTICOLOR));
-    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(MULTICOLOR));
+    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(BOMB));
 };
 
 void Board::draw() {
@@ -198,4 +199,21 @@ bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
         (cell1Position.y == cell2Position.y && std::abs(cell1Position.x - cell2Position.x) == 1))
         return true;
     return false;
+}
+
+void Board::matchIcingObjective() {
+    if (getObjective() == Objective::CLEAR_ICING) {
+        int size = sqrt(numberOfCells) - 1;
+        int i = 0;
+        while (i < getRemainingObjective()) {
+            int x1 = rand() % size;
+            int y1 = rand() % size;
+            if (!CellsVertex[x1][y1].isIcing()) {
+                CellsVertex[x1][y1].setObject(
+                    ClickableFactory::makeIcing(static_cast<IcingStatus>(rand() % 2))
+                );
+            }
+            i++;
+        }
+    }
 }

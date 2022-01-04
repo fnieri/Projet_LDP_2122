@@ -48,6 +48,7 @@ class GameObjective :virtual public Game {
 
         std::string buildCandyString();
         
+    
 };
 
 

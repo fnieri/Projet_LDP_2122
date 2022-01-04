@@ -151,8 +151,10 @@ void MatchHandler::emptyCell(int i, int j) {
                 IcingStatus status = CellsVertex.at(dx).at(dy).getStatus();
                 if (status == COMPLETE_ICING)
                     CellsVertex[dx][dy].setObject(ClickableFactory::makeIcing(HALF_ICING));
-                else
+                else {
+                    decreaseObjective(CellsVertex[dx][dy]);
                     CellsVertex[dx][dy].setObject(ClickableFactory::makeEmptyCandy());
+                }
             }
         } 
         catch (std::out_of_range &e) {continue;}
@@ -173,31 +175,33 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
     cellsToDestroy.push_back(&CellsVertex[firstCellPosition.x][firstCellPosition.y]);
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            switch (speciality) {
-                case CandySpeciality::NONE: {
-                    if (CellsVertex[i][j].getColor() == color) {
-                        cellsToDestroy.push_back(&CellsVertex[i][j]);
-                        break;
+            if (CellsVertex[i][j].isCandy()) {
+                switch (speciality) {
+                    case CandySpeciality::NONE: {
+                        if (CellsVertex[i][j].getColor() == color) {
+                            cellsToDestroy.push_back(&CellsVertex[i][j]);
+                            break;
+                        }
                     }
-                }
-                case CandySpeciality::STRIPED_HORIZONTAL:
-                case CandySpeciality::STRIPED_VERTICAL: {
-                    if (CellsVertex[i][j].getColor() == color) {
-                        //Choose randomly between striped horizontal and vertical
-                        setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), color, i, j);
-                        cellsToDestroy.push_back(&CellsVertex[i][j]);
-                        break;
+                    case CandySpeciality::STRIPED_HORIZONTAL:
+                    case CandySpeciality::STRIPED_VERTICAL: {
+                        if (CellsVertex[i][j].getColor() == color) {
+                            //Choose randomly between striped horizontal and vertical
+                            setCellAt(static_cast<CandySpeciality>(rand() % 2 + 1), color, i, j);
+                            cellsToDestroy.push_back(&CellsVertex[i][j]);
+                            break;
+                        }
                     }
-                }
-                case CandySpeciality::BOMB: {
-                    if (CellsVertex[i][j].getColor() == color) {
-                        setCellAt(CandySpeciality::BOMB, color, i, j);
-                        cellsToDestroy.push_back(&CellsVertex[i][j]);
-                        break;
+                    case CandySpeciality::BOMB: {
+                        if (CellsVertex[i][j].getColor() == color) {
+                            setCellAt(CandySpeciality::BOMB, color, i, j);
+                            cellsToDestroy.push_back(&CellsVertex[i][j]);
+                            break;
+                        }
                     }
+                    default:
+                        break;
                 }
-                default:
-                    break;
             }
             Fl::check();
             usleep(3000);

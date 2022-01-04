@@ -135,7 +135,7 @@ std::string GameObjective::buildCandyString() {
 }
 std::string GameObjective::getSpecialityString(CandySpeciality speciality) {
     switch (speciality){
-        case NONE: return " normal";
+        case NONE: return " ";
         case STRIPED_HORIZONTAL: return " horizontal striped";
         case STRIPED_VERTICAL: return " vertical striped";
         case BOMB: return " wrapped";

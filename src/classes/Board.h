@@ -58,6 +58,8 @@ public:
     void shuffle();
 
     void exchangeCells(Cell *cell1, Cell *cell2);
+
+    void matchIcingObjective();
 };
 
 

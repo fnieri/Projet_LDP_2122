@@ -14,7 +14,12 @@
 class Canvas: public Board {
     bool drawAchievement = true;
     bool keyInputAllowed = true;
-    bool showSplashscreen = true;
+    bool showTopInfo = true;
+    bool showSplashscreen = false;
+    bool showBoard = true;
+    bool resetting = false;
+
+    int messageX= 175, messageY = 300;
     Splashscreen splashscreen;
 public:
     Canvas(int cellSize, int margin, int numberOfCells, const char* filename);
@@ -34,7 +39,21 @@ public:
     void setKeyInputAllowed(bool);
     
     void resetCurrentLevel();
-    
+
+    void setShowTopInfo(bool);
+
+    bool getShowTopInfo();
+
+    bool drawBoard();
+
+    void setShowBoard(bool);
+
+    void showReset();
+
+    void setResetting(bool);
+
+    bool isResetting();
 };
+
 
 #endif
