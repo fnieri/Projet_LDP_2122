@@ -7,22 +7,32 @@ CC=g++
 OBJDIR = build
 
 POBJ=\
-	cell.o\
-	canvas.o\
-	board.o\
-	candy.o\
-	candyfactory.o\
-	animation.o\
-	mainwindow.o\
-	matchdetection.o\
-	eventhandler.o	
+	Animation.o\
+	Board.o\
+	Canvas.o\
+	Candy.o\
+	CandyFactory.o\
+	Cell.o\
+	EventHandler.o\
+	Game.o\
+	MainWindow.o\
+	MatchDetection.o\
+	MatchHandler.o\
+	ClickableFactory.o\
+	IcingFactory.o\
+	Clickable.o\
+	Icing.o\
+	Wall.o\
+	LevelFactory.o\
+	ScoreCalculator.o\
+	GameObjective.o\
+	Splashscreen.o
+
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
 main.out : $(OBJ)
-
 	$(CC) -o $@ $^ $(FLAGS)
-
 
 -include $(OBJDIR)/*.d  # include dependencies
 
@@ -36,5 +46,5 @@ $(OBJDIR)/%.o : classes/%.cpp
 
 .PHONY : clean
 clean :
-
 	rm $(OBJDIR)/*.o
+	rm $(OBJDIR)/*.d
