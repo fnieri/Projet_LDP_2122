@@ -9,3 +9,7 @@ Icing::Icing(const Icing &i) :
 IcingStatus Icing::getStatus() {
     return status;
 }
+
+bool Icing::isEmpty() {
+    return getStatus() == IcingStatus::EMPTY;
+}

@@ -15,3 +15,7 @@ Color Candy::getColor() const {
 CandySpeciality Candy::getSpeciality() const {
     return speciality;
 }
+
+bool Candy::isEmpty() const {
+    return getColor() == Color::NONE;
+}

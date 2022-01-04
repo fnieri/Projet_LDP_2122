@@ -17,6 +17,9 @@ public:
     ~Candy();
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] CandySpeciality getSpeciality() const;
+
+    bool isEmpty() const;
+
 };
 
 #endif

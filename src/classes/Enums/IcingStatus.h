@@ -3,7 +3,8 @@
 
 enum IcingStatus {
     HALF_ICING,
-    COMPLETE_ICING
+    COMPLETE_ICING,
+    EMPTY
 };
 
 #endif

@@ -12,34 +12,51 @@
 #include "GameObjective.h"
 
 class MatchHandler : public Animation, public GameObjective {
+  bool isInteracting = false;
+    Color interactionColor = Color::NONE;
+    CandySpeciality interactionSpeciality = CandySpeciality::NONE;
+
 public:
-    void handleCellsToReplace(vector <vector<int>> cellsToReplace);
+    void handleCellsToReplace(vector<vector<int>> cellsToReplace);
 
-    void handleStrippedHorizontal(int i, int j, vector <vector<int>> cellsToMove);
+    void handleStripedHorizontal(int i, int j, vector<vector<int>> cellsToMove);
 
-    void handleStrippedVertical(int i, int j, vector <vector<int>> cellsToMove);
+    void handleStripedVertical(int i, int j, vector<vector<int>> cellsToMove);
 
-    void handleWrapped(int i, int j, vector <vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin);
+    void handleWrapped(int i, int j, vector<vector<int>> cellsToMove, int leftDownMargin, int rightUpMargin);
 
+    bool wrappedInRange(int i, int j, 
+                        int partialVerticalOffset, int partialHorizontalOffset, 
+                        int verticalLimit, int horizontalLimit);
+    
     void emptyCell(int i, int j);
 
     void emptyCells(vector<vector<int>> cellsToEmpty) override;
+
+    void doubleStriped(Point firstCellPosition, Point secondCellPosition, const vector<vector<int>> &cellsToMove);
+
+    void doubleWrapped(Point firstCellPosition, Point secondCellPosition, vector<vector<int>> cellsToMove);
+
+    void multiColorSpecial(Point firstCellPosition, Point secondCellPosition,
+                           CandySpeciality speciality, Color color);
+
+    bool doubleSpecialCandyInteraction(Point firstCellPosition, Point secondCellPosition, Color firstCellColor,
+                                       Color secondCellColor, CandySpeciality firstCellSpeciality,
+                                       CandySpeciality secondCellSpeciality);
 
     void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
 
     void doubleStripedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
 
-    void stripedAndWrappedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
-
-    void doubleWrappedInteraction(Point, Point);
-
     void doubleMulticolorInteraction();
 
-    void doubleStripedOrWrappedInteraction(Point firstCellPosition, Point secondCellPosition, int leftOffset,
-                                           int rightOffset);
+    void handleWrappedStriped(Point firstCellPosition, Point secondCellPosition,
+                              vector<vector<int>> cellsToMove, bool isHorizontal);
 
-    void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor,
-                                vector <CandySpeciality> specialities);
+   // void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor);
+
+    void
+    setInteraction(bool interacting, Color color = Color::NONE, CandySpeciality speciality = CandySpeciality::NONE);
 
     void sendInteractionScore(Interaction);
 

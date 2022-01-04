@@ -9,18 +9,29 @@
 #include "Cell.h"
 #include "Common.h"
 #include "Board.h"
+#include "Splashscreen.h"
 
-class Canvas: public Board {
+class Canvas: public Board, public Splashscreen {
     bool drawAchievement = true;
     bool keyInputAllowed = true;
+    bool showSplashscreen = true;
 public:
-    Canvas(int cellSize, int margin, int numberOfCells);
+    Canvas(int cellSize, int margin, int numberOfCells, const char* filename);
     void draw() override;
     void keyPressed(int keyCode);
+
+    void showSplashScreen();
+
+    void drawCurrentObjective();
+
     void checkLevelDone();
+    
     void setDrawAchievement(bool);
+    
     bool isKeyInputAllowed();
+    
     void setKeyInputAllowed(bool);
+    
     void resetCurrentLevel();
     
 };

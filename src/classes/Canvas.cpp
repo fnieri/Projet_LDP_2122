@@ -1,10 +1,29 @@
 #include "Canvas.h"
 
-Canvas::Canvas(int cellSize, int margin, int numberOfCells) : Board(cellSize, margin, numberOfCells) {
+Canvas::Canvas(int cellSize, int margin, int numberOfCells, const char* filename) : 
+Board(cellSize, margin, numberOfCells), Splashscreen{filename} {
     objectiveInit();
 }
 
 void Canvas::draw() {
+    showSplashScreen();
+    drawCurrentObjective();
+    // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
+    Board::draw();
+    
+}
+
+void Canvas::showSplashScreen() {
+    if (showSplashscreen) {
+        Splashscreen::draw(0, 0, w(), h());
+        Fl::check();
+        sleep(2);
+        showSplashscreen = false;
+        Fl::check();
+    }
+}
+
+void Canvas::drawCurrentObjective() {
     fl_color(FL_WHITE);
     fl_rectf(50, 45, 605, 605, FL_WHITE);
     fl_rectf(50, 0, 605, 40, FL_WHITE);
@@ -15,19 +34,15 @@ void Canvas::draw() {
     
     string scoreStr = "Score: " + to_string(score);
     string hiScoreStr = "High score: " + to_string(hiScore);
-    string achievementStr = getObjectiveString();
-    
+    string achievementStr = getObjectiveString(); 
     string movesStr = "Moves left:" + to_string(getMovesLeft());
 
     fl_draw(scoreStr.c_str(), 60, 20);
     fl_draw(hiScoreStr.c_str(), 150, 20);
+    fl_draw(movesStr.c_str(), 550, 20);
     
     if (drawAchievement)
     fl_draw(achievementStr.c_str(), 280, 20);
-    fl_draw(movesStr.c_str(), 550, 20);
-    // at the moment only the nearest sqrt of numberOfCells is displayed. If 20 cells, then 16 cells are shown.
-    
-    Board::draw();
     
 }
 

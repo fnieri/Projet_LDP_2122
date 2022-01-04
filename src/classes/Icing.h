@@ -10,11 +10,13 @@ class Icing : public Clickable {
     private:
         const char* filename;
         IcingStatus status;
+
     public:
         ~Icing()=default;
         Icing(const char* filename, IcingStatus status);
         Icing(const Icing &i);
         IcingStatus getStatus();
+        bool isEmpty();
 };
 
 #endif

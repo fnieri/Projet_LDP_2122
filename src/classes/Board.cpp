@@ -123,7 +123,12 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         if (isCandy(selectedCell) && isCandy(swapCell)) {
             exchangeCells(selectedCell, swapCell);
-            checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition);
+            if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition)) {
+                selectedCell = nullptr;
+                while (checkMatches());
+                while (!checkIfShuffleIsNeeded()) shuffle();
+                return;
+                }
             if (!checkMatches()) {
                 exchangeCells(selectedCell, swapCell);
             } else {

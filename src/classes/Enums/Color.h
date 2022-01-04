@@ -8,7 +8,8 @@ enum class Color {
     GREEN,
     BLUE,
     PURPLE,
-    MULTICOLOR
+    MULTICOLOR,
+    NONE
 };
 
 

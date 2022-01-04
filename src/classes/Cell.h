@@ -61,6 +61,9 @@ public:
     template <class objectClass>
     bool isClass(shared_ptr<Clickable>);
 
+    template <class objectClass>
+    shared_ptr<objectClass> returnCasted();
+    
     bool hasObject();
     
     Candy* getCandy();
@@ -78,7 +81,10 @@ public:
     void animateGravity(Point destination);
 
     void setHighlighted(bool val);
+
     void removeObject() {cellObjectPtr = nullptr;}; 
+
+    bool isEmpty();
 };
 
 #endif

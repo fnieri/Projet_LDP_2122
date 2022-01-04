@@ -28,7 +28,7 @@ void Cell::castClickable(Clickable* cellClickable) {
         cellClickable = dynamic_cast<Icing*>(cellClickable);
     }
     
-}  
+} 
 
 void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
     if (isClass<Candy>(cellClickable)) {
@@ -44,6 +44,20 @@ void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
         cellClickable = dynamic_pointer_cast<Icing>(cellClickable);
     }
     
+}
+
+template <class objectClass>
+
+shared_ptr<objectClass> Cell::returnCasted(){
+    return dynamic_pointer_cast<objectClass>(cellObjectPtr);
+}
+
+bool Cell::isEmpty() {
+    if (isClass<Candy>())
+        return returnCasted<Candy>()->isEmpty();
+    else if (isClass<Icing>()) 
+        return returnCasted<Icing>()->isEmpty();
+    return false;
 }
 
 bool Cell::hasObject() {

@@ -12,6 +12,7 @@ class Wall : public Clickable {
         ~Wall()=default;
         Wall(const char* filename);
         Wall(const Wall &w);
+        bool isEmpty();
 };
 
 #endif

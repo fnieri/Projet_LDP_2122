@@ -11,6 +11,7 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include "unistd.h"
 
 #include "Clickable.h"
 #include "Candy.h"

@@ -103,101 +103,7 @@ bool MatchDetection::checkMatchThree(int i, int j) {
     return false;
 }
 
-bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell,
-                                                Point secondCellPosition) {
-    if (isCandy(firstCell) && isCandy(secondCell)) {
-        CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
-        CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
-        Color firstCandyColor = firstCell->getColor();
-        Color secondCandyColor = secondCell->getColor();
 
-        switch (firstCandySpeciality) {
-            case NONE: {
-                switch (secondCandySpeciality) {
-                    case MULTICOLOR: {
-                        MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                            firstCandyColor, secondCandyColor, vector < CandySpeciality > {NONE});
-                        return true;
-                    }
-                    default:
-                        return false;
-                }
-            }
-            case STRIPED_HORIZONTAL:
-            case STRIPED_VERTICAL: {
-                switch (secondCandySpeciality) {
-                    case STRIPED_HORIZONTAL:
-                    case STRIPED_VERTICAL: {
-                        doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, 0, 0);
-                        return true;
-                    }
-                    case BOMB: {
-                        doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
-                        return true;
-                    }
-                    case MULTICOLOR: {
-                        MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                            firstCandyColor, secondCandyColor,
-                                            vector < CandySpeciality > {STRIPED_HORIZONTAL, STRIPED_VERTICAL});
-                        return true;
-                    }
-                    default:
-                        return false;
-                }
-            }
-            case BOMB: {
-                switch (secondCandySpeciality) {
-                    case STRIPED_VERTICAL:
-                    case STRIPED_HORIZONTAL: {
-                        doubleStripedOrWrappedInteraction(firstCellPosition, secondCellPosition, -1, 1);
-                        return true;
-                    }
-                    case BOMB: {
-                        doubleWrappedInteraction(firstCellPosition, secondCellPosition);
-                        return true;
-                    }
-                    case MULTICOLOR: {
-                        MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                            firstCandyColor, secondCandyColor, vector < CandySpeciality > {BOMB});
-                        return true;
-                    }
-                    default:
-                        return false;
-                }
-            }
-            case MULTICOLOR: {
-                vector <CandySpeciality> specialities;
-                switch (secondCandySpeciality) {
-                    case NONE: {
-                        specialities = {NONE};
-                        break;
-                    }
-                    case STRIPED_HORIZONTAL:
-                    case STRIPED_VERTICAL: {
-                        specialities = {STRIPED_VERTICAL, STRIPED_HORIZONTAL};
-                        break;
-                    }
-                    case BOMB: {
-                        specialities = {BOMB};
-                        break;
-                    }
-                    case MULTICOLOR: {
-                        doubleMulticolorInteraction();
-                        return true;
-                    }
-                    default:
-                        return false;
-
-                }
-                //This only occurs if first candy is multicolor because of break
-                MultiColorInteractions(firstCellPosition, secondCellPosition,
-                                    firstCandyColor, secondCandyColor, specialities);
-                return true;
-            }
-        }
-    }
-    return false;
-}
 
 bool MatchDetection::canStillPlay() {
     vector <vector<Cell>> CellsVector = getCells();
@@ -234,3 +140,20 @@ bool MatchDetection::canStillPlay() {
     }
     return false;
 };
+
+bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCellPosition, Cell *secondCell,
+                                                Point secondCellPosition) {
+    CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
+    CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
+    Color firstCandyColor = firstCell->getColor();
+    Color secondCandyColor = secondCell->getColor();
+
+    // call it twice with reversed arguments instead of having a long switch-case
+    if (doubleSpecialCandyInteraction(firstCellPosition, secondCellPosition, firstCandyColor, secondCandyColor,
+                                      firstCandySpeciality, secondCandySpeciality))
+        return true;
+    else
+        return doubleSpecialCandyInteraction(secondCellPosition, firstCellPosition, secondCandyColor, firstCandyColor,
+                                             secondCandySpeciality, firstCandySpeciality);
+
+}

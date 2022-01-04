@@ -36,6 +36,8 @@ void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
         }
         (CellsVertex)[0][j].setObject(ClickableFactory::makeCandy(CandySpeciality::NONE));
     }
+        usleep(700);
+        Fl::check();
 }
 
 void Animation::destroyObject(Cell *cell) {
@@ -48,4 +50,10 @@ void Animation::destroyObject(Cell *cell) {
     }
     cell->setHighlighted(false);
     cell->setHighlightColor(FL_LIGHT3);
+
+
+    /*cell->setCandy(generateBoomCandy());
+    Fl::check();
+    usleep(70000);
+    */
 }
