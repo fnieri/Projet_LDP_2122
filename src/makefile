@@ -7,27 +7,27 @@ CC=g++
 OBJDIR = build
 
 POBJ=\
-	Animation.o\
-	Board.o\
-	Canvas.o\
-	Candy.o\
-	CandyFactory.o\
-	Cell.o\
-	ClickableFactory.o\
-	Clickable.o\
-	EventHandler.o\
-	Game.o\
-	GameObjective.o\
-	Icing.o\
-	IcingFactory.o\
-	LevelFactory.o\
-	MainWindow.o\
-	MatchDetection.o\
-	MatchHandler.o\
-	ScoreCalculator.o\
-	Splashscreen.o\
-	Wall.o
-
+	Display/Animation.o\
+	Display/Board.o\
+	Display/Canvas.o\
+	Clickables/Candy.o\
+	Factories/CandyFactory.o\
+	Display/Cell.o\
+	Factories/ClickableFactory.o\
+	Clickables/Clickable.o\
+	Game/EventHandler.o\
+	Game/Game.o\
+	Objectives/GameObjective.o\
+	Clickables/Icing.o\
+	Factories/IcingFactory.o\
+	Factories/LevelFactory.o\
+	Display/MainWindow.o\
+	Game/MatchDetection.o\
+	Game/MatchHandler.o\
+	Objectives/ScoreCalculator.o\
+	Display/Splashscreen.o\
+	Clickables/Wall.o\
+	Factories/WallFactory.o
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 
