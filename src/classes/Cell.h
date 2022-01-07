@@ -9,13 +9,13 @@
 #include <FL/Fl_Box.H>
 #include <utility>
 
-#include "../Sources/Common.h"
-#include "../Clickables/Candy.h"
-#include "../Enums/Color.h"
-#include "../Clickables/Clickable.h"
-#include "../Enums/IcingStatus.h"
-#include "../Clickables/Icing.h"
-#include "../Clickables/Wall.h"
+#include "Common.h"
+#include "Candy.h"
+#include "Enums/Color.h"
+#include "Clickable.h"
+#include "Enums/IcingStatus.h"
+#include "Icing.h"
+#include "Wall.h"
 
 using namespace std;
 

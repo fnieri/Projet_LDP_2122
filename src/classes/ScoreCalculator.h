@@ -1,9 +1,9 @@
 #ifndef __SCORECALCULATOR_H
 #define __SCORECALCULATOR_H
 
-#include "../Enums/CandySpeciality.h"
-#include "../Enums/IcingStatus.h"
-#include "../Enums/Interaction.h"
+#include "Enums/CandySpeciality.h"
+#include "Enums/IcingStatus.h"
+#include "Enums/Interaction.h"
 
 class ScoreCalculator {
 

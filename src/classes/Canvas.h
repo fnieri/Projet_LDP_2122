@@ -7,7 +7,7 @@
 #include <FL/fl_draw.H>
 
 #include "Cell.h"
-#include "../Sources/Common.h"
+#include "Common.h"
 #include "Board.h"
 #include "Splashscreen.h"
 

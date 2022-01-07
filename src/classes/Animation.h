@@ -5,7 +5,7 @@
 #ifndef __ANIMATION_H
 #define __ANIMATION_H
 
-#include "../Game/Game.h"
+#include "Game.h"
 #include "Cell.h"
 
 class Animation : virtual public Game {

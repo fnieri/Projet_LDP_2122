@@ -7,10 +7,10 @@
 #include <cstring>
 #include <utility>
 
-#include "../Clickables/Candy.h"
-#include "../Enums/CandySpeciality.h"
-#include "../Sources/Common.h"
-#include "../Enums/Color.h"
+#include "Candy.h"
+#include "Enums/CandySpeciality.h"
+#include "Common.h"
+#include "Enums/Color.h"
 
 class CandyFactory {
 private:

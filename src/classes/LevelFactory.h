@@ -2,10 +2,10 @@
 #define __LEVELFACTORY_H
 
 
-#include "../Clickables/Candy.h"
+#include "Candy.h"
 #include "ClickableFactory.h"
-#include "../Enums/IcingStatus.h"
-#include "../Display/Cell.h"
+#include "Enums/IcingStatus.h"
+#include "Cell.h"
 #include <cstdlib>
 #include <iostream> 
 #include <fstream>

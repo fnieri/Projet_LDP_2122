@@ -1,7 +1,7 @@
 #ifndef __GAMEOBJECTIVE_H
 #define __GAMEOBJECTIVE_H
 
-#include "../Game/Game.h"
+#include "Game.h"
 #include <Fl/Fl_PNG_Image.H>
 
 

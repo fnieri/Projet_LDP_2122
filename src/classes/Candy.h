@@ -2,9 +2,9 @@
 #define __CANDY_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "../Sources/Common.h"
-#include "../Enums/Color.h"
-#include "../Enums/CandySpeciality.h"
+#include "Common.h"
+#include "Enums/Color.h"
+#include "Enums/CandySpeciality.h"
 #include "Clickable.h"
 
 class Candy :  public Clickable {

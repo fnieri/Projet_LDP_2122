@@ -2,9 +2,9 @@
 #define __WALLFACTORY_H
 
 
-#include "../Sources/Common.h"
+#include "Common.h"
 #include <cstring>
-#include "../Clickables/Wall.h"
+#include "Wall.h"
 
 
 class WallFactory {

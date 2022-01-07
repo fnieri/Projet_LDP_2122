@@ -13,16 +13,16 @@
 #include <algorithm>
 #include "unistd.h"
 
-#include "../Clickables/Clickable.h"
-#include "../Clickables/Candy.h"
-#include "../Display/Cell.h"
-#include "../Factories/CandyFactory.h"
-#include "../Enums/CandySpeciality.h"
-#include "../Sources/Common.h"
-#include "../Factories/ClickableFactory.h"
-#include "../Clickables/Icing.h"
-#include "../Clickables/Wall.h"
-#include "../Enums/Objective.h"
+#include "Clickable.h"
+#include "Candy.h"
+#include "Cell.h"
+#include "CandyFactory.h"
+#include "Enums/CandySpeciality.h"
+#include "Common.h"
+#include "ClickableFactory.h"
+#include "Icing.h"
+#include "Wall.h"
+#include "Enums/Objective.h"
 
 
 class Game{

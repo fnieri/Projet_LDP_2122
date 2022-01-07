@@ -2,8 +2,8 @@
 #define __ICING_H
 
 #include <Fl/Fl_PNG_Image.H>
-#include "../Sources/Common.h"
-#include "../Enums/IcingStatus.h"
+#include "Common.h"
+#include "Enums/IcingStatus.h"
 #include "Clickable.h"
 
 class Icing : public Clickable {

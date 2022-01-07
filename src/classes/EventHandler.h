@@ -5,7 +5,7 @@
 #ifndef TEMP_CLASSES_EVENTHANDLER_H
 #define TEMP_CLASSES_EVENTHANDLER_H
 
-#include "../Sources/Common.h"
+#include "Common.h"
 #include "Game.h"
 
 

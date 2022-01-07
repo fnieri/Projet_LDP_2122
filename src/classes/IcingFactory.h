@@ -2,8 +2,8 @@
 #define __ICINGFACTORY_H
 
 
-#include "../Enums/IcingStatus.h"
-#include "../Clickables/Icing.h"
+#include "Enums/IcingStatus.h"
+#include "Icing.h"
 #include <cstdlib>
 #include <cstring>
 

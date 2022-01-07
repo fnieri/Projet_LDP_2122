@@ -5,11 +5,11 @@
 #ifndef __MATCHHANDLER_H
 #define __MATCHHANDLER_H
 
-#include "../Display/Animation.h"
-#include "../Factories/ClickableFactory.h"
-#include "../Objectives/ScoreCalculator.h"
-#include "../Enums/Interaction.h"
-#include "../Objectives/GameObjective.h"
+#include "Animation.h"
+#include "ClickableFactory.h"
+#include "ScoreCalculator.h"
+#include "Enums/Interaction.h"
+#include "GameObjective.h"
 
 class MatchHandler : public Animation, public GameObjective {
   bool isInteracting = false;

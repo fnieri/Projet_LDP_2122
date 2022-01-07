@@ -5,11 +5,11 @@
 #ifndef __BOARD_H
 #define __BOARD_H
 
-#include "../Game/EventHandler.h"
-#include "../Game/MatchDetection.h"
-#include "../Factories/LevelFactory.h"
-#include "../Objectives/GameObjective.h"
-#include "../Enums/Interaction.h"
+#include "EventHandler.h"
+#include "MatchDetection.h"
+#include "LevelFactory.h"
+#include "GameObjective.h"
+#include "Enums/Interaction.h"
 
 class Board : public EventHandler, public MatchDetection {
     int cellSize;

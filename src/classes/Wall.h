@@ -2,7 +2,7 @@
 #define __WALL_H
 
 #include <FL/Fl_PNG_Image.H>
-#include "../Sources/Common.h"
+#include "Common.h"
 #include "Clickable.h"
 
 class Wall : public Clickable {
