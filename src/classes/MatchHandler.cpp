@@ -172,7 +172,7 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
     cellsToDestroy.push_back(&CellsVertex[firstCellPosition.x][firstCellPosition.y]);
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (CellsVertex[i][j].hasCandy()) {
+            if (isCandy(CellsVertex[i][j])) {
                 switch (speciality) {
                     case CandySpeciality::NONE: {
                         if (CellsVertex[i][j].getColor() == color) {
