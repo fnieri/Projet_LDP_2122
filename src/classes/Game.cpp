@@ -4,14 +4,10 @@
 
 #include "Game.h"
 
-bool Game::contains(Point p)
-{
-    for (int i = 0; i < (int)CellsVertex.size(); i++)
-    {
-        for (int j = 0; j < (int)CellsVertex[i].size(); j++)
-        {
-            if (CellsVertex[i][j].contains(p))
-            {
+bool Game::contains(Point p) {
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].contains(p)) {
                 return true;
             }
         }
@@ -19,22 +15,31 @@ bool Game::contains(Point p)
     return false;
 }
 
-void Game::createSpecialCandy(int i, int j, CandySpeciality speciality)
-{
+vector<vector<int>> Game::findEmptyCells() {
+    vector<vector<int>> cellsToDrop;
+    // find all empty cells in CellsVertex and drop them
+    for (int col = 0; col < (int) CellsVertex.size(); ++col) {
+        for (int row = 0; row < (int) CellsVertex[col].size(); ++row) {
+            if (CellsVertex[col][row].isEmpty()) {
+                cellsToDrop.push_back({col, row});
+            }
+        }
+    }
+    return cellsToDrop;
+}
+
+void Game::createSpecialCandy(int i, int j, CandySpeciality speciality) {
     if (speciality == CandySpeciality::MULTICOLOR)
         CellsVertex[i][j].setObject(
-            ClickableFactory::makeCandy(speciality));
+                ClickableFactory::makeCandy(speciality));
     else
         CellsVertex[i][j].setObject(ClickableFactory::makeCandy(speciality, CellsVertex[i][j].getColor()));
 }
 
-void Game::highlight(Point p)
-{
-    for (auto &i : CellsVertex)
-    {
-        for (auto &j : i)
-        {
-            if (j.contains(p))
+void Game::highlight(Point p) {
+    for (auto &i: CellsVertex) {
+        for (auto &j: i) {
+            if (j.isCandy() && !j.isEmpty() && j.contains(p))
                 j.setHighlighted(true);
             else
                 j.setHighlighted(false);
@@ -42,54 +47,43 @@ void Game::highlight(Point p)
     }
 };
 
-void Game::unHighlightAll()
-{
-    for (auto &i : CellsVertex)
-    {
-        for (auto &j : i)
-        {
-            j.setHighlighted(false);
+void Game::unHighlightAll() {
+    for (auto &i: CellsVertex) {
+        for (auto &j: i) {
+            j.resetHighlight();
         }
     }
 }
 
-void Game::setMargin(int m)
-{
+void Game::setMargin(int m) {
     margin = m;
 }
 
-vector<vector<Cell>> Game::getCells()
-{
+vector<vector<Cell>> Game::getCells() {
     return CellsVertex;
 }
 
-void Game::setAcceptInput(bool newState)
-{
+void Game::setAcceptInput(bool newState) {
     acceptInput = newState;
 }
 
-bool Game::isInputAllowed()
-{
+bool Game::isInputAllowed() {
     return acceptInput;
 }
 
-void Game::addToScore(int scoreToAdd)
-{
+void Game::addToScore(int scoreToAdd) {
     score += scoreToAdd;
     saveHighscore();
 }
 
 //http://www.cplusplus.com/forum/beginner/195138/
-void Game::saveHighscore()
-{
-    if (score > hiScore)
-    {
+void Game::saveHighscore() {
+    if (score > hiScore) {
         hiScore = score;
         //Trunc is to remove all content
         std::fstream bestScoreFile(BEST_SCORE_FILE);
         std::string currentBestScore;
-        if (bestScoreFile.is_open())
-        {
+        if (bestScoreFile.is_open()) {
             //Save high score
             bestScoreFile << to_string(hiScore);
         }
@@ -97,12 +91,10 @@ void Game::saveHighscore()
     }
 }
 
-void Game::getInitialHighScore()
-{
+void Game::getInitialHighScore() {
     std::fstream bestScoreFile(BEST_SCORE_FILE);
     std::string currentBestScore;
-    if (bestScoreFile.is_open())
-    {
+    if (bestScoreFile.is_open()) {
         std::getline(bestScoreFile, currentBestScore);
         hiScore = stoi(currentBestScore);
     }
@@ -131,7 +123,7 @@ void Game::setGameState(bool newState) {
 
 void Game::decreaseMovesLeft() {
     if (!gameIsOver())
-    movesLeft -= 1;
+        movesLeft -= 1;
 }
 
 void Game::setMovesLeft(int newMoves) {
@@ -145,5 +137,5 @@ void Game::resetGame() {
 
 }
 
-bool Game::isIcing(Cell cell) {return cell.isIcing();}
+bool Game::isIcing(Cell cell) { return cell.isIcing(); }
     

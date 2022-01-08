@@ -25,6 +25,7 @@ class Cell {
     shared_ptr<Clickable> cellObjectPtr;
     int margin;
     bool drawBox = false;
+    bool suggesting = false;
     Fl_Color highlightColor = FL_LIGHT3;
 public:
     Cell(Point, int, Clickable*, int);
@@ -74,6 +75,10 @@ public:
     void setHighlighted(bool val);
 
     bool isEmpty();
+
+    void resetHighlight();
+
+    void setSuggestion(bool suggestion);
 };
 
 #endif

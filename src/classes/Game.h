@@ -25,18 +25,18 @@
 #include "Enums/Objective.h"
 
 
-class Game{
+class Game {
 protected:
     int margin;
-    vector <vector<Cell>> CellsVertex;
+    vector<vector<Cell>> CellsVertex;
     int score = 0;
     int hiScore;
     bool acceptInput = true;
     bool gameOver = false;
-    int movesLeft = 1; 
+    int movesLeft = 10;
 public:
     void getInitialHighScore();
-    
+
     bool contains(Point p);
 
     void highlight(Point p);
@@ -45,40 +45,45 @@ public:
 
     void setMargin(int m);
 
-    vector <vector<Cell>> getCells();
+    vector<vector<Cell>> getCells();
 
     void setAcceptInput(bool newState);
 
     bool isInputAllowed();
 
-    virtual void moveCellsDown(vector <vector<int>>) = 0;
+    virtual void moveCellsDown(vector<vector<int>>) = 0;
+
+    virtual void moveCellsDiagonaly() = 0;
+
 
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 
     void createSpecialCandy(int, int, CandySpeciality);
-    
-    bool isCandy(Cell *cell) {return cell->isCandy();;};
 
-    bool isCandy(Cell cell) {return cell.isCandy();};
+    bool isCandy(Cell *cell) { return cell->isCandy();; };
+
+    bool isCandy(Cell cell) { return cell.isCandy(); };
 
     bool isIcing(Cell cell);
-    
+
     void addToScore(int scoreToAdd);
-    
+
     void saveHighscore();
- 
+
     int getScore();
 
-    void resetScore() {score = 0;};
-    
-    int getMovesLeft(); 
+    void resetScore() { score = 0; };
+
+    vector<vector<int>> findEmptyCells();
+
+    int getMovesLeft();
 
     void setMovesLeft(int);
 
     void setGameState(bool);
 
     bool gameIsOver();
-    
+
     void decreaseMovesLeft();
 
     virtual void reset() = 0;
@@ -107,11 +112,10 @@ public:
 
     virtual void setSwapCellPosition(Point p) = 0;
 
-    virtual void emptyCells(vector <vector<int>> cellsToEmpty) = 0;
+    virtual void emptyCells(vector<vector<int>> cellsToEmpty) = 0;
 
     void resetGame();
 };
-
 
 
 #endif //PROJET_LDP_2122_GAME_H

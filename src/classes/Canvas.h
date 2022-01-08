@@ -14,11 +14,13 @@
 class Canvas: public Board {
     bool drawAchievement = true;
     bool keyInputAllowed = true;
-    bool showSplashscreen = true;
+    bool showSplashscreen = false;
     Splashscreen splashscreen;
 public:
     Canvas(int cellSize, int margin, int numberOfCells, const char* filename);
+
     void draw() override;
+
     void keyPressed(int keyCode);
 
     void showSplashScreen();

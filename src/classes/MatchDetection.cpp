@@ -3,6 +3,7 @@
 Color MatchDetection::getCellColor(int i, int j) {
     if (isCandy(CellsVertex.at(i).at(j)))
         return CellsVertex.at(i).at(j).getColor();
+    return Color::NONE; // To remove warning
 }
 
 bool MatchDetection::cellsColorMatch(int i, int j) {
@@ -18,7 +19,7 @@ void MatchDetection::setHandleMatch(bool handleM) {
 bool MatchDetection::checkMatches() {
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (isCandy(CellsVertex[i][j])) {
+            if (isCandy(CellsVertex[i][j]) && !CellsVertex[i][j].isEmpty()) {
                 currentCellColor = CellsVertex[i][j].getColor();
                 if (checkMatchFive(i, j)) return true;
                 if (checkWrappedCandy(i, j)) return true;
@@ -30,7 +31,7 @@ bool MatchDetection::checkMatches() {
 
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
-            if (isCandy(CellsVertex[i][j])) {
+            if (isCandy(CellsVertex[i][j]) && !CellsVertex[i][j].isEmpty()) {
                 currentCellColor = CellsVertex[i][j].getColor();
                 if (checkMatchThree(i, j)) return true;
             }

@@ -4,39 +4,86 @@
 
 #include "Animation.h"
 
-void Animation::moveCellsDown(vector <vector<int>> cellsToReplace) {
+void Animation::moveCellsDiagonaly() {
+    for (int col = (int) CellsVertex.size() - 1; col > -1; --col) {
+        for (int row = 0; row < (int) CellsVertex[col].size() - 1; ++row) {
+            Cell *toDrop = &CellsVertex[col][row];
+            if (!toDrop->isEmpty() && toDrop->isCandy()) {
+                try {
+                    for (int lr = -1; lr < 2; lr += 2) {
+                        Cell *toReplace = &CellsVertex.at(col + 1).at(row + lr);
+                        if (toReplace->isEmpty()) {
+                            for (int l = 0; l < (int) margin; ++l) {
+                                Point movingCenter{toDrop->getCenter().x + 1 * lr,
+                                                   toDrop->getCenter().y + 1};
+                                toDrop->setCenter(movingCenter);
+                                if (!isInputAllowed()) {
+                                    usleep(7000);
+                                    Fl::check();
+                                }
+                            }
+                            toReplace->setObject(*(toDrop->getCandy()));
+                            Point originalCenter{toDrop->getCenter().x - margin * lr,
+                                                 toDrop->getCenter().y - margin};
+                            toDrop->setCenter(originalCenter);
+                            toDrop->setObject(ClickableFactory::makeEmptyCandy());
+                            Fl::check();
+                        }
+                    }
+                } catch (const std::out_of_range &e) {
+                    continue;
+                }
+            }
+        }
+    }
+}
 
+void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToReplace: cellsToReplace) {
-            
             int i = cellToReplace[0];
             int j = cellToReplace[1];
             // drops all candy one cell under then generates candy for top cell
             for (int k = i; k > 0; --k) {
-                Point movingCenter{(CellsVertex)[k - 1][j].getCenter().x,
-                                (CellsVertex)[k - 1][j].getCenter().y + 1};
-                (CellsVertex)[k - 1][j].setCenter(movingCenter);
+                Cell *toDrop = &CellsVertex[k - 1][j];
+                if (!isCandy(toDrop)) break;
+
+                Point movingCenter{toDrop->getCenter().x,
+                                   toDrop->getCenter().y + 1};
+                toDrop->setCenter(movingCenter);
             }
         }
-        
-        usleep(700);
-        Fl::check();
+        // TODO: change this to function in game and use it everywhere
+        if (!isInputAllowed()) {
+            usleep(7000);
+            Fl::check();
+        }
     }
 
     for (auto &cellToReplace: cellsToReplace) {
         int i = cellToReplace[0];
         int j = cellToReplace[1];
-        for (int k = i; k > 0; k--) {
-            if (isCandy(CellsVertex[k-1][j])) {
-                (CellsVertex)[k][j].setObject(*(CellsVertex)[k - 1][j].getCandy());
-                Point originalCenter{(CellsVertex)[k - 1][j].getCenter().x,
-                                    (CellsVertex)[k - 1][j].getCenter().y - margin};
-                (CellsVertex)[k - 1][j].setCenter(originalCenter);
-            }    
+        Cell *toReplace = &CellsVertex[i][j];
+        for (int k = i; k > 0; --k) {
+            toReplace = &CellsVertex[k - 1][j];
+            if (!isCandy(*toReplace)) {
+                (&CellsVertex[k][j])->setObject(ClickableFactory::makeEmptyCandy());
+                break;
+            }
+            (CellsVertex)[k][j].setObject(*(toReplace->getCandy()));
+            Point originalCenter{toReplace->getCenter().x,
+                                 toReplace->getCenter().y - margin};
+            toReplace->setCenter(originalCenter);
         }
-        (CellsVertex)[0][j].setObject(ClickableFactory::makeCandy(CandySpeciality::NONE));
+        // don't generate a new candy on top if last cell is not a candy
+        if (toReplace->isCandy()) {
+            Cell *topCell = &CellsVertex[0][j];
+            topCell->setObject(ClickableFactory::makeCandy(CandySpeciality::NONE));
+        }
     }
+    moveCellsDiagonaly();
 }
+
 void Animation::destroyObject(Cell *cell) {
     cell->setObject(CandyFactory::generateBoomCandy());
     Fl::check();

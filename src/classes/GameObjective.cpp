@@ -9,7 +9,7 @@ void GameObjective::createObjective() {
 void GameObjective::makeNumberToAchieve() {
     switch (currentObjective) {
         case CLEAR_CANDIES: {
-            CandySpeciality speciality = static_cast<CandySpeciality>(rand() % ( ((int) SPECIALITY_COUNT) - 1));
+            auto speciality = static_cast<CandySpeciality>(rand() % ( ((int) SPECIALITY_COUNT) - 1));
             Color color = CandyFactory::generateColor();
             Candy tmp = makeObjectiveCandy(speciality, color);
             candyToRemove = make_unique<Candy>(tmp);

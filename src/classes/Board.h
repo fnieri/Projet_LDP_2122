@@ -5,10 +5,12 @@
 #ifndef __BOARD_H
 #define __BOARD_H
 
+#include <thread>
+#include <mutex>
+
 #include "EventHandler.h"
 #include "MatchDetection.h"
 #include "LevelFactory.h"
-#include "GameObjective.h"
 #include "Enums/Interaction.h"
 
 class Board : public EventHandler, public MatchDetection {
@@ -20,6 +22,10 @@ class Board : public EventHandler, public MatchDetection {
     Cell *toSwapCell = nullptr;
     Point toSwapCellCenter{0, 0};
     Point toSwapCellPosition{0, 0};
+    vector<Cell *> suggestedCells{};
+    thread *suggestionThread = nullptr;
+    bool runSuggestionThread = false;
+    mutex suggestionMutex;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -58,6 +64,12 @@ public:
     void shuffle();
 
     void exchangeCells(Cell *cell1, Cell *cell2);
+
+    void initializeLevel();
+
+    void terminateSuggestionsThreads();
+
+    void handleSuggestionThread();
 };
 
 
