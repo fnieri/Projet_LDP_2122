@@ -21,7 +21,7 @@ public:
 
     void setHandleMatch(bool handleM);
 
-    bool checkMatches();
+    bool checkMatches() override;
 
     bool checkMatch(vector <array<int, 2>> match, int i, int j, CandySpeciality speciality);
 

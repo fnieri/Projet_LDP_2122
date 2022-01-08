@@ -70,10 +70,12 @@ void MatchHandler::handleCellsToReplace(vector<vector<int>> cellsToReplace) {
 //        }
 //    }
     // drop all empty cells and if moves diagonally, reload the top cells
-    vector<vector<int>> cellsToDrop = findEmptyCells();
+        vector<vector<int>> cellsToDrop = findEmptyCells();
         moveCellsDown(cellsToDrop);
-//    for (int o = 0; o < 2; ++o) {
-//    }
+        if (remainingEmptyCells()) {
+            vector<vector<int>> cellsToDrop = findEmptyCells();
+            moveCellsDown(cellsToDrop);
+        }
 }
 
 

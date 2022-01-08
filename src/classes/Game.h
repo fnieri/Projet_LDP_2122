@@ -51,10 +51,11 @@ public:
 
     bool isInputAllowed();
 
+    virtual bool checkMatches() = 0;
+
     virtual void moveCellsDown(vector<vector<int>>) = 0;
 
     virtual void moveCellsDiagonaly() = 0;
-
 
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 
@@ -75,6 +76,8 @@ public:
     void resetScore() { score = 0; };
 
     vector<vector<int>> findEmptyCells();
+
+    bool remainingEmptyCells();
 
     int getMovesLeft();
 

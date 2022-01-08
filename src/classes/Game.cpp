@@ -15,6 +15,17 @@ bool Game::contains(Point p) {
     return false;
 }
 
+bool Game::remainingEmptyCells() {
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].isEmpty()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 vector<vector<int>> Game::findEmptyCells() {
     vector<vector<int>> cellsToDrop;
     // find all empty cells in CellsVertex and drop them
