@@ -5,6 +5,8 @@
 #include "Animation.h"
 
 void Animation::moveCellsDiagonaly() {
+    vector<vector<int>> dropRightCells;
+    vector<vector<int>> dropLeftCells;
     for (int col = (int) CellsVertex.size() - 1; col > -1; --col) {
         for (int row = 0; row < (int) CellsVertex[col].size() - 1; ++row) {
             Cell *toDrop = &CellsVertex[col][row];
@@ -13,21 +15,21 @@ void Animation::moveCellsDiagonaly() {
                     for (int lr = -1; lr < 2; lr += 2) {
                         Cell *toReplace = &CellsVertex.at(col + 1).at(row + lr);
                         if (toReplace->isEmpty()) {
-                            for (int l = 0; l < (int) margin; ++l) {
-                                Point movingCenter{toDrop->getCenter().x + 1 * lr,
-                                                   toDrop->getCenter().y + 1};
-                                toDrop->setCenter(movingCenter);
-                                if (!isInputAllowed()) {
-                                    usleep(7000);
-                                    Fl::check();
+                            for (int k = col; k > -1; --k) {
+                                try {
+                                    int dCol = col - k;
+                                    int dRow = row - k * lr;
+                                    Cell *diagonalCell = &CellsVertex.at(dCol).at(dRow);
+                                    if (!diagonalCell->isCandy()) continue;
+                                    if (lr == -1) {
+                                        dropLeftCells.push_back({dCol, dRow});
+                                    } else {
+                                        dropRightCells.push_back({dCol, dRow});
+                                    }
+                                } catch (const std::out_of_range &e) {
+                                    break;
                                 }
                             }
-                            toReplace->setObject(*(toDrop->getCandy()));
-                            Point originalCenter{toDrop->getCenter().x - margin * lr,
-                                                 toDrop->getCenter().y - margin};
-                            toDrop->setCenter(originalCenter);
-                            toDrop->setObject(ClickableFactory::makeEmptyCandy());
-                            Fl::check();
                         }
                     }
                 } catch (const std::out_of_range &e) {
@@ -36,6 +38,45 @@ void Animation::moveCellsDiagonaly() {
             }
         }
     }
+
+    for (int lr = -1; lr < 2; lr += 2) {
+        vector<vector<int>> cellsToDrop;
+        if (lr == -1) cellsToDrop = dropLeftCells;
+        else cellsToDrop = dropRightCells;
+
+        for (int l = 0; l < (int) margin; ++l) {
+            for (auto &cellToDrop: cellsToDrop) {
+                int i = cellToDrop[0];
+                int j = cellToDrop[1];
+                Cell *toDrop = &CellsVertex[i][j];
+                Point movingCenter{toDrop->getCenter().x + 1 * lr,
+                                   toDrop->getCenter().y + 1};
+                toDrop->setCenter(movingCenter);
+            }
+            if (!isInputAllowed()) {
+                usleep(7000);
+                Fl::check();
+            }
+        }
+        for_each(cellsToDrop.rbegin(), cellsToDrop.rend(), [&](auto &cellToDrop) {
+            int i = cellToDrop[0];
+            int j = cellToDrop[1];
+            int ri = cellToDrop[0] + 1;
+            int rj = cellToDrop[1] + 1 * lr;
+            try {
+                Cell *toDrop = &CellsVertex.at(i).at(j);
+                Cell *toReplace = &CellsVertex.at(ri).at(rj);
+                toReplace->setObject(*(toDrop->getCandy()));
+                Point originalCenter{toDrop->getCenter().x - margin * lr,
+                                     toDrop->getCenter().y - margin};
+                toDrop->setCenter(originalCenter);
+//                toDrop->setObject(ClickableFactory::makeEmptyCandy());
+            } catch (const std::out_of_range &e) {
+
+            }
+        });
+    }
+    Fl::check();
 }
 
 void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {

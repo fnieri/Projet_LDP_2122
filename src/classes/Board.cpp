@@ -150,7 +150,7 @@ void Board::terminateSuggestionsThreads() {
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
-    terminateSuggestionsThreads();
+//    terminateSuggestionsThreads();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         runSuggestionThread = false;
         suggestedCells.clear();
