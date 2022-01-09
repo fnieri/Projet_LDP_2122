@@ -33,6 +33,7 @@ void Board::draw() {
 void Board::handleBoardDrag(Point p1, Point p2) {
     setAcceptInput(false);
     setAnimating(true);
+
     unHighlightAll();
     selectedCell = getCellFromPosition(p1);
     Cell *secondCell = getCellFromPosition(p2);
@@ -41,6 +42,7 @@ void Board::handleBoardDrag(Point p1, Point p2) {
         selectedCellPosition = p1;
         swapCells(secondCell, p2);
     }
+    
     setAcceptInput(true);
     setAnimating(false);
 }

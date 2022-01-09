@@ -39,9 +39,9 @@ void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
     
 }
 
-template <class bs>
-shared_ptr<bs> Cell::returnCasted(){
-    return dynamic_pointer_cast<bs>(cellClickable);
+template <class cellObject>
+shared_ptr<cellObject> Cell::returnCasted(){
+    return dynamic_pointer_cast<cellObject>(cellClickable);
 }
 
 bool Cell::isEmpty() {
@@ -127,7 +127,6 @@ Candy* Cell::getCandy() {
      return dynamic_cast<Candy*>(cellClickable.get());
 }
 
-
 Point Cell::getCenter() {
     return center;
 }
@@ -144,7 +143,6 @@ CandySpeciality Cell::getSpeciality() {
         return dynamic_pointer_cast<Candy>(cellClickable)->getSpeciality();  
     return CandySpeciality::NONE;
 }
-
 
 Color Cell::getColor() {
     if (cellClickable->visitCandy()) 
