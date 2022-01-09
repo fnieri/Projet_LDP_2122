@@ -11,8 +11,8 @@
 class Animation : virtual public Game {
 public:
     void moveCellsDown(vector <vector<int>> cellsToReplace) override;
-    void moveCellsDiagonaly() override;
-    
+    void moveCellsDiagonaly(const vector<vector<int>> &diagonalCells, int lr) override;
+
     static void destroyObject(Cell *cell);
 };
 

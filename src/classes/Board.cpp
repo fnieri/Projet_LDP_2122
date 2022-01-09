@@ -146,11 +146,13 @@ void Board::shuffle() {
 
 void Board::terminateSuggestionsThreads() {
     if (suggestionThread && suggestionThread->joinable()) suggestionThread->~thread();
+    suggestionThread = nullptr;
+    Fl::unlock();
 }
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
-//    terminateSuggestionsThreads();
+    terminateSuggestionsThreads();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         runSuggestionThread = false;
         suggestedCells.clear();
@@ -179,27 +181,24 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
 }
 
 void Board::handleSuggestionThread() {
-    suggestionMutex.lock();
-    runSuggestionThread = true;
-    this_thread::sleep_for(2s);
-    suggestionMutex.unlock();
-    if (!runSuggestionThread) return;
-
+    Fl::unlock();
+    this_thread::sleep_for(4s);
     try {
         Cell *tempCell = suggestedCells.at(0);
         Cell *tempSwapCell = suggestedCells.at(1);
+        Fl::lock();
         tempCell->setHighlightColor(FL_RED);
         tempSwapCell->setHighlightColor(FL_RED);
         tempCell->setSuggestion(true);
         tempSwapCell->setSuggestion(true);
+        Fl::unlock();
 
-        Fl::check();
         this_thread::sleep_for(2s);
-        if (!runSuggestionThread) return;
+        Cell *tempCell1 = suggestedCells.at(0);
+        Cell *tempSwapCell1 = suggestedCells.at(1);
 
-        tempCell->resetHighlight();
-        tempSwapCell->resetHighlight();
-        Fl::check();
+        tempCell1->resetHighlight();
+        tempSwapCell1->resetHighlight();
     }
     catch (const std::out_of_range &e) {
         return;

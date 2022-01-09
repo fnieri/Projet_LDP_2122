@@ -45,6 +45,8 @@ public:
 
     void setMargin(int m);
 
+    void gameWait(useconds_t time);
+
     vector<vector<Cell>> getCells();
 
     void setAcceptInput(bool newState);
@@ -55,7 +57,7 @@ public:
 
     virtual void moveCellsDown(vector<vector<int>>) = 0;
 
-    virtual void moveCellsDiagonaly() = 0;
+    virtual void moveCellsDiagonaly(const vector<vector<int>> &diagonalCells, int lr) = 0;
 
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
 

@@ -26,6 +26,13 @@ bool Game::remainingEmptyCells() {
     return false;
 }
 
+void Game::gameWait(useconds_t time){
+    if (!isInputAllowed()){
+        usleep(time);
+        Fl::check();
+    }
+}
+
 vector<vector<int>> Game::findEmptyCells() {
     vector<vector<int>> cellsToDrop;
     // find all empty cells in CellsVertex and drop them

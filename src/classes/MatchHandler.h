@@ -19,6 +19,12 @@ class MatchHandler : public Animation, public GameObjective {
 public:
     void handleCellsToReplace(vector<vector<int>> cellsToReplace);
 
+    vector<vector<int>> getDiagonalCells(int col, int row, int lr);
+
+    bool handleDiagonalCells();
+
+    void handleGravity();
+
     void handleStripedHorizontal(int i, int j, vector<vector<int>> cellsToMove);
 
     void handleStripedVertical(int i, int j, vector<vector<int>> cellsToMove);
