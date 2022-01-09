@@ -80,7 +80,6 @@ vector<vector<int>> MatchHandler::getDiagonalCells(int col, int row, int lr) {
             Cell *checkCell = &CellsVertex.at(dCol).at(dRow);
             if (!checkCell->isCandy() || checkCell->isEmpty()) break;
             diagonalCells.push_back({dCol, dRow});
-
         } catch (const std::out_of_range &oor) {
             break;
         }
@@ -102,8 +101,8 @@ bool MatchHandler::handleDiagonalCells() {
                 vector<vector<int>> diagonalCells = getDiagonalCells(col, row, lr);
                 if (!diagonalCells.empty()) {
                     Animation::moveCellsDiagonaly(diagonalCells, lr);
-                    while (checkMatches());
                     handleGravity();
+                    while (checkMatches());
                     return true;
                 }
             } catch (const out_of_range &e) {}

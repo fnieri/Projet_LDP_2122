@@ -64,6 +64,7 @@ bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, Cand
 }
 
 bool MatchDetection::checkWrappedCandy(int i, int j) {
+    // TODO: complete this vector
     vector < vector < array < int, 2>>> match{{{1,  0}, {2,  0}, {0, 1},  {0, 2}},
                                               {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}}};
     for (auto &matchWrapped: match) {

@@ -13,7 +13,6 @@ void EventHandler::setFirstPosition(Point p) {
 }
 
 void EventHandler::handleMouseDrag(Point p){
-    Fl::unlock();
     if (p.x < 0 || p.y < 0) return;
     if (firstPosition == Point{}) {
         setFirstPosition(p);

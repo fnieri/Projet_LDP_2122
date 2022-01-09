@@ -181,17 +181,17 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
 }
 
 void Board::handleSuggestionThread() {
-    Fl::unlock();
+//    Fl::unlock();
     this_thread::sleep_for(4s);
     try {
         Cell *tempCell = suggestedCells.at(0);
         Cell *tempSwapCell = suggestedCells.at(1);
-        Fl::lock();
+//        Fl::lock();
         tempCell->setHighlightColor(FL_RED);
         tempSwapCell->setHighlightColor(FL_RED);
         tempCell->setSuggestion(true);
         tempSwapCell->setSuggestion(true);
-        Fl::unlock();
+//        Fl::unlock();
 
         this_thread::sleep_for(2s);
         Cell *tempCell1 = suggestedCells.at(0);
