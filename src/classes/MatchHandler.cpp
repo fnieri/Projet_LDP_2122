@@ -60,16 +60,6 @@ void MatchHandler::handleCellsToReplace(vector<vector<int>> cellsToReplace) {
         }
         ++i;
     }
-
-//    // find all empty cells in CellsVertex and drop them
-//    for (int col = 0; col < (int) CellsVertex.size(); ++col) {
-//        for (int row = 0; row < (int) CellsVertex[col].size(); ++row) {
-//            if (CellsVertex[col][row].isEmpty()) {
-//                cellsToDrop.push_back({col, row});
-//            }
-//        }
-//    }
-    // drop all empty cells and if moves diagonally, reload the top cells
     handleGravity();
 }
 
