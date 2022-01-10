@@ -156,9 +156,11 @@ void Canvas::shuffleCurrentLevel() {
     
 }
 void Canvas::showShuffle() {
-    if (isShuffling())
+    if (isShuffling()) {
+        hideAll();
         showCenterMessage("Shuffling");
-    
+        showAll();
+    }
 }
 
 void Canvas::hideAll() {

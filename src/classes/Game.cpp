@@ -104,7 +104,6 @@ void Game::getInitialHighScore()
     if (bestScoreFile.is_open())
     {
         std::getline(bestScoreFile, currentBestScore);
-        std::cout << currentBestScore.length() << std::endl;
         if (currentBestScore.length() != 0)
             hiScore = stoi(currentBestScore);
         else {
@@ -115,7 +114,6 @@ void Game::getInitialHighScore()
     
     else {
         //Create file if it doesn't exist and reopen
-        std::cout << "carmine";
         std::ofstream(BEST_SCORE_FILE);
         std::fstream bestScoreFile(BEST_SCORE_FILE);
         bestScoreFile << "0";

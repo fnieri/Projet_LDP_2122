@@ -64,8 +64,18 @@ bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, Cand
 }
 
 bool MatchDetection::checkWrappedCandy(int i, int j) {
-    vector < vector < array < int, 2>>> match{{{1,  0}, {2,  0}, {0, 1},  {0, 2}},
-                                              {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}}};
+    vector < vector < array < int, 2>>> match{  //L Shapes
+                                              {{1,  0}, {2,  0}, {0, 1},  {0, 2}},
+                                              {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}},
+                                              {{-1, 0}, {-2, 0}, {0, 1},  {0,  2}},
+                                              {{0, -2}, {0, -1}, {0, 1},  {0, 2}},
+                                              // T Shapes
+                                              {{0, -1}, {0, 1},  {-1, 0}, {-2, 0}},
+                                              {{0, -1}, {0, 1},  {1, 0},  {2, 0}},
+                                              {{1,  0}, {-1, 0}, {0, 1},  {2, 0}},
+                                              {{1,  0}, {-1, 0}, {0, -1}, {0, -2}},
+                                              // X shape
+                                              {{1, 0},  {-1, 0}, {0, 1},  {0, -1}}};
     for (auto &matchWrapped: match) {
         if (checkMatch(matchWrapped, i, j, CandySpeciality::BOMB)) return true;
     }

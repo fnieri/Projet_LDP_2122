@@ -128,15 +128,15 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
             if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition)) {
                 selectedCell = nullptr;
                 while (checkMatches());
-                while (!checkIfShuffleIsNeeded()) shuffle();
+                while (!checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false);};
                 return;
             }
             if (!checkMatches()) {
                 exchangeCells(selectedCell, swapCell);
             } else {
                 while (checkMatches());
-                while (!checkIfShuffleIsNeeded()) shuffle();
-            }
+                while (!checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false);};
+              }
             decreaseMovesLeft();
         }
     }
