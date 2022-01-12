@@ -2,8 +2,8 @@
 // Created by louis on 17/12/2021.
 //
 
-#ifndef PROJET_LDP_2122_GAME_H
-#define PROJET_LDP_2122_GAME_H
+#ifndef __2122_GAME_H
+#define __2122_GAME_H
 
 #include <cstdio>
 #include <fstream>
@@ -33,7 +33,6 @@ protected:
     int hiScore;
     bool acceptInput = true;
     bool gameOver = false;
-    bool animating = false;
     bool shuffling = false;
     bool resetting = false;
     int movesLeft = 1; 
@@ -41,7 +40,6 @@ protected:
 public:
 
    //Setters 
-    void setAnimating(bool);
     void setMargin(int m);
     void setShuffling(bool);
     void setAcceptInput(bool newState);
@@ -53,12 +51,15 @@ public:
     void setResetting(bool);
     //----//
 
+    void gameWait(useconds_t time);
+
     //Save highscore in file
     void saveHighscore();
 
     //Cell highlighting
     void highlight(Point p);
     void unHighlightAll();
+
 
     
     //Getters
@@ -75,8 +76,6 @@ public:
     //Reset moves and state
     void resetGame();
     
-    //Check if animation is animating
-    bool isAnimating();
     bool isShuffling();
 
     //Check if cell contains points
@@ -85,11 +84,16 @@ public:
     int getScore();
     int getMovesLeft(); 
     bool gameIsOver();
-    bool isResetting();
+    bool isResetting();    
+    bool remainingEmptyCells();
+
+    vector<vector<int>> findEmptyCells();
+
     //---//
 
     void createSpecialCandy(int, int, CandySpeciality);
     
+    virtual void moveCellsDiagonally(const vector<vector<int>> &diagonalCells, int lr) = 0;
     virtual void moveCellsDown(vector <vector<int>>) = 0;
 
     virtual void setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int j) = 0;
@@ -104,7 +108,7 @@ public:
 
     virtual void swapCellsNoAnim(Cell *cell1, Cell *cell2) = 0;
 
-//    virtual bool checkMatches() = 0;
+    virtual bool checkMatches() = 0;
 
     virtual Point getPositionOfCell(Point p) = 0;
 

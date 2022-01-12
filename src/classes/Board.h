@@ -5,6 +5,10 @@
 #ifndef __BOARD_H
 #define __BOARD_H
 
+
+#include <thread>
+#include <mutex>
+
 #include "EventHandler.h"
 #include "MatchDetection.h"
 #include "LevelFactory.h"
@@ -20,6 +24,11 @@ class Board : public EventHandler, public MatchDetection {
     Cell *toSwapCell = nullptr;
     Point toSwapCellCenter{0, 0};
     Point toSwapCellPosition{0, 0};
+    
+    vector<Cell *> suggestedCells{};
+    thread *suggestionThread = nullptr;
+    bool runSuggestionThread = false;
+    mutex suggestionMutex;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -82,6 +91,12 @@ public:
      * is of type CLEAR_ICING,
      */
     void matchIcingObjective();
+
+    void initializeLevel();
+
+    void terminateSuggestionsThreads();
+
+    void handleSuggestionThread();
 
 
 

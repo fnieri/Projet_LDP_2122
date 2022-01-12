@@ -7,8 +7,39 @@
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
     setMargin(margin);
     CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
+    initializeLevel();
     getInitialHighScore();  
 }
+
+
+void Board::initializeLevel() {
+    // replace all non candy by candy, then it checks all the matches, and finally it places back the non candy
+    vector<vector<int>> nonCandyPos;
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (!isCandy(CellsVertex[i][j])) {
+                int id;
+                if (isIcing(CellsVertex[i][j]))
+                    id = 2;
+                else
+                    id = 3;
+                nonCandyPos.push_back({i, j, id});
+                CellsVertex[i][j].setClickable(ClickableFactory::makeCandy(CandySpeciality::NONE));
+            }
+        }
+    }
+    while (checkMatches());
+    for (auto &nonCandyPo: nonCandyPos) {
+        int x = nonCandyPo[0];
+        int y = nonCandyPo[1];
+        int id = nonCandyPo[2];
+        if (id == 2)
+            CellsVertex[x][y].setClickable(ClickableFactory::makeIcing(static_cast<IcingStatus>(id - 1)));
+        else if (id == 3)
+            CellsVertex[x][y].setClickable(ClickableFactory::makeWall());
+    }
+}
+
 
 void Board::reset() {  
     //CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
@@ -32,7 +63,6 @@ void Board::draw() {
 
 void Board::handleBoardDrag(Point p1, Point p2) {
     setAcceptInput(false);
-    setAnimating(true);
 
     unHighlightAll();
     selectedCell = getCellFromPosition(p1);
@@ -44,7 +74,6 @@ void Board::handleBoardDrag(Point p1, Point p2) {
     }
     
     setAcceptInput(true);
-    setAnimating(false);
 }
 
 Cell *Board::getCellFromPosition(Point p) {
@@ -60,6 +89,7 @@ bool Board::handleBoardContains(Point p) {
                     selectedCell = &CellsVertex[i][j];
                     selectedCellCenter = selectedCell->getCenter();
                     selectedCellPosition = Point{i, j};
+
                 } else swapCells(&CellsVertex[i][j], Point{i, j});
                 return true;
             }
@@ -109,6 +139,7 @@ void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int 
 }
 
 void Board::shuffle() {
+    std::cout << "ao" << std::endl;
     for (int i = 0; i < numberOfCells; ++i) {
         int size = sqrt(numberOfCells) - 1;
         int x1 = rand() % size;
@@ -120,35 +151,71 @@ void Board::shuffle() {
     while (checkMatches());
 }
 
+
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
+    terminateSuggestionsThreads();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        if (isCandy(selectedCell) && isCandy(swapCell)) {
+        runSuggestionThread = false;
+        suggestedCells.clear();
+        if (isCandy(selectedCell) && isCandy(swapCell) && !selectedCell->isEmpty() && !swapCell->isEmpty()) {
             exchangeCells(selectedCell, swapCell);
             if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition)) {
-                selectedCell = nullptr;
                 while (checkMatches());
-                while (!checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false);};
-                return;
-            }
-            if (!checkMatches()) {
+                while (checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false); }
+                decreaseMovesLeft();
+
+            } else if (!checkMatches()) {
                 exchangeCells(selectedCell, swapCell);
             } else {
                 while (checkMatches());
-                while (!checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false);};
-              }
-            decreaseMovesLeft();
+                while (checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false);}
+                decreaseMovesLeft();
+            }
+        }
+        if (!isInputAllowed()) {
+            thread t1(&Board::handleSuggestionThread, this);
+            t1.detach();
         }
     }
     selectedCell = nullptr;
     setAcceptInput(true);
 }
 
+
+void Board::terminateSuggestionsThreads() {
+    if (suggestionThread && suggestionThread->joinable()) suggestionThread->~thread();
+    suggestionThread = nullptr;
+    Fl::unlock();
+}
+
+void Board::handleSuggestionThread() {
+    this_thread::sleep_for(4s);
+    try {
+        Cell *tempCell = suggestedCells.at(0);
+        Cell *tempSwapCell = suggestedCells.at(1);
+        tempCell->setHighlightColor(FL_RED);
+        tempSwapCell->setHighlightColor(FL_RED);
+        tempCell->setSuggestion(true);
+        tempSwapCell->setSuggestion(true);
+        this_thread::sleep_for(2s);
+        Cell *tempCell1 = suggestedCells.at(0);
+        Cell *tempSwapCell1 = suggestedCells.at(1);
+
+        tempCell1->resetHighlight();
+        tempSwapCell1->resetHighlight();
+    }
+    catch (const std::out_of_range &e) {
+        return;
+    }
+}
+
+
 bool Board::checkIfShuffleIsNeeded() {
-    vector <array<int, 2>> deltas = {{0,  1},
-                                     {1,  0},
-                                     {0,  -1},
-                                     {-1, 0}};
+    vector<array<int, 2>> deltas = {{0,  1},
+                                    {1,  0},
+                                    {0,  -1},
+                                    {-1, 0}};
     for (int i = 0; i < (int) CellsVertex.size(); ++i) {
         for (int j = 0; j < (int) CellsVertex[i].size(); ++j) {
             Cell *tempCell = &CellsVertex[i][j];
@@ -157,14 +224,18 @@ bool Board::checkIfShuffleIsNeeded() {
                     int dx = d[0];
                     int dy = d[1];
                     Cell *tempSwapCell = &CellsVertex.at(i + dy).at(j + dx);
-                    swapCellsNoAnim(tempCell, tempSwapCell);
-                    setHandleMatch(false);
-                    if (checkMatches()) {
+                    if (!(tempSwapCell)->isEmpty()) {
                         swapCellsNoAnim(tempCell, tempSwapCell);
-                        setHandleMatch(true);
-                        return true;
+                        setHandleMatch(false);
+                        if (checkMatches()) {
+                            swapCellsNoAnim(tempCell, tempSwapCell);
+                            setHandleMatch(true);
+                            suggestedCells.push_back(tempCell);
+                            suggestedCells.push_back(tempSwapCell);
+                            return false;
+                        }
+                        swapCellsNoAnim(tempCell, tempSwapCell);
                     }
-                    swapCellsNoAnim(tempCell, tempSwapCell);
                 }
                 catch (out_of_range &e) {
                     continue;
@@ -173,7 +244,7 @@ bool Board::checkIfShuffleIsNeeded() {
         }
     }
     setHandleMatch(true);
-    return false;
+    return true;
 }
 
 void Board::swapCellsNoAnim(Cell *cell1, Cell *cell2) {

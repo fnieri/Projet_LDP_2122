@@ -18,12 +18,21 @@ public:
      * @param cellsToReplace 
      */
     void moveCellsDown(vector <vector<int>> cellsToReplace) override;
+    
+    /**
+     * @brief Move cells diagonally when needed
+     * 
+     * @param diagonalCells 
+     * @param lr 
+     */
+    void moveCellsDiagonally(const vector<vector<int>> &diagonalCells, int lr) override;
+
     /**
      * @brief Animate cell destruction with png
      * 
      * @param cell 
      */
-    void destroyObject(Cell *cell);
+    static void destroyObject(Cell *cell);
 };
 
 #endif

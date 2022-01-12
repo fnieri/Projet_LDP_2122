@@ -57,17 +57,56 @@ void MatchHandler::handleCellsToReplace(vector <vector<int>> cellsToReplace) {
         }
         ++i;
     }
-    
-    vector<vector<int>> cellsToDrop;
-    // find all empty cells in CellsVertex and drop them
-    for (int col = 0; col < (int) CellsVertex.size(); ++col) {
-        for (int row = 0; row < (int) CellsVertex[col].size(); ++row) {
-            if (CellsVertex[col][row].isEmpty()) {
-                cellsToDrop.push_back({col, row});
-            }
+    handleGravity();
+}
+
+void MatchHandler::handleGravity() {
+    vector<vector<int>> cellsToDrop = findEmptyCells();
+    moveCellsDown(cellsToDrop);
+    if (remainingEmptyCells()) {
+        handleDiagonalCells();
+    }
+}
+
+
+vector<vector<int>> MatchHandler::getDiagonalCells(int col, int row, int lr) {
+    vector<vector<int>> diagonalCells;
+    int i = 1;
+    for (int dCol = col-1; dCol > -1; --dCol) {
+        try {
+            int dRow = row + lr * i;
+            Cell *checkCell = &CellsVertex.at(dCol).at(dRow);
+            if (!isCandy(checkCell) || checkCell->isEmpty()) break;
+            diagonalCells.push_back({dCol, dRow});
+        } catch (const std::out_of_range &oor) {
+            break;
+        }
+        ++i;
+    }
+    return diagonalCells;
+}
+
+
+bool MatchHandler::handleDiagonalCells() {
+    vector<vector<int>> emptyCells = findEmptyCells();
+    for (auto &cell: emptyCells) {
+        int col = cell[0];
+        int row = cell[1];
+        for (int lr = -1; lr < 2; lr += 2) {
+            try {
+                Cell *checkCell = &CellsVertex.at(col - 1).at(row + lr);
+                if (!isCandy(*checkCell) || checkCell->isEmpty()) continue;
+                vector<vector<int>> diagonalCells = getDiagonalCells(col, row, lr);
+                if (!diagonalCells.empty()) {
+                    Animation::moveCellsDiagonally(diagonalCells, lr);
+                    handleGravity();
+                    while (checkMatches());
+                    return true;
+                }
+            } catch (const out_of_range &e) {}
         }
     }
-    moveCellsDown(cellsToDrop);
+    return false;
 }
 
 void MatchHandler::clearIcing(int i, int j) {
@@ -91,7 +130,6 @@ void MatchHandler::handleStripedHorizontal(int i, int j, vector <vector<int>> ce
             cellsToMove.push_back(cellToMove);
         }
     }
-    
     handleCellsToReplace(cellsToMove);
 }
 

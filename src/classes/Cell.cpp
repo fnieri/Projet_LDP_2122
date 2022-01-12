@@ -49,7 +49,7 @@ bool Cell::isEmpty() {
 }
 
 void Cell::draw() {
-    if (drawBox) {
+    if (drawBox || suggesting) {
         array<Point, 5> points{
                 Point{center.x - cellSize / 10, center.y - cellSize / 4},
                 Point{center.x - cellSize / 10, center.y + cellSize},
@@ -66,6 +66,15 @@ void Cell::draw() {
     cellClickable->draw(center.x - cellSize / 2, center.y - cellSize / 2, cellClickable->w(), cellClickable->h());
 }
 
+void Cell::resetHighlight() {
+    setHighlightColor(FL_LIGHT3);
+    setHighlighted(false);
+    setSuggestion(false);
+}
+
+void Cell::setSuggestion(bool suggestion) {
+    suggesting = suggestion;
+}
 
 void Cell::setHighlightColor(Fl_Color color) {
     highlightColor = color;

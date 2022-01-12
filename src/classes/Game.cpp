@@ -19,6 +19,37 @@ bool Game::contains(Point p)
     return false;
 }
 
+bool Game::remainingEmptyCells() {
+    for (int i = 0; i < (int) CellsVertex.size(); i++) {
+        for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
+            if (CellsVertex[i][j].isEmpty()) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Game::gameWait(useconds_t time){
+    if (!isInputAllowed()){
+        usleep(time);
+        Fl::check();
+    }
+}
+
+vector<vector<int>> Game::findEmptyCells() {
+    vector<vector<int>> cellsToDrop;
+    // find all empty cells in CellsVertex and drop them
+    for (int col = 0; col < (int) CellsVertex.size(); ++col) {
+        for (int row = 0; row < (int) CellsVertex[col].size(); ++row) {
+            if (CellsVertex[col][row].isEmpty()) {
+                cellsToDrop.push_back({col, row});
+            }
+        }
+    }
+    return cellsToDrop;
+}
+
 void Game::createSpecialCandy(int i, int j, CandySpeciality speciality)
 {
     if (speciality == CandySpeciality::MULTICOLOR)
@@ -164,14 +195,6 @@ bool Game::isIcing(Cell cell) {return cell.hasIcing();}
 bool Game::isCandy(Cell *cell) {return cell->hasCandy();}
 
 bool Game::isCandy(Cell cell) {return cell.hasCandy();}
-
-void Game::setAnimating(bool newState) {
-    animating = newState;
-}
-
-bool Game::isAnimating(){
-    return animating;
-}
 
 void Game::setShuffling(bool newState) {
     shuffling = newState;

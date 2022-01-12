@@ -13,11 +13,17 @@
 
 class MatchHandler : public Animation, public GameObjective {
   bool isInteracting = false;
-    Color interactionColor = Color::NONE;
-    CandySpeciality interactionSpeciality = CandySpeciality::NONE;
+  Color interactionColor = Color::NONE;
+  CandySpeciality interactionSpeciality = CandySpeciality::NONE;
 
 public:
     void handleCellsToReplace(vector<vector<int>> cellsToReplace);
+
+    vector<vector<int>> getDiagonalCells(int col, int row, int lr);
+
+    bool handleDiagonalCells();
+
+    void handleGravity();
 
     void handleStripedHorizontal(int i, int j, vector<vector<int>> cellsToMove);
 

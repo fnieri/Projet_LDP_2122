@@ -25,6 +25,7 @@ class Cell {
     shared_ptr<Clickable> cellClickable;
     int margin;
     bool drawBox = false;
+    bool suggesting = false;
     Fl_Color highlightColor = FL_LIGHT3;
 public:
     Cell(Point, int, Clickable*, int);
@@ -59,6 +60,8 @@ public:
     //Animate gravity of cell
     void animateGravity(Point destination);
     void draw();
+    void resetHighlight();
+    void setSuggestion(bool suggestion);
 
     //Getters
     Color getColor();
@@ -72,6 +75,8 @@ public:
     //Return casted object from Clickable
     template <class cellObject>
     shared_ptr<cellObject> returnCasted(); 
+
+
 };
 
 #endif

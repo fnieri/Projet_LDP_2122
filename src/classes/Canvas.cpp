@@ -1,5 +1,4 @@
 #include "Canvas.h"
-#include "pthread.h"
 
 Canvas::Canvas(int cellSize, int margin, int numberOfCells) : 
 Board(cellSize, margin, numberOfCells) {
@@ -72,8 +71,7 @@ void Canvas::checkLevelDone() {
         if (levelDone) {
             hideAll();
             showCenterMessage(message);
-        }
-    
+        }  
 }
 
 
@@ -85,12 +83,10 @@ void Canvas::keyPressed(int keyCode) {
         case 'r':
             resetCurrentLevel();
             break;
-        case 'c':
-            checkMatches();
-            break;
-        case 's':
+        /*case 's':
             shuffleCurrentLevel();
             break;
+        */
         default:
             break;
     }
