@@ -101,7 +101,7 @@ void Canvas::setDrawAchievement(bool newDraw) {
     drawAchievement = newDraw;
 }
 
-bool Canvas::isKeyInputAllowed() {return keyInputAllowed;}
+bool Canvas::isKeyInputAllowed() const {return keyInputAllowed;}
 
 void Canvas::setKeyInputAllowed(bool newState) {
     keyInputAllowed = newState;
@@ -116,6 +116,9 @@ void Canvas::resetCurrentLevel() {
     objectiveInit();
     matchIcingObjective();
     resetScore();
+
+    Fl::check();
+    sleep(1);
     
     setResetting(false);
     showAll();
@@ -125,7 +128,7 @@ void Canvas::setShowTopInfo(bool newShow) {
     showTopInfo = newShow;
 }
 
-bool Canvas::getShowTopInfo() {
+bool Canvas::getShowTopInfo() const {
     return showTopInfo;
 }
 
@@ -133,7 +136,7 @@ void Canvas::setShowBoard(bool newHide) {
     showBoard = newHide;
 }
 
-bool Canvas::getShowBoard() {
+bool Canvas::getShowBoard() const {
     return showBoard;
 }
 
@@ -179,12 +182,12 @@ void Canvas::showAll() {
     setAcceptInput(true);
 }
 
-void Canvas::showCenterMessage(std::string message) {
+void Canvas::showCenterMessage(std::string message) const {
     fl_rectf(messageX, messageY, 300, 40, FL_WHITE);
     fl_rect(messageX, messageY, 300, 40, FL_BLACK);
     fl_draw(message.c_str(), messageX + 40, messageY + 20);
 }
 
-bool Canvas::getShowSplashscreen() {
+bool Canvas::getShowSplashscreen() const {
     return showSplashscreen;
 }

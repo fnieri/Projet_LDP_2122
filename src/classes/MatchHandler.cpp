@@ -172,7 +172,7 @@ bool MatchHandler::wrappedInRange(int i, int j, int partialVerticalOffset, int p
 
 void MatchHandler::emptyCell(int i, int j) {
     
-    if (!isInputAllowed()) 
+    if (!isInputAllowed() && !isResetting())
         destroyObject(&CellsVertex[i][j]);
     
     if (isCandy(CellsVertex[i][j])) {
@@ -244,7 +244,6 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
                         break;
                 }
             }
-            //gameWait(3000);
         }
     }
 

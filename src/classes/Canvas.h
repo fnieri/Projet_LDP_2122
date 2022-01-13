@@ -57,7 +57,7 @@ public:
 
     void hideAll();
     void showAll();
-    void showCenterMessage(std::string message);
+    void showCenterMessage(std::string message) const;
     void showReset();
 
     
@@ -69,16 +69,16 @@ public:
     void resetCurrentLevel();
 
     //Setters
-    bool isKeyInputAllowed();
+    bool isKeyInputAllowed() const;
     void setDrawAchievement(bool);
     void setKeyInputAllowed(bool);
     void setShowTopInfo(bool);
     void setShowBoard(bool);
     
     //Getters    
-    bool getShowBoard();
-    bool getShowTopInfo();
-    bool getShowSplashscreen();
+    bool getShowBoard() const;
+    bool getShowTopInfo() const;
+    bool getShowSplashscreen() const;
 };
 
 

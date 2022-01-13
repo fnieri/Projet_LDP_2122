@@ -30,7 +30,7 @@ bool Game::remainingEmptyCells() {
 }
 
 void Game::gameWait(useconds_t time){
-    if (!isInputAllowed()){
+    if (!isInputAllowed() && !isResetting()){
         usleep(time);
         Fl::check();
     }

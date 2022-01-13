@@ -66,7 +66,7 @@ public:
 
     
     //Getters
-    void getInitialHighScore();  
+    void getInitialHighScore();
     
     //Check if cell is of clickable derived class
     bool isCandy(Cell *cell);
