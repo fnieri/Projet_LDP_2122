@@ -56,6 +56,8 @@ bool Cell::isEmpty() {
 }
 
 void Cell::draw() {
+    //Draw a box beneath candy with color
+    //FL_LIGHT3 is for hover, FL_RED is for suggestion, none is default
     if (drawBox || suggesting) {
         array<Point, 5> points{
                 Point{center.x - cellSize / 10, center.y - cellSize / 4},
@@ -92,6 +94,7 @@ void Cell::setHighlighted(bool val) {
 }
 
 void Cell::animateCandy(Cell *swapCell) {
+    //Animate two candies swapping cell
     Point destination = swapCell->getCenter();
     while (center.x != destination.x || center.y != destination.y) {
         Point swapCenter = swapCell->getCenter();
@@ -122,8 +125,6 @@ bool Cell::contains(Point p) const {
            p.y >= center.y - cellSize / 4 &&
            p.y < center.y + cellSize;
 }
-
-
 
 void Cell::setClickable(const Clickable &clickable) {
     if (auto tmp = dynamic_cast<const Candy*>(&clickable))  {

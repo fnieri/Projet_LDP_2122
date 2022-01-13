@@ -40,6 +40,7 @@ void Canvas::showSplashScreen() {
 }
 
 void Canvas::drawCurrentObjective() {
+    //Show top white bar with info containing score, hiscore, current objective and moves left
     if (getShowTopInfo()) {
         fl_color(FL_WHITE);
         fl_rectf(50, 45, 605, 605, FL_WHITE);

@@ -16,6 +16,7 @@ void GameObjective::createObjectiveType() {
 void GameObjective::makeNumberToAchieve() {
     switch (currentObjective) {
         case CLEAR_CANDIES: {
+            //Create candy to be cleared
             CandySpeciality speciality = static_cast<CandySpeciality>(rand() % ( ((int) SPECIALITY_COUNT) - 1));
             Color color = CandyFactory::generateColor();
             Candy tmp = makeObjectiveCandy(speciality, color);
@@ -27,7 +28,7 @@ void GameObjective::makeNumberToAchieve() {
             setNumberToAchieve(5, 15);
             return;
         case POINTS:
-            setNumberToAchieve(7 * getMovesLeft(), 15   * getMovesLeft());
+            setNumberToAchieve(7 * getMovesLeft(), 10   * getMovesLeft());
             return;
         default:
             return;
@@ -45,6 +46,7 @@ void GameObjective::makeCandyNoToAchieve(CandySpeciality speciality) {
         case NONE:
             min = 20, max = 45;        
             break;
+        //As bombs are harder to get, only 1 or 2 are required
         case BOMB:
             min = 1, max = 2;
         case STRIPED_VERTICAL:
@@ -61,14 +63,17 @@ void GameObjective::makeCandyNoToAchieve(CandySpeciality speciality) {
 
 //https://stackoverflow.com/questions/7560114/random-number-c-in-some-range
 void GameObjective::setNumberToAchieve(int min, int max) {
+    //Choose a random number for the objective in the min-max range
     int range = max - min + 1;
     srand(time(NULL));
     initialNumberToAchieve = rand() % range + min;
     currentNumberToAchieve = initialNumberToAchieve;
+
 }
 
 void GameObjective::decreaseCandyObjective(Cell cell) {
     if (candyToRemove) {
+        //Check if speciality and color of the objective corresponds to the objective one
         if (isCandy(cell) && currentObjective == CLEAR_CANDIES) {
             
             CandySpeciality thisSpeciality = candyToRemove->getSpeciality();
@@ -99,6 +104,8 @@ void GameObjective::objectiveInit() {
 }
 
 void GameObjective::decreaseObjective(Cell cell) {
+
+    //Only count objective if cell has kind of clickable and if objective corresponds to that clickable
     if (isCandy(cell) && isObjective(CLEAR_CANDIES)) {
         decreaseCandyObjective(cell);
     }

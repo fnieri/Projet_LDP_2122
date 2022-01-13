@@ -98,11 +98,11 @@ void Game::addToScore(int scoreToAdd){
 }
 
 //http://www.cplusplus.com/forum/beginner/195138/
+//Check if  highscore can be saved each time score is incremented
 void Game::saveHighscore(){
     if (score > hiScore)
     {
         hiScore = score;
-        //Trunc is to remove all content
         std::fstream bestScoreFile(BEST_SCORE_FILE);
         std::string currentBestScore;
         if (bestScoreFile.is_open())
@@ -129,7 +129,7 @@ void Game::getInitialHighScore(){
     }
     
     else {
-        //Create file if it doesn't exist and reopen
+        //Create file if it doesn't exist, reopen and write 0 to it
         std::ofstream(BEST_SCORE_FILE);
         std::fstream bestScoreFile(BEST_SCORE_FILE);
         bestScoreFile << "0";
@@ -185,10 +185,8 @@ void Game::setShuffling(bool newState) {
     shuffling = newState;
 }
 bool Game::isShuffling() {
-    //Every day i'm shuffling
     return shuffling;
 }
-
 
 void Game::setResetting(bool newState) {
     resetting = newState;

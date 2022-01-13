@@ -16,6 +16,7 @@ class Clickable : public Fl_PNG_Image {
         const char* filename;
     public:
         Clickable(const char* filename);
+        //Copy constructor is called by fltk everytime a new clickable is created
         Clickable(const Clickable &c);
         virtual ~Clickable()=default;
         virtual bool isEmpty() const=0;

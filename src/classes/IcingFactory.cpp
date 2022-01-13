@@ -5,7 +5,6 @@
 * Date: 13/01/2022
 */
         
-
 #include "IcingFactory.h"
 
 std::string IcingFactory::generateIcingPath(IcingStatus status) {

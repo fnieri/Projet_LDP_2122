@@ -8,10 +8,10 @@
 #include "Board.h"
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
-    setMargin(margin);
+    setMargin(margin); //Margin between cells
     CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
     initializeLevel();
-    getInitialHighScore();  
+    getInitialHighScore();  //Set hhigh score
 }
 
 
@@ -153,6 +153,7 @@ void Board::shuffle() {
 }
 
 void Board::resetHighlighting() {
+    //Remove highlighting if an highlight is shown and the user clicks it while the cell is highlighted
     for (auto &cell: suggestedCells)
         cell->resetHighlight();
 }
@@ -171,6 +172,7 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
                 decreaseMovesLeft();
 
             } else if (!checkMatches()) {
+                //No matches found so exchange cells
                 exchangeCells(selectedCell, swapCell);
             } else {
                 while (checkMatches());
@@ -236,6 +238,9 @@ bool Board::checkIfShuffleIsNeeded() {
                     int dy = d[1];
                     Cell *tempSwapCell = &CellsVertex.at(i + dy).at(j + dx);
                     if (!(tempSwapCell)->isEmpty()) {
+                        //Swap two cells without animating to see if there are any
+                        //If there are none, a shuffle is needed
+                        //The first match found is used to suggest a move
                         swapCellsNoAnim(tempCell, tempSwapCell);
                         setHandleMatch(false);
                         if (checkMatches()) {
@@ -288,10 +293,12 @@ bool Board::isMoveAllowed(Point cell1Position, Point cell2Position) {
 }
 
 void Board::matchIcingObjective() {
+
     if (isObjective(Objective::CLEAR_ICING)) {
         int size = sqrt(numberOfCells) - 1;
         int i = 0;
-        while (i < getRemainingObjective()) {
+        //Generate as many icing as objective and add 2 for good measure
+        while (i <= getRemainingObjective() + 2) {
             int x1 = rand() % size;
             int y1 = rand() % size;
             if (!isIcing(CellsVertex[x1][y1])) {

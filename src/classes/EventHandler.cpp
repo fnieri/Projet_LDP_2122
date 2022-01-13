@@ -17,11 +17,14 @@ void EventHandler::setFirstPosition(Point p) {
 
 void EventHandler::handleMouseDrag(Point p){
     if (p.x < 0 || p.y < 0) return;
+    //First move or first move after successful swap
     if (firstPosition == Point{}) {
         setFirstPosition(p);
     }
     else {
+        //After first move
         Point secondPosition = getPositionOfCell(p);
+        //As Fl_DRAG updates at every pixel, check everytime if mouse is in another cell
         if (firstPosition != secondPosition) {
             handleBoardDrag(firstPosition, secondPosition);
             resetEvent();

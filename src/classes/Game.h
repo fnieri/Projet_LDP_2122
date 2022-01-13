@@ -88,6 +88,7 @@ public:
     int getMovesLeft(); 
     bool gameIsOver();
     bool isResetting();    
+    //Check if there are any remaining cells in the board to drop them
     bool remainingEmptyCells();
 
     vector<vector<int>> findEmptyCells();
