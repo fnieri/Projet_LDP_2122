@@ -1,3 +1,11 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Canvas.cpp
+* Date: 13/01/2022
+*/
+        
+
 #include "Canvas.h"
 
 Canvas::Canvas(int cellSize, int margin, int numberOfCells) : 
@@ -6,14 +14,13 @@ Board(cellSize, margin, numberOfCells) {
         const char* filename = "sprites/splashscreen/splashscreen.png";
         splashscreen = make_unique<Splashscreen>(filename);
     }
-
     objectiveInit();
 }
 
 void Canvas::draw() {
     showSplashScreen();
-    showShuffle();
     showReset();
+    showShuffle();
     drawCurrentObjective();
     
     if (getShowBoard()) {
@@ -83,10 +90,6 @@ void Canvas::keyPressed(int keyCode) {
         case 'r':
             resetCurrentLevel();
             break;
-        /*case 's':
-            shuffleCurrentLevel();
-            break;
-        */
         default:
             break;
     }
@@ -160,6 +163,7 @@ void Canvas::showShuffle() {
 }
 
 void Canvas::hideAll() {
+    setKeyInputAllowed(false);
     setAcceptInput(false);
     setShowBoard(false);
     setDrawAchievement(false);
@@ -168,6 +172,7 @@ void Canvas::hideAll() {
 }
 
 void Canvas::showAll() {
+    setKeyInputAllowed(true);
     setDrawAchievement(true);
     setShowBoard(true);
     setShowTopInfo(true);

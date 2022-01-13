@@ -27,7 +27,8 @@ POBJ=\
 	ScoreCalculator.o\
 	Splashscreen.o\
 	Wall.o\
-	WallFactory.o
+	WallFactory.o\
+	main.o
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 

@@ -1,7 +1,10 @@
-//
-// Created by louis on 19/12/2021.
-//
-
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Board.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Board.h"
 
 Board::Board(int cellSize, int margin, int numberOfCells) : cellSize(cellSize), numberOfCells(numberOfCells) {
@@ -38,11 +41,11 @@ void Board::initializeLevel() {
         else if (id == 3)
             CellsVertex[x][y].setClickable(ClickableFactory::makeWall());
     }
+    
 }
 
 
 void Board::reset() {  
-    //CellsVertex = LevelFactory::buildCellVector("levels/level_1.txt", margin, cellSize, numberOfCells);
     
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
@@ -50,6 +53,9 @@ void Board::reset() {
         }
     }
     while (checkMatches());
+    CellsVertex[3][6].setClickable(ClickableFactory::makeCandy(BOMB, Color::BLUE));
+    CellsVertex[4][6].setClickable(ClickableFactory::makeCandy(STRIPED_HORIZONTAL, Color::BLUE));
+
     
 };
 
@@ -139,7 +145,6 @@ void Board::setCellAt(CandySpeciality newSpeciality, Color newColor, int i, int 
 }
 
 void Board::shuffle() {
-    std::cout << "ao" << std::endl;
     for (int i = 0; i < numberOfCells; ++i) {
         int size = sqrt(numberOfCells) - 1;
         int x1 = rand() % size;
@@ -154,13 +159,15 @@ void Board::shuffle() {
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
-    terminateSuggestionsThreads();
+   // terminateSuggestionsThreads();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        runSuggestionThread = false;
+        for (auto &cell: suggestedCells) {
+            cell->resetHighlight();
+        }
         suggestedCells.clear();
         if (isCandy(selectedCell) && isCandy(swapCell) && !selectedCell->isEmpty() && !swapCell->isEmpty()) {
             exchangeCells(selectedCell, swapCell);
-            if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition)) {
+            if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, swapCellPosition)) {
                 while (checkMatches());
                 while (checkIfShuffleIsNeeded()) {setShuffling(true); shuffle(); setShuffling(false); }
                 decreaseMovesLeft();
@@ -173,23 +180,26 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
                 decreaseMovesLeft();
             }
         }
-        if (!isInputAllowed()) {
-            thread t1(&Board::handleSuggestionThread, this);
-            t1.detach();
-        }
     }
+
+    thread t1(&Board::handleSuggestionThread, this);
+    suggestionThread = &t1;
+    suggestionThread->detach();
     selectedCell = nullptr;
     setAcceptInput(true);
 }
 
 
 void Board::terminateSuggestionsThreads() {
-    if (suggestionThread && suggestionThread->joinable()) suggestionThread->~thread();
+    if (suggestionThread && suggestionThread->joinable()) {
+            suggestionThread->~thread();
+    }
     suggestionThread = nullptr;
     Fl::unlock();
 }
 
 void Board::handleSuggestionThread() {
+    Fl::unlock();
     this_thread::sleep_for(4s);
     try {
         Cell *tempCell = suggestedCells.at(0);
@@ -198,6 +208,7 @@ void Board::handleSuggestionThread() {
         tempSwapCell->setHighlightColor(FL_RED);
         tempCell->setSuggestion(true);
         tempSwapCell->setSuggestion(true);
+        
         this_thread::sleep_for(2s);
         Cell *tempCell1 = suggestedCells.at(0);
         Cell *tempSwapCell1 = suggestedCells.at(1);

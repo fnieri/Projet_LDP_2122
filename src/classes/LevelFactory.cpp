@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: LevelFactory.cpp
+* Date: 13/01/2022
+*/
+        
 #include "LevelFactory.h"
 
 enum LevelObjects {

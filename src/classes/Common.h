@@ -1,6 +1,10 @@
-//
-// Created by louis on 11/15/21.
-//
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: Common.h
+* Date: 13/01/2022
+*/
+
 
 #ifndef __COMMON_H
 #define __COMMON_H

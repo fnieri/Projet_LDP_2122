@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: LevelFactory.h
+* Date: 13/01/2022
+*/
+
 #ifndef __LEVELFACTORY_H
 #define __LEVELFACTORY_H
 

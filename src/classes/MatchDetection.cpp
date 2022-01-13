@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: MatchDetection.cpp
+* Date: 13/01/2022
+*/
+        
 #include "MatchDetection.h"
 
 Color MatchDetection::getCellColor(int i, int j) {
@@ -157,6 +164,7 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     if (isCandy(firstCell) && isCandy(secondCell)) {
         CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
         CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
+   
         Color firstCandyColor = firstCell->getColor();
         Color secondCandyColor = secondCell->getColor();
 

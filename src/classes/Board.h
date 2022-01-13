@@ -1,6 +1,9 @@
-//
-// Created by louis on 19/12/2021.
-//
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: Board.h 
+* Date: 13/01/2022
+*/
 
 #ifndef __BOARD_H
 #define __BOARD_H

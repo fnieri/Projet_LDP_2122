@@ -1,4 +1,10 @@
-
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: CandyFactory.cpp
+* Date: 13/01/2022
+*/
+        
 #include "CandyFactory.h"
 
 Color CandyFactory::generateColor() {

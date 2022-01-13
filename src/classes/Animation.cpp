@@ -1,7 +1,10 @@
-//
-// Created by louis on 19/12/2021.
-//
-
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Animation.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Animation.h"
 
 
@@ -15,7 +18,7 @@ void Animation::moveCellsDiagonally(const vector<vector<int>> &diagonalCells, in
                                toDrop->getCenter().y + 1};
             toDrop->setCenter(movingCenter);
         }
-        gameWait(7000);
+        gameWait(4000);
     }
 
     int firstCol = diagonalCells[0][0];
@@ -55,7 +58,7 @@ void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
                 toDrop->setCenter(movingCenter);
             }
         }
-        gameWait(7000);
+        gameWait(4000);
     }
 
     for (auto &cellToReplace: cellsToReplace) {

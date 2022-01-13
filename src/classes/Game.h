@@ -1,6 +1,9 @@
-//
-// Created by louis on 17/12/2021.
-//
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: Game.h
+* Date: 13/01/2022
+*/
 
 #ifndef __2122_GAME_H
 #define __2122_GAME_H

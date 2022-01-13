@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Icing.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Icing.h"
 
 Icing::Icing(const char* filename, IcingStatus status) : 

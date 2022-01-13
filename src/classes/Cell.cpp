@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Cell.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Cell.h"
 
 Cell::Cell(Point center, int cellSize, Clickable *cellObject, int margin) : center{center}, cellSize{cellSize},

@@ -1,7 +1,10 @@
-//
-// Created by louis on 19/12/2021.
-//
-
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Game.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Game.h"
 
 bool Game::contains(Point p)

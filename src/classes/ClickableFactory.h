@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: ClickableFactory.h
+* Date: 13/01/2022
+*/
+
 #ifndef __CLICKABLEFACTORY_H
 #define __CLICKABLEFACTORY_H
 

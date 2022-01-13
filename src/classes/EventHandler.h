@@ -1,9 +1,12 @@
-//
-// Created by louis on 19/12/2021.
-//
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: EventHandler.h
+* Date: 13/01/2022
+*/
 
-#ifndef TEMP_CLASSES_EVENTHANDLER_H
-#define TEMP_CLASSES_EVENTHANDLER_H
+#ifndef __EVENTHANDLER_H
+#define __EVENTHANDLER_H
 
 #include "Common.h"
 #include "Game.h"
