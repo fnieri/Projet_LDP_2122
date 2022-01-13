@@ -163,7 +163,6 @@ void Canvas::showShuffle() {
 }
 
 void Canvas::hideAll() {
-    setKeyInputAllowed(false);
     setAcceptInput(false);
     setShowBoard(false);
     setDrawAchievement(false);
@@ -172,7 +171,6 @@ void Canvas::hideAll() {
 }
 
 void Canvas::showAll() {
-    setKeyInputAllowed(true);
     setDrawAchievement(true);
     setShowBoard(true);
     setShowTopInfo(true);
