@@ -209,7 +209,8 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
 
     sendScoreMulticolor(speciality);
     vector<Candy *> candyToDestroy;
-    handleCellsToReplace(vector<vector<int>>({{firstCellPosition.x, secondCellPosition.y}}));
+    handleCellsToReplace(vector<vector<int>>({{firstCellPosition.x, firstCellPosition.y}}));
+//    handleCellsToReplace(vector<vector<int>>({{secondCellPosition.x, secondCellPosition.y}}));
     for (int i = 0; i < (int) CellsVertex.size(); i++) {
         for (int j = 0; j < (int) CellsVertex[i].size(); j++) {
             if (isCandy(CellsVertex[i][j])) {
