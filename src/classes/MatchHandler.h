@@ -53,21 +53,13 @@ public:
                                        Color secondCellColor, CandySpeciality firstCellSpeciality,
                                        CandySpeciality secondCellSpeciality);
 
-    void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
-
-    void doubleStripedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
-
     void doubleMulticolorInteraction();
 
     void handleWrappedStriped(Point firstCellPosition, Point secondCellPosition,
                               vector<vector<int>> cellsToMove, bool isHorizontal);
 
 
-    //Functions that use score calculator 
-    
-    void
-    setInteraction(bool interacting, Color color = Color::NONE, CandySpeciality speciality = CandySpeciality::NONE);
-
+    //Functions that use score calculator
     void sendInteractionScore(Interaction);
 
     void sendScoreMulticolor(CandySpeciality);

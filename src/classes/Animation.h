@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "Cell.h"
 
+// class responsible for the animation of gravity applied to candies
 class Animation : virtual public Game {
 public:
 

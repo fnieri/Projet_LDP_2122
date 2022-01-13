@@ -46,17 +46,13 @@ void Board::initializeLevel() {
 
 
 void Board::reset() {  
-    
+    // reset the board
     for (auto &row: CellsVertex) {
         for (auto &cell: row) {
             cell.setClickable(ClickableFactory::generateCandy(CandySpeciality::NONE));
         }
     }
     while (checkMatches());
-    CellsVertex[3][6].setClickable(ClickableFactory::makeCandy(BOMB, Color::BLUE));
-    CellsVertex[4][6].setClickable(ClickableFactory::makeCandy(STRIPED_VERTICAL, Color::BLUE));
-
-    
 };
 
 void Board::draw() {
@@ -194,6 +190,7 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
 
 void Board::handleSuggestionThread() {
     int t1 = 0;
+    // check every half seconds whether the thread should still run or not
     while (runSuggestionThread && t1 < 4000) {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         t1 += 500;
@@ -201,6 +198,7 @@ void Board::handleSuggestionThread() {
     if (!runSuggestionThread) return;
 
     try {
+        // highlight the suggested cells
         Cell *tempCell = suggestedCells.at(0);
         Cell *tempSwapCell = suggestedCells.at(1);
         tempCell->setHighlightColor(FL_RED);
@@ -221,6 +219,7 @@ void Board::handleSuggestionThread() {
     catch (const std::out_of_range &e) {
         return;
     }
+    handleSuggestionThread();
 }
 
 bool Board::checkIfShuffleIsNeeded() {

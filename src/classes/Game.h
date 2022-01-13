@@ -27,7 +27,7 @@
 #include "Wall.h"
 #include "Enums/Objective.h"
 
-
+// Abstract class used by other classes to implement the game logic.
 class Game{
 protected:
     int margin;

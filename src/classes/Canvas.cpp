@@ -183,8 +183,8 @@ void Canvas::showAll() {
 }
 
 void Canvas::showCenterMessage(std::string message) const {
-    fl_rectf(messageX, messageY, 300, 40, FL_WHITE);
-    fl_rect(messageX, messageY, 300, 40, FL_BLACK);
+    fl_rectf(messageX, messageY, 400, 40, FL_WHITE);
+    fl_rect(messageX, messageY, 400, 40, FL_BLACK);
     fl_draw(message.c_str(), messageX + 40, messageY + 20);
 }
 
