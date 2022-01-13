@@ -244,7 +244,7 @@ void MatchHandler::multiColorSpecial(Point firstCellPosition, Point secondCellPo
                         break;
                 }
             }
-            gameWait(3000);
+            //gameWait(3000);
         }
     }
 

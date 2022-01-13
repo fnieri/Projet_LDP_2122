@@ -29,10 +29,8 @@ class Board : public EventHandler, public MatchDetection {
     Point toSwapCellPosition{0, 0};
     
     vector<Cell *> suggestedCells{};
-    thread *suggestionThread = nullptr;
     bool runSuggestionThread = false;
-    mutex suggestionMutex;
-public:
+public:     
     Board(int cellSize, int margin, int numberOfCells);
 
     /**
@@ -97,11 +95,9 @@ public:
 
     void initializeLevel();
 
-    void terminateSuggestionsThreads();
-
     void handleSuggestionThread();
 
-
+    void resetHighlighting();
 
 };
 
