@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: ClickableFactory.cpp
+* Date: 13/01/2022
+*/
+        
 #include "ClickableFactory.h"
 
 Candy ClickableFactory::makeCandy(CandySpeciality speciality) {
@@ -17,8 +24,5 @@ Icing ClickableFactory::makeIcing(IcingStatus status) {
 }
 
 Wall ClickableFactory::makeWall() {
-    std::string filename = WORKING_DIRECTORY + "/sprites/wall/wall.png";
-    char *fullPathChar = new char[filename.length() + 1];
-    strcpy(fullPathChar, filename.c_str());
-    return {fullPathChar};
+    return generateWall();
 }

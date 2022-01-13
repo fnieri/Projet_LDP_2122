@@ -1,6 +1,6 @@
 #FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 -fconcepts -mlong-double-128 -ggdb3 -Wpedantic -Wextra -Wconversion -Wsign-conversion -Weffc++ -Wstrict-null-sentinel -Wold-style-cast -Wnoexcept -Wctor-dtor-privacy -Woverloaded-virtual -Wsign-promo -Wzero-as-null-pointer-constant -Wsuggest-final-types -Wsuggest-final-methods -Wsuggest-override -lquadmath
 
-FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17
+FLAGS=-lfltk -lfltk_images -lstdc++fs -Wall -std=c++17 -lpthread
 
 CC=g++
 
@@ -13,21 +13,22 @@ POBJ=\
 	Candy.o\
 	CandyFactory.o\
 	Cell.o\
+	ClickableFactory.o\
+	Clickable.o\
 	EventHandler.o\
 	Game.o\
+	GameObjective.o\
+	Icing.o\
+	IcingFactory.o\
+	LevelFactory.o\
 	MainWindow.o\
 	MatchDetection.o\
 	MatchHandler.o\
-	ClickableFactory.o\
-	IcingFactory.o\
-	Clickable.o\
-	Icing.o\
-	Wall.o\
-	LevelFactory.o\
 	ScoreCalculator.o\
-	GameObjective.o\
-	Splashscreen.o
-
+	Splashscreen.o\
+	Wall.o\
+	WallFactory.o\
+	main.o
 
 OBJ=$(addprefix $(OBJDIR)/, $(POBJ))
 

@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: CandyFactory.h
+* Date: 13/01/2022
+*/
+
 #ifndef __CANDYFACTORY_H
 #define __CANDYFACTORY_H
 
@@ -15,9 +22,7 @@
 class CandyFactory {
 private:
 
-
     static std::string generateSpecialityPath(CandySpeciality speciality);
-
 
     static std::string
     generateFullPath(CandySpeciality speciality, const std::string &colorPrefix, const std::string &specialityPath);
@@ -29,15 +34,14 @@ public:
 
     static std::string generateColorPrefix(Color color);
 
+    static Candy generateBoomCandy();
+
     static Candy generateCandy( CandySpeciality speciality);
 
     static Candy generateCandy(CandySpeciality speciality, Color color);
 
     static Candy generateEmptyCandy();
 
-    static Candy generateBoomCandy();
 };
-
-
 
 #endif

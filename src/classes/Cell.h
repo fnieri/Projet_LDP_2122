@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: Cell.h
+* Date: 13/01/2022
+*/
+
 #ifndef __CELL_H
 #define __CELL_H
 
@@ -17,63 +24,66 @@
 #include "Icing.h"
 #include "Wall.h"
 
-using namespace std;
+using std::make_shared;
 
 class Cell {
     Point center;
     int cellSize;
-    shared_ptr<Clickable> cellObjectPtr;
+    shared_ptr<Clickable> cellClickable;
     int margin;
     bool drawBox = false;
+    bool suggesting = false;
     Fl_Color highlightColor = FL_LIGHT3;
 public:
     Cell(Point, int, Clickable*, int);
-
     Cell(const Cell &);
 
+    //Cast arriving clickable from constructor
     void castClickable(shared_ptr<Clickable>);
     void castClickable(Clickable*);
-    
+
+    //Check if point is in cell
     bool contains(Point p) const;
+
+    //Check if cell has type of clickable
+    bool hasCandy();
+    bool hasIcing();
+    bool hasWall();
+    
+    //Setters
+    void setCenter(Point);
+    void setHighlighted(bool val);
+    //Set clickable of cell
+    void setClickable(const Clickable&);
+    void setClickable(Clickable*);
 
     void setHighlightColor(Fl_Color);
 
-    void draw();
+    //Animation
 
-    Color getColor();
-
-    CandySpeciality getSpeciality();
-
-    void setObject(const Clickable&);
-
-    void setObject(Clickable*);
-
-    bool isCandy();
-
-    bool isIcing();
-    
-    bool isWall();
-
-    template <class cellObject>
-    shared_ptr<cellObject> returnCasted();
-    
-    Candy* getCandy();
-
-    Clickable* getClickable();
-    
-    IcingStatus getStatus();
-
+    //Animate candy, only candy can be animated
+    //Because icing and wall can't be animated
     void animateCandy(Cell*);
-
-    Point getCenter();
-
-    void setCenter(Point);
-
+    //Animate gravity of cell
     void animateGravity(Point destination);
+    void draw();
+    void resetHighlight();
+    void setSuggestion(bool suggestion);
 
-    void setHighlighted(bool val);
-
+    //Getters
+    Color getColor();
+    CandySpeciality getSpeciality();
+    Point getCenter();
     bool isEmpty();
+    Candy* getCandy();
+    Clickable* getClickable();
+    IcingStatus getStatus();
+    
+    //Return casted object from Clickable
+    template <class cellObject>
+    shared_ptr<cellObject> returnCasted(); 
+
+
 };
 
 #endif

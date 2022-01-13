@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: ScoreCalculator.cpp
+* Date: 13/01/2022
+*/
+        
 #include "ScoreCalculator.h"
 
 int ScoreCalculator::returnInteractionScore(Interaction currentInteraction) {
@@ -19,7 +26,6 @@ int ScoreCalculator::returnCandyScore(CandySpeciality speciality) {
     default:
         return 0;
     }
-
 }
 
 int ScoreCalculator::returnIcingScore(IcingStatus status) {

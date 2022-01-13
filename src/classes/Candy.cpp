@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Candy.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Candy.h"
 
 Candy::Candy(const char *filename, Color color, CandySpeciality speciality) :

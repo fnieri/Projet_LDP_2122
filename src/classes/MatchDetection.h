@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: MatchDetection.h
+* Date: 13/01/2022
+*/
+
 #ifndef __MATCHDETECTION_H
 #define __MATCHDETECTION_H
 
@@ -14,7 +21,7 @@ class MatchDetection : public MatchHandler {
     Color currentCellColor;
     Bool handleMatch;
 public:
-
+    
     Color getCellColor(int x, int y);
 
     bool cellsColorMatch(int i, int j);

@@ -1,17 +1,24 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: Cell.cpp
+* Date: 13/01/2022
+*/
+        
 #include "Cell.h"
 
 Cell::Cell(Point center, int cellSize, Clickable *cellObject, int margin) : center{center}, cellSize{cellSize},
                                                                          margin{margin} {
     
     castClickable(cellObject); //Cast from base class to derived class
-    setObject(*cellObject);              
+    setClickable(*cellObject);              
 }
 
 Cell::Cell(const Cell &c) {
     center = c.center;
     cellSize = c.cellSize;
     margin = c.margin;
-    cellObjectPtr = std::move(c.cellObjectPtr);
+    cellClickable = std::move(c.cellClickable);
 }
 
 // https://en.cppreference.com/w/cpp/language/dynamic_cast
@@ -39,17 +46,19 @@ void Cell::castClickable(shared_ptr<Clickable> cellClickable) {
     
 }
 
-template <class bs>
-shared_ptr<bs> Cell::returnCasted(){
-    return dynamic_pointer_cast<bs>(cellObjectPtr);
+template <class cellObject>
+shared_ptr<cellObject> Cell::returnCasted(){
+    return dynamic_pointer_cast<cellObject>(cellClickable);
 }
 
 bool Cell::isEmpty() {
-    return cellObjectPtr->isEmpty();
+    return cellClickable->isEmpty();
 }
 
 void Cell::draw() {
-    if (drawBox) {
+    //Draw a box beneath candy with color
+    //FL_LIGHT3 is for hover, FL_RED is for suggestion, none is default
+    if (drawBox || suggesting) {
         array<Point, 5> points{
                 Point{center.x - cellSize / 10, center.y - cellSize / 4},
                 Point{center.x - cellSize / 10, center.y + cellSize},
@@ -63,9 +72,18 @@ void Cell::draw() {
         }
         fl_end_polygon();
     }
-    cellObjectPtr->draw(center.x - cellSize / 2, center.y - cellSize / 2, cellObjectPtr->w(), cellObjectPtr->h());
+    cellClickable->draw(center.x - cellSize / 2, center.y - cellSize / 2, cellClickable->w(), cellClickable->h());
 }
 
+void Cell::resetHighlight() {
+    setHighlightColor(FL_LIGHT3);
+    setHighlighted(false);
+    setSuggestion(false);
+}
+
+void Cell::setSuggestion(bool suggestion) {
+    suggesting = suggestion;
+}
 
 void Cell::setHighlightColor(Fl_Color color) {
     highlightColor = color;
@@ -76,6 +94,7 @@ void Cell::setHighlighted(bool val) {
 }
 
 void Cell::animateCandy(Cell *swapCell) {
+    //Animate two candies swapping cell
     Point destination = swapCell->getCenter();
     while (center.x != destination.x || center.y != destination.y) {
         Point swapCenter = swapCell->getCenter();
@@ -107,26 +126,23 @@ bool Cell::contains(Point p) const {
            p.y < center.y + cellSize;
 }
 
-
-
-void Cell::setObject(const Clickable &clickable) {
+void Cell::setClickable(const Clickable &clickable) {
     if (auto tmp = dynamic_cast<const Candy*>(&clickable))  {
-        cellObjectPtr = make_shared<Candy>(*tmp);
+        cellClickable = make_shared<Candy>(*tmp);
     }
-    if (auto tmp = dynamic_cast<const Wall*>(&clickable))  {
-        cellObjectPtr = make_shared<Wall>(*tmp);
+    else if (auto tmp = dynamic_cast<const Wall*>(&clickable))  {
+        cellClickable = make_shared<Wall>(*tmp);
     }
 
-    if (auto tmp = dynamic_cast<const Icing*>(&clickable))  {
-        cellObjectPtr = make_shared<Icing>(*tmp);
+    else if (auto tmp = dynamic_cast<const Icing*>(&clickable))  {
+        cellClickable = make_shared<Icing>(*tmp);
     }
 }
 
 
 Candy* Cell::getCandy() {
-     return dynamic_cast<Candy*>(cellObjectPtr.get());
+     return dynamic_cast<Candy*>(cellClickable.get());
 }
-
 
 Point Cell::getCenter() {
     return center;
@@ -140,31 +156,31 @@ void Cell::setCenter(Point newCenter) {
 
 
 CandySpeciality Cell::getSpeciality() {
-    if (cellObjectPtr->visitCandy()) 
-        return dynamic_pointer_cast<Candy>(cellObjectPtr)->getSpeciality();  
+    if (cellClickable->visitCandy()) 
+        return dynamic_pointer_cast<Candy>(cellClickable)->getSpeciality();  
+    return CandySpeciality::NONE;
 }
 
-
 Color Cell::getColor() {
-    if (cellObjectPtr->visitCandy()) 
-        return dynamic_pointer_cast<Candy>(cellObjectPtr)->getColor();  
-
+    if (cellClickable->visitCandy()) 
+        return dynamic_pointer_cast<Candy>(cellClickable)->getColor();  
+    return Color::NONE;
 }
 
 IcingStatus Cell::getStatus() {
-    if (cellObjectPtr->visitIcing())
-        return dynamic_pointer_cast<Icing>(cellObjectPtr)->getStatus();  
-    
+    if (cellClickable->visitIcing())
+        return dynamic_pointer_cast<Icing>(cellClickable)->getStatus();  
+    return IcingStatus::EMPTY; 
+}  
+
+bool Cell::hasCandy() {
+    return cellClickable->visitCandy();
 }
 
-bool Cell::isCandy() {
-    return cellObjectPtr->visitCandy();
+bool Cell::hasIcing() {
+    return cellClickable->visitIcing();
 }
 
-bool Cell::isIcing() {
-    return cellObjectPtr->visitIcing();
-}
-
-bool Cell::isWall() {
-    return cellObjectPtr->visitWall();
+bool Cell::hasWall() {
+    return cellClickable->visitWall();
 }

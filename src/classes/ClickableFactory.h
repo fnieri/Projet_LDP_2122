@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: ClickableFactory.h
+* Date: 13/01/2022
+*/
+
 #ifndef __CLICKABLEFACTORY_H
 #define __CLICKABLEFACTORY_H
 
@@ -9,10 +16,11 @@
 #include "Enums/IcingStatus.h"
 #include "CandyFactory.h"
 #include "IcingFactory.h"
+#include "WallFactory.h"
 
 
-
-class ClickableFactory : public CandyFactory, public IcingFactory {
+class ClickableFactory : public CandyFactory, public IcingFactory,
+                         public WallFactory {
     public:
     
         static Candy makeCandy(CandySpeciality speciality);

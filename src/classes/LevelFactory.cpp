@@ -1,28 +1,44 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: LevelFactory.cpp
+* Date: 13/01/2022
+*/
+        
 #include "LevelFactory.h"
 
+enum LevelObjects {
+    CANDY,
+    ICING_HALF_STATUS,
+    ICING_FULL_STATUS,
+    WALL
+};
+
 Cell LevelFactory::buildCell(int id, Point center, int cellSize, int margin) {
-       if (id == 0) {
-            Candy candy = ClickableFactory::makeCandy(NONE);
-            return {center, cellSize, &candy, margin};
-        }
+    if (id == CANDY) {
+        Candy candy = ClickableFactory::makeCandy(NONE);
+        return {center, cellSize, &candy, margin};
+    }
 
-        else if ((id == 1) || (id == 2)) {
-            Icing icing = ClickableFactory::makeIcing(static_cast<IcingStatus>(id-1));
-            return {center, cellSize, &icing, margin};
-        }
+    else if ((id == ICING_HALF_STATUS) || (id == ICING_FULL_STATUS)) {
+        Icing icing = ClickableFactory::makeIcing(static_cast<IcingStatus>(id-1));
+        return {center, cellSize, &icing, margin};
+    }
 
-        else if (id == 3) {
-            Wall wall = ClickableFactory::makeWall();
-            return {center, cellSize, &wall, margin};        
-        }
+    else if (id == WALL) {
+        Wall wall = ClickableFactory::makeWall();
+        return {center, cellSize, &wall, margin};        
+    }
+
+    return {center, cellSize, nullptr, margin};
 }
 
 //https://www.cplusplus.com/doc/tutorial/files/
 
 vector <vector <Cell> > 
-    LevelFactory::buildCellVector(string filename, int margin, int cellSize, int noOfCells) {
+    LevelFactory::buildCellVector(std::string filename, int margin, int cellSize, int noOfCells) {
     
-    ifstream levelFile(filename);
+    std::ifstream levelFile(filename);
     
     int asciiCharDiff = 48; //Digits in ascii begin
     int column = 0;
@@ -34,6 +50,7 @@ vector <vector <Cell> >
   
     vector <int> idRow;
     vector < vector < int >> lineInfo;
+
     if (levelFile.is_open()) {
 
         while(std::getline(levelFile, clickableID)) { 
@@ -63,5 +80,6 @@ vector <vector <Cell> >
         }
     levelFile.close();
     }
+    
     return cellsVector;
 }

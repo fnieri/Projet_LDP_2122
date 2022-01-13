@@ -1,9 +1,12 @@
-//
-// Created by louis on 19/12/2021.
-//
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: MatchHandler.h
+* Date: 13/01/2022
+*/
 
-#ifndef TEMP_CLASSES_MATCHHANDLER_H
-#define TEMP_CLASSES_MATCHHANDLER_H
+#ifndef __MATCHHANDLER_H
+#define __MATCHHANDLER_H
 
 #include "Animation.h"
 #include "ClickableFactory.h"
@@ -12,12 +15,18 @@
 #include "GameObjective.h"
 
 class MatchHandler : public Animation, public GameObjective {
-  bool isInteracting = false;
+    bool isInteracting = false;
     Color interactionColor = Color::NONE;
     CandySpeciality interactionSpeciality = CandySpeciality::NONE;
 
 public:
     void handleCellsToReplace(vector<vector<int>> cellsToReplace);
+
+    vector<vector<int>> getDiagonalCells(int col, int row, int lr);
+
+    bool handleDiagonalCells();
+
+    void handleGravity();
 
     void handleStripedHorizontal(int i, int j, vector<vector<int>> cellsToMove);
 
@@ -44,20 +53,13 @@ public:
                                        Color secondCellColor, CandySpeciality firstCellSpeciality,
                                        CandySpeciality secondCellSpeciality);
 
-    void normalCandyAndMulticolorInteraction(Color colorToRemove, Point multicolorPosition);
-
-    void doubleStripedCandyInteraction(Point firstCellPosition, Point secondCellPosition);
-
     void doubleMulticolorInteraction();
 
     void handleWrappedStriped(Point firstCellPosition, Point secondCellPosition,
                               vector<vector<int>> cellsToMove, bool isHorizontal);
 
-   // void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor);
 
-    void
-    setInteraction(bool interacting, Color color = Color::NONE, CandySpeciality speciality = CandySpeciality::NONE);
-
+    //Functions that use score calculator
     void sendInteractionScore(Interaction);
 
     void sendScoreMulticolor(CandySpeciality);
@@ -66,7 +68,7 @@ public:
 
     void sendSpecialityScore(CandySpeciality);
 
-    
+    void clearIcing(int i, int j);
 };
 
 

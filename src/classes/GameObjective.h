@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: GameObjective.h
+* Date: 13/01/2022
+*/
+
 #ifndef __GAMEOBJECTIVE_H
 #define __GAMEOBJECTIVE_H
 
@@ -12,42 +19,43 @@ class GameObjective :virtual public Game {
     unique_ptr<Candy> candyToRemove = nullptr;
     bool isComplete = false;
 
-    void createObjective();
-    
-    void makeNumberToAchieve();
-    
-    void makeCandyNoToAchieve(CandySpeciality);
-    
-    void setNumberToAchieve(int min, int max);
-    
-    Candy makeObjectiveCandy(CandySpeciality, Color);
+        //Create currentObjective
+        void createObjectiveType();
+        
+        void makeNumberToAchieve();
+        
+        //Make number to achieve based on speciality
+        void makeCandyNoToAchieve(CandySpeciality);
+        
+        void setNumberToAchieve(int min, int max);
+        
+        //Create candyToRemove
+        Candy makeObjectiveCandy(CandySpeciality, Color);
+       
+        std::string getSpecialityString(CandySpeciality);
+        std::string buildCandyString();     
     public:
+        //Create new objective
         void objectiveInit();
-        
+        //Decrease objective based on cell sent
+        void decreaseObjective(Cell);
+        //Helper functions
         void decreaseCandyObjective(Cell cell);        
-        
-        void decreaseIcingObjective();     
-
+        void decreaseIcingObjective();
         void decreasePointObjective();
 
-        void decreaseObjective(Cell);
-
+        //Getters
         bool isObjective(Objective);
-
         int getRemainingObjective();
-
         std::string getObjectiveString();
-
         Objective getObjective();
-
-        std::string getSpecialityString(CandySpeciality);
-        
-        void updateObjective();
-
         bool objectiveIsComplete();
 
-        std::string buildCandyString();
-        
+        //Check if objective is over and update
+        void updateObjective();
+
+
+    
 };
 
 

@@ -1,3 +1,10 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Header: Icing.h
+* Date: 13/01/2022
+*/
+
 #ifndef __ICING_H
 #define __ICING_H
 
@@ -17,10 +24,7 @@ class Icing : public Clickable {
         Icing(const Icing &i);
         IcingStatus getStatus() const;
         bool isEmpty() const override;
-        bool visitCandy() override {return false;};
         bool visitIcing() override {return true;};
-        bool visitWall() override {return false;};
-
 };
 
 #endif

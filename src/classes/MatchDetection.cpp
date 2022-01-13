@@ -1,8 +1,16 @@
+/* LDP INFO-F-202 First Session project.
+* Authors: Louis Vanstappen, Francesco Nieri
+*               515205          515694
+* Source code: MatchDetection.cpp
+* Date: 13/01/2022
+*/
+        
 #include "MatchDetection.h"
 
 Color MatchDetection::getCellColor(int i, int j) {
     if (isCandy(CellsVertex.at(i).at(j)))
         return CellsVertex.at(i).at(j).getColor();
+    return Color::NONE;
 }
 
 bool MatchDetection::cellsColorMatch(int i, int j) {
@@ -63,8 +71,18 @@ bool MatchDetection::checkMatch(vector <array<int, 2>> match, int i, int j, Cand
 }
 
 bool MatchDetection::checkWrappedCandy(int i, int j) {
-    vector < vector < array < int, 2>>> match{{{1,  0}, {2,  0}, {0, 1},  {0, 2}},
-                                              {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}}};
+    vector < vector < array < int, 2>>> match{  //L Shapes
+                                              {{1,  0}, {2,  0}, {0, 1},  {0, 2}},
+                                              {{-1, 0}, {-2, 0}, {0, -1}, {0, -2}},
+                                              {{-1, 0}, {-2, 0}, {0, 1},  {0,  2}},
+                                              {{0, -2}, {0, -1}, {0, 1},  {0, 2}},
+                                              // T Shapes
+                                              {{0, -1}, {0, 1},  {-1, 0}, {-2, 0}},
+                                              {{0, -1}, {0, 1},  {1, 0},  {2, 0}},
+                                              {{1,  0}, {-1, 0}, {0, 1},  {2, 0}},
+                                              {{1,  0}, {-1, 0}, {0, -1}, {0, -2}},
+                                              // X shape
+                                              {{1, 0},  {-1, 0}, {0, 1},  {0, -1}}};
     for (auto &matchWrapped: match) {
         if (checkMatch(matchWrapped, i, j, CandySpeciality::BOMB)) return true;
     }
@@ -146,6 +164,7 @@ bool MatchDetection::checkForCandiesInteraction(Cell *firstCell, Point firstCell
     if (isCandy(firstCell) && isCandy(secondCell)) {
         CandySpeciality firstCandySpeciality = firstCell->getSpeciality();
         CandySpeciality secondCandySpeciality = secondCell->getSpeciality();
+   
         Color firstCandyColor = firstCell->getColor();
         Color secondCandyColor = secondCell->getColor();
 
