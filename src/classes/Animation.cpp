@@ -14,7 +14,7 @@ void Animation::moveCellsDiagonaly(const vector<vector<int>> &diagonalCells, int
                                toDrop->getCenter().y + 1};
             toDrop->setCenter(movingCenter);
         }
-        gameWait(7000);
+        gameWait(4000);
     }
 
     int firstCol = diagonalCells[0][0];
@@ -55,8 +55,7 @@ void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
                 toDrop->setCenter(movingCenter);
             }
         }
-        // TODO: change this to function in game and use it everywhere
-        gameWait(7000);
+        gameWait(4000);
     }
 
     for (auto &cellToReplace: cellsToReplace) {

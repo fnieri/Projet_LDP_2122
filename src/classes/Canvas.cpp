@@ -93,9 +93,11 @@ void Canvas::setKeyInputAllowed(bool newState) {
 }
 
 void Canvas::resetCurrentLevel() {
+    setAcceptInput(true);
     reset();
     resetScore();
     setMovesLeft(30);
     setDrawAchievement(true);
     objectiveInit();
+    setAcceptInput(true);
 }

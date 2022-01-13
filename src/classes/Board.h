@@ -6,7 +6,6 @@
 #define __BOARD_H
 
 #include <thread>
-#include <mutex>
 
 #include "EventHandler.h"
 #include "MatchDetection.h"
@@ -25,7 +24,6 @@ class Board : public EventHandler, public MatchDetection {
     vector<Cell *> suggestedCells{};
     thread *suggestionThread = nullptr;
     bool runSuggestionThread = false;
-    mutex suggestionMutex;
 public:
     Board(int cellSize, int margin, int numberOfCells);
 
@@ -70,6 +68,7 @@ public:
     void terminateSuggestionsThreads();
 
     void handleSuggestionThread();
+
 };
 
 

@@ -46,8 +46,8 @@ void Board::reset() {
         }
     }
     while (checkMatches());
-    CellsVertex[5][5].setObject(ClickableFactory::makeCandy(MULTICOLOR));
-    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(MULTICOLOR));
+    CellsVertex[5][5].setObject(ClickableFactory::makeCandy(BOMB));
+    CellsVertex[5][6].setObject(ClickableFactory::makeCandy(STRIPED_HORIZONTAL));
 };
 
 void Board::draw() {
@@ -145,24 +145,26 @@ void Board::shuffle() {
 }
 
 void Board::terminateSuggestionsThreads() {
-    if (suggestionThread && suggestionThread->joinable()) suggestionThread->~thread();
+    // TODO correct this
+    if (suggestionThread && suggestionThread->joinable()) {
+        cout << "Terminating suggestion thread" << endl;
+            suggestionThread->~thread();
+    }
     suggestionThread = nullptr;
     Fl::unlock();
 }
 
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
-    terminateSuggestionsThreads();
+//    terminateSuggestionsThreads();
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
-        runSuggestionThread = false;
         suggestedCells.clear();
         if (isCandy(selectedCell) && isCandy(swapCell) && !selectedCell->isEmpty() && !swapCell->isEmpty()) {
             exchangeCells(selectedCell, swapCell);
-            if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, toSwapCellPosition)) {
+            if (checkForCandiesInteraction(selectedCell, selectedCellPosition, swapCell, swapCellPosition)) {
                 while (checkMatches());
                 while (checkIfShuffleIsNeeded()) shuffle();
                 decreaseMovesLeft();
-
             } else if (!checkMatches()) {
                 exchangeCells(selectedCell, swapCell);
             } else {
@@ -171,17 +173,18 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
                 decreaseMovesLeft();
             }
         }
-        if (!isInputAllowed()) {
-            thread t1(&Board::handleSuggestionThread, this);
-            t1.detach();
-        }
+//        if (!isInputAllowed()) {
+//        }
     }
+    thread t1(&Board::handleSuggestionThread, this);
+    suggestionThread = &t1;
+    suggestionThread->detach();
     selectedCell = nullptr;
     setAcceptInput(true);
 }
 
 void Board::handleSuggestionThread() {
-//    Fl::unlock();
+    Fl::unlock();
     this_thread::sleep_for(4s);
     try {
         Cell *tempCell = suggestedCells.at(0);
