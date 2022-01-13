@@ -60,7 +60,7 @@ void Game::createSpecialCandy(int i, int j, CandySpeciality speciality){
 void Game::highlight(Point p){
     for (auto &i : CellsVertex){
         for (auto &j : i){
-            if (j.contains(p))
+            if (j.hasCandy() && !j.isEmpty() && j.contains(p))
                 j.setHighlighted(true);
             else
                 j.setHighlighted(false);

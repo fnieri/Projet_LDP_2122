@@ -4,7 +4,7 @@
 * Source code: Animation.cpp
 * Date: 13/01/2022
 */
-        
+
 #include "Animation.h"
 
 void Animation::moveCellsDiagonally(const vector<vector<int>> &diagonalCells, int lr) {
@@ -23,8 +23,10 @@ void Animation::moveCellsDiagonally(const vector<vector<int>> &diagonalCells, in
     int firstCol = diagonalCells[0][0];
     int firstRow = diagonalCells[0][1];
     Cell *firstCell = &CellsVertex[firstCol][firstRow];
-    Cell *emptyCell = &CellsVertex[firstCol + 1][firstRow - lr];
-    emptyCell->setClickable(*(firstCell->getCandy()));
+    try {
+        Cell *emptyCell = &CellsVertex.at(firstCol + 1).at(firstRow - lr);
+        emptyCell->setClickable(*(firstCell->getCandy()));
+    } catch (out_of_range &e) { return; }
     for (int k = 0; k < (int) diagonalCells.size(); ++k) {
         int col = diagonalCells[k][0];
         int row = diagonalCells[k][1];
@@ -38,8 +40,11 @@ void Animation::moveCellsDiagonally(const vector<vector<int>> &diagonalCells, in
             Cell *toDrop = &CellsVertex[dCol][dRow];
             toReplace->setClickable(*(toDrop->getCandy()));
         } catch (out_of_range &e) {}
-        if (col == 0) toReplace->setClickable(CandyFactory::generateCandy(NONE));
     }
+    int lastCol = diagonalCells[diagonalCells.size() - 1][0];
+    int lastRow = diagonalCells[diagonalCells.size() - 1][1];
+    Cell *lastCell = &CellsVertex[lastCol][lastRow];
+    lastCell->setClickable(CandyFactory::generateEmptyCandy());
 }
 
 void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
@@ -81,7 +86,7 @@ void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
             topCell->setClickable(ClickableFactory::makeCandy(CandySpeciality::NONE));
         }
     }
-}   
+}
 
 
 void Animation::destroyObject(Cell *cell) {

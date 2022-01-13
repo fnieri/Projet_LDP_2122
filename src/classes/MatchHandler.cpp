@@ -79,7 +79,7 @@ vector<vector<int>> MatchHandler::getDiagonalCells(int col, int row, int lr) {
         try {
             int dRow = row + lr * i;
             Cell *checkCell = &CellsVertex.at(dCol).at(dRow);
-            if (!isCandy(checkCell) || checkCell->isEmpty()) break;
+            if (!checkCell->hasCandy() || checkCell->isEmpty()) break;
             diagonalCells.push_back({dCol, dRow});
         } catch (const std::out_of_range &oor) {
             break;
@@ -88,6 +88,7 @@ vector<vector<int>> MatchHandler::getDiagonalCells(int col, int row, int lr) {
     }
     return diagonalCells;
 }
+
 
 
 bool MatchHandler::handleDiagonalCells() {
