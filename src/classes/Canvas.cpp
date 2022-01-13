@@ -4,14 +4,14 @@
 * Source code: Canvas.cpp
 * Date: 13/01/2022
 */
-        
+
 
 #include "Canvas.h"
 
-Canvas::Canvas(int cellSize, int margin, int numberOfCells) : 
-Board(cellSize, margin, numberOfCells) {
+Canvas::Canvas(int cellSize, int margin, int numberOfCells) :
+        Board(cellSize, margin, numberOfCells) {
     if (getShowSplashscreen()) {
-        const char* filename = "sprites/splashscreen/splashscreen.png";
+        const char *filename = "sprites/splashscreen/splashscreen.png";
         splashscreen = make_unique<Splashscreen>(filename);
     }
     objectiveInit();
@@ -22,7 +22,7 @@ void Canvas::draw() {
     showReset();
     showShuffle();
     drawCurrentObjective();
-    
+
     if (getShowBoard()) {
         Board::draw();
     }
@@ -36,7 +36,7 @@ void Canvas::showSplashScreen() {
         showSplashscreen = false;
         Fl::check();
     }
-    
+
 }
 
 void Canvas::drawCurrentObjective() {
@@ -46,17 +46,17 @@ void Canvas::drawCurrentObjective() {
         fl_rectf(50, 0, 605, 40, FL_WHITE);
         fl_rect(50, 0, 605, 40, FL_BLACK);
         fl_rect(50, 45, 605, 605, FL_BLACK);
-        
-        
+
+
         std::string scoreStr = "Score: " + to_string(score);
         std::string hiScoreStr = "High score: " + to_string(hiScore);
-        std::string objectiveStr = getObjectiveString(); 
+        std::string objectiveStr = getObjectiveString();
         std::string movesStr = "Moves left:" + to_string(getMovesLeft());
 
         fl_draw(scoreStr.c_str(), 60, 20);
         fl_draw(hiScoreStr.c_str(), 150, 20);
         fl_draw(movesStr.c_str(), 550, 20);
-        
+
         if (drawAchievement)
             fl_draw(objectiveStr.c_str(), 280, 20);
     }
@@ -66,24 +66,24 @@ void Canvas::drawCurrentObjective() {
 void Canvas::checkLevelDone() {
     std::string message;
     bool levelDone = false;
-       if (objectiveIsComplete()) {
-            levelDone = true;
-            message = "You completed the level ! Press r to reset" ;
-        }
-        else if (gameIsOver() && !objectiveIsComplete()) {
-            levelDone = true;
-            message = "You lost! Press r to reset";
-        }
+    if (objectiveIsComplete()) {
+        levelDone = true;
+        message = "You completed the level ! Press r to reset";
+    } else if (gameIsOver() && !objectiveIsComplete()) {
+        levelDone = true;
+        message = "You lost! Press r to reset";
+    }
 
-        if (levelDone) {
-            hideAll();
-            showCenterMessage(message);
-        }  
+    if (levelDone) {
+        hideAll();
+        showCenterMessage(message);
+    }
 }
 
 
 void Canvas::keyPressed(int keyCode) {
-    setKeyInputAllowed(false); setAcceptInput(false);
+    setKeyInputAllowed(false);
+    setAcceptInput(false);
     switch (keyCode) {
         case 'q':
             exit(0);
@@ -93,15 +93,16 @@ void Canvas::keyPressed(int keyCode) {
         default:
             break;
     }
-    
-    setKeyInputAllowed(true); setAcceptInput(true);
+
+    setKeyInputAllowed(true);
+    setAcceptInput(true);
 }
 
 void Canvas::setDrawAchievement(bool newDraw) {
     drawAchievement = newDraw;
 }
 
-bool Canvas::isKeyInputAllowed() const {return keyInputAllowed;}
+bool Canvas::isKeyInputAllowed() const { return keyInputAllowed; }
 
 void Canvas::setKeyInputAllowed(bool newState) {
     keyInputAllowed = newState;
@@ -119,7 +120,7 @@ void Canvas::resetCurrentLevel() {
 
     Fl::check();
     sleep(1);
-    
+
     setResetting(false);
     showAll();
 }
@@ -140,7 +141,7 @@ bool Canvas::getShowBoard() const {
     return showBoard;
 }
 
-void Canvas::showReset() { 
+void Canvas::showReset() {
     if (isResetting()) {
         showCenterMessage("Resetting the level, hold on");
     }
@@ -152,11 +153,12 @@ void Canvas::shuffleCurrentLevel() {
     setShuffling(true);
 
     shuffle();
-    
+
     setShuffling(false);
     showAll();
-    
+
 }
+
 void Canvas::showShuffle() {
     if (isShuffling()) {
         hideAll();
@@ -170,7 +172,7 @@ void Canvas::hideAll() {
     setShowBoard(false);
     setDrawAchievement(false);
     setShowTopInfo(false);
-    
+
 }
 
 void Canvas::showAll() {
