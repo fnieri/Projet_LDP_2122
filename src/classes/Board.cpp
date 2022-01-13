@@ -144,19 +144,9 @@ void Board::shuffle() {
     while (checkMatches());
 }
 
-void Board::terminateSuggestionsThreads() {
-    // TODO correct this
-    if (suggestionThread && suggestionThread->joinable()) {
-        cout << "Terminating suggestion thread" << endl;
-            suggestionThread->~thread();
-    }
-    suggestionThread = nullptr;
-    Fl::unlock();
-}
-
 void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
     setAcceptInput(false);
-//    terminateSuggestionsThreads();
+    runSuggestionThread = false;
     if (isMoveAllowed(selectedCellPosition, swapCellPosition)) {
         suggestedCells.clear();
         if (isCandy(selectedCell) && isCandy(swapCell) && !selectedCell->isEmpty() && !swapCell->isEmpty()) {
@@ -173,35 +163,39 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
                 decreaseMovesLeft();
             }
         }
-//        if (!isInputAllowed()) {
-//        }
     }
+    runSuggestionThread = true;
     thread t1(&Board::handleSuggestionThread, this);
-    suggestionThread = &t1;
-    suggestionThread->detach();
+    t1.detach();
     selectedCell = nullptr;
     setAcceptInput(true);
 }
 
 void Board::handleSuggestionThread() {
-    Fl::unlock();
-    this_thread::sleep_for(4s);
+    int t1 = 0;
+    while (runSuggestionThread && t1 < 4000) {
+        this_thread::sleep_for(chrono::milliseconds(500));
+        t1 += 500;
+    }
+    if (!runSuggestionThread) return;
+
     try {
         Cell *tempCell = suggestedCells.at(0);
         Cell *tempSwapCell = suggestedCells.at(1);
-//        Fl::lock();
         tempCell->setHighlightColor(FL_RED);
         tempSwapCell->setHighlightColor(FL_RED);
         tempCell->setSuggestion(true);
         tempSwapCell->setSuggestion(true);
-//        Fl::unlock();
 
-        this_thread::sleep_for(2s);
-        Cell *tempCell1 = suggestedCells.at(0);
-        Cell *tempSwapCell1 = suggestedCells.at(1);
+        int t2 = 0;
+        while (runSuggestionThread && t2 < 2000) {
+            this_thread::sleep_for(chrono::milliseconds(500));
+            t2 += 500;
+        }
+        if (!runSuggestionThread) return;
 
-        tempCell1->resetHighlight();
-        tempSwapCell1->resetHighlight();
+        tempCell->resetHighlight();
+        tempSwapCell->resetHighlight();
     }
     catch (const std::out_of_range &e) {
         return;

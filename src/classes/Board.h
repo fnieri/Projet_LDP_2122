@@ -22,7 +22,6 @@ class Board : public EventHandler, public MatchDetection {
     Point toSwapCellCenter{0, 0};
     Point toSwapCellPosition{0, 0};
     vector<Cell *> suggestedCells{};
-    thread *suggestionThread = nullptr;
     bool runSuggestionThread = false;
 public:
     Board(int cellSize, int margin, int numberOfCells);
