@@ -14,6 +14,15 @@
 
 namespace fs = std::experimental::filesystem;
 
+
+using std::shared_ptr; using std::make_shared;
+using std::unique_ptr; using std::make_unique;
+using std::dynamic_pointer_cast;
+using std::vector;
+using std::out_of_range;
+using std::array;
+using std::to_string;
+
 struct Point {
     int x, y;
 

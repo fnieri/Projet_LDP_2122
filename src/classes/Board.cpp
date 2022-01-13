@@ -54,7 +54,7 @@ void Board::reset() {
     }
     while (checkMatches());
     CellsVertex[3][6].setClickable(ClickableFactory::makeCandy(BOMB, Color::BLUE));
-    CellsVertex[4][6].setClickable(ClickableFactory::makeCandy(STRIPED_HORIZONTAL, Color::BLUE));
+    CellsVertex[4][6].setClickable(ClickableFactory::makeCandy(STRIPED_VERTICAL, Color::BLUE));
 
     
 };
@@ -195,7 +195,7 @@ void Board::swapCells(Cell *swapCell, Point swapCellPosition) {
 void Board::handleSuggestionThread() {
     int t1 = 0;
     while (runSuggestionThread && t1 < 4000) {
-        this_thread::sleep_for(chrono::milliseconds(500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         t1 += 500;
     }
     if (!runSuggestionThread) return;
@@ -210,7 +210,7 @@ void Board::handleSuggestionThread() {
 
         int t2 = 0;
         while (runSuggestionThread && t2 < 2000) {
-            this_thread::sleep_for(chrono::milliseconds(500));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             t2 += 500;
         }
         if (!runSuggestionThread) return;

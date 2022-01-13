@@ -129,11 +129,11 @@ void Cell::setClickable(const Clickable &clickable) {
     if (auto tmp = dynamic_cast<const Candy*>(&clickable))  {
         cellClickable = make_shared<Candy>(*tmp);
     }
-    if (auto tmp = dynamic_cast<const Wall*>(&clickable))  {
+    else if (auto tmp = dynamic_cast<const Wall*>(&clickable))  {
         cellClickable = make_shared<Wall>(*tmp);
     }
 
-    if (auto tmp = dynamic_cast<const Icing*>(&clickable))  {
+    else if (auto tmp = dynamic_cast<const Icing*>(&clickable))  {
         cellClickable = make_shared<Icing>(*tmp);
     }
 }
@@ -157,19 +157,19 @@ void Cell::setCenter(Point newCenter) {
 CandySpeciality Cell::getSpeciality() {
     if (cellClickable->visitCandy()) 
         return dynamic_pointer_cast<Candy>(cellClickable)->getSpeciality();  
-    return CandySpeciality::NONE;
+//    return CandySpeciality::NONE;
 }
 
 Color Cell::getColor() {
     if (cellClickable->visitCandy()) 
         return dynamic_pointer_cast<Candy>(cellClickable)->getColor();  
-    return Color::NONE;
+  //  return Color::NONE;
 }
 
 IcingStatus Cell::getStatus() {
     if (cellClickable->visitIcing())
         return dynamic_pointer_cast<Icing>(cellClickable)->getStatus();  
-    return IcingStatus::EMPTY; 
+ //   return IcingStatus::EMPTY; 
 }  
 
 bool Cell::hasCandy() {

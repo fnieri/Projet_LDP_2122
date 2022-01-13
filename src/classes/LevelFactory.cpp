@@ -36,9 +36,9 @@ Cell LevelFactory::buildCell(int id, Point center, int cellSize, int margin) {
 //https://www.cplusplus.com/doc/tutorial/files/
 
 vector <vector <Cell> > 
-    LevelFactory::buildCellVector(string filename, int margin, int cellSize, int noOfCells) {
+    LevelFactory::buildCellVector(std::string filename, int margin, int cellSize, int noOfCells) {
     
-    ifstream levelFile(filename);
+    std::ifstream levelFile(filename);
     
     int asciiCharDiff = 48; //Digits in ascii begin
     int column = 0;

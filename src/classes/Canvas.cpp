@@ -48,10 +48,10 @@ void Canvas::drawCurrentObjective() {
         fl_rect(50, 45, 605, 605, FL_BLACK);
         
         
-        string scoreStr = "Score: " + to_string(score);
-        string hiScoreStr = "High score: " + to_string(hiScore);
-        string objectiveStr = getObjectiveString(); 
-        string movesStr = "Moves left:" + to_string(getMovesLeft());
+        std::string scoreStr = "Score: " + to_string(score);
+        std::string hiScoreStr = "High score: " + to_string(hiScore);
+        std::string objectiveStr = getObjectiveString(); 
+        std::string movesStr = "Moves left:" + to_string(getMovesLeft());
 
         fl_draw(scoreStr.c_str(), 60, 20);
         fl_draw(hiScoreStr.c_str(), 150, 20);

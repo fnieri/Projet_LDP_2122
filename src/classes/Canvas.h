@@ -18,6 +18,7 @@
 #include "Board.h"
 #include "Splashscreen.h"
 
+
 class Canvas: public Board {
     bool drawAchievement = true;
     bool keyInputAllowed = true;

@@ -15,9 +15,9 @@
 #include "GameObjective.h"
 
 class MatchHandler : public Animation, public GameObjective {
-  bool isInteracting = false;
-  Color interactionColor = Color::NONE;
-  CandySpeciality interactionSpeciality = CandySpeciality::NONE;
+    bool isInteracting = false;
+    Color interactionColor = Color::NONE;
+    CandySpeciality interactionSpeciality = CandySpeciality::NONE;
 
 public:
     void handleCellsToReplace(vector<vector<int>> cellsToReplace);
@@ -62,7 +62,6 @@ public:
     void handleWrappedStriped(Point firstCellPosition, Point secondCellPosition,
                               vector<vector<int>> cellsToMove, bool isHorizontal);
 
-   // void MultiColorInteractions(Point firstCellPosition, Point secondCellPosition, Color firstColor, Color secondColor);
 
     //Functions that use score calculator 
     

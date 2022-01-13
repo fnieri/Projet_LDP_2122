@@ -38,7 +38,7 @@ protected:
     bool gameOver = false;
     bool shuffling = false;
     bool resetting = false;
-    int movesLeft = 1; 
+    int movesLeft = 15; 
     
 public:
 

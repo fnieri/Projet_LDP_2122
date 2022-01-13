@@ -325,7 +325,7 @@ MatchHandler::doubleSpecialCandyInteraction(Point firstCellPosition, Point secon
                     return true;
                 }
                 default:
-                    break;
+                    return false;
             }
         }
         case CandySpeciality::BOMB: {
@@ -335,11 +335,11 @@ MatchHandler::doubleSpecialCandyInteraction(Point firstCellPosition, Point secon
                     return true;
                 }
                 default:
-                    break;
+                    return false;
             }
         }
         default: {
-            break;
+            return false;
         }
     }
 

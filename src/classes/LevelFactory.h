@@ -25,7 +25,7 @@ class LevelFactory {
          static Cell buildCell(int id, Point center, int cellSize, int margin);
     public:
         static
-        vector<vector<Cell>> buildCellVector(string filename, int margin, int cellSize, int noOfCells);
+        vector<vector<Cell>> buildCellVector(std::string filename, int margin, int cellSize, int noOfCells);
 };
 
 #endif

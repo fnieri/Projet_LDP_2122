@@ -24,7 +24,7 @@
 #include "Icing.h"
 #include "Wall.h"
 
-using namespace std;
+using std::make_shared;
 
 class Cell {
     Point center;

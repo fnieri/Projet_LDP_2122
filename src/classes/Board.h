@@ -18,6 +18,8 @@
 #include "GameObjective.h"
 #include "Enums/Interaction.h"
 
+using std::thread;
+
 class Board : public EventHandler, public MatchDetection {
     int cellSize;
     int numberOfCells;
@@ -102,4 +104,4 @@ public:
 };
 
 
-#endif //TEMP_CLASSES_BOARD_H
+#endif //__BOARD_H

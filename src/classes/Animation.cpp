@@ -7,7 +7,6 @@
         
 #include "Animation.h"
 
-
 void Animation::moveCellsDiagonally(const vector<vector<int>> &diagonalCells, int lr) {
     for (int l = 0; l < (int) margin; ++l) {
         for (auto &cellToDrop: diagonalCells) {
@@ -82,8 +81,7 @@ void Animation::moveCellsDown(vector<vector<int>> cellsToReplace) {
             topCell->setClickable(ClickableFactory::makeCandy(CandySpeciality::NONE));
         }
     }
-}
-
+}   
 
 
 void Animation::destroyObject(Cell *cell) {
